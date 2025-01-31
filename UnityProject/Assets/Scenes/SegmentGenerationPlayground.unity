@@ -149,9 +149,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   segmentPrefab: {fileID: 355697970}
-  segmentShiftLength: 10
+  segmentShiftLength: 40
   angleScaling: 50
-  generateCooldown: 1
+  generateCooldown: 3
+  initialTunnelLength: 5
+  cameraMovement: {fileID: 529929436}
 --- !u!4 &85011387
 Transform:
   m_ObjectHideFlags: 0
@@ -183,6 +185,7 @@ GameObject:
   - component: {fileID: 529929435}
   - component: {fileID: 529929434}
   - component: {fileID: 529929433}
+  - component: {fileID: 529929436}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -264,6 +267,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &529929436
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 529929432}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75da7ea946703ea488549a5fac140d87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 10
+  rotationSpeed: 1
 --- !u!1001 &1315061618
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -278,15 +295,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 495d4b0f8e45e104fb8da65211ca11e6, type: 3}
       propertyPath: m_LocalScale.x
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 495d4b0f8e45e104fb8da65211ca11e6, type: 3}
       propertyPath: m_LocalScale.y
-      value: 10
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 495d4b0f8e45e104fb8da65211ca11e6, type: 3}
       propertyPath: m_LocalScale.z
-      value: 10
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 495d4b0f8e45e104fb8da65211ca11e6, type: 3}
       propertyPath: m_LocalPosition.x
@@ -330,7 +347,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 495d4b0f8e45e104fb8da65211ca11e6, type: 3}
       propertyPath: m_ConstrainProportionsScale
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
