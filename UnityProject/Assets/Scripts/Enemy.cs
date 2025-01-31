@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections.Generic;
 using System;
 
@@ -6,6 +6,8 @@ public class Enemy : MonoBehaviour
 {
     public bool[] enemyInUsed = new bool[4]; // 0: Enemy1, 1: Enemy2, 2: Enemy3, 3: Enemy4
     [SerializeField] private GameObject[] enemyPrefabs = new GameObject[4]; // 0: Enemy1, 1: Enemy2, 2: Enemy3, 3: Enemy4
+    [SerializeField] private GameObject[] enemyArrows = new GameObject[4]; // 0: Arrow1, 1: Arrow2, 2: Arrow3, 3: Arrow4
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -61,6 +63,36 @@ public class Enemy : MonoBehaviour
 
         // display the enemy
         enemyPrefabs[enemyIndex].SetActive(true);
+
+        // Update the arrow text
+
+        // randomly select the arrow text for testing purpose
+        string arrows = "";
+        for (int i = 0; i < 6; i++) {
+            int arrow = UnityEngine.Random.Range(0, 4);
+            if (arrow == 0) { arrows += "↑"; }
+            else if (arrow == 1) { arrows += "↓"; }
+            else if (arrow == 2) { arrows += "←"; }
+            else if (arrow == 3) { arrows += "→"; }
+        }
+
+        UpdateArrowText(enemyIndex, arrows);
+    }
+
+    public void UpdateArrowText(int enemyIndex, string text)
+    {   
+        // check if the enemyIndex is valid
+        if (enemyIndex < 0 || enemyIndex >= enemyInUsed.Length || !enemyInUsed[enemyIndex])
+        {   
+            Debug.Log("Invalid enemy index");
+            return;
+        }
+        // clear the previous text
+        enemyArrows[enemyIndex].GetComponent<TMPro.TextMeshProUGUI>().text = "";
+
+        // find the child object with TextMeshPro - Text component
+        enemyArrows[enemyIndex].GetComponent<TMPro.TextMeshProUGUI>().text = text;
+        //Debug.Log("Arrow: " + text);
     }
 
     public void KillEnemy(int enemyIndex)
