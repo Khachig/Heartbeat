@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using TMPro;
 public class PlayerMovement : MonoBehaviour
 {
     public Camera mainCamera;
@@ -12,6 +13,9 @@ public class PlayerMovement : MonoBehaviour
     
     private Vector3 circleCenter;
     public float forwardOffset = 10f; 
+
+    public float playerMaxHealth = 100f;
+    public float playerCurrentHealth = 90f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -98,4 +102,12 @@ public class PlayerMovement : MonoBehaviour
         transform.position = target; // Ensure precise snapping
         isMoving = false;
     }
+
+    // public void subtractHealth(float damage){
+    //     playerCurrentHealth -= damage;
+    //     healthText.text = "Health: " + playerCurrentHealth.ToString();
+    //     if (playerCurrentHealth <= 0){
+    //         Destroy(gameObject);
+    //     }
+    // }
 }
