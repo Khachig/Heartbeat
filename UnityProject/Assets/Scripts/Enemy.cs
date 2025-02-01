@@ -8,11 +8,32 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject[] enemyPrefabs = new GameObject[4]; // 0: Enemy1, 1: Enemy2, 2: Enemy3, 3: Enemy4
     [SerializeField] private GameObject[] enemyArrows = new GameObject[4]; // 0: Arrow1, 1: Arrow2, 2: Arrow3, 3: Arrow4
 
+    private int[] enemyDamage;
+    private int[] fireRate;
+
+    public Camera mainCamera;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         Debug.Log("Enemy Start");
+        CalculatePositions();
+    }
+
+    void CalculatePositions(int numLanes = 4)
+    {   
+        float forwardOffset = 10f;
+        Vector3 targetCenter = mainCamera.transform.position + mainCamera.transform.forward * forwardOffset;
+        float enemyDistance = 50f;
+        Vector3 circleCenter = new Vector3(targetCenter[0], targetCenter[1], targetCenter[2]+enemyDistance);
+        // Vector3 targetCenter = playerPlaneLocation.position;
+        float tunnelRadius = 10f;
+
+        float angleStep = 360f / numLanes;
+        for (int i = 0; i < 4; i++){
+            float angle = angleStep * i * Mathf.Deg2Rad;
+            enemyPrefabs[i].transform.position = circleCenter + new Vector3(Mathf.Cos(angle) * tunnelRadius, Mathf.Sin(angle) * tunnelRadius, 0);
+        }
     }
 
     // Update is called once per frame
@@ -108,5 +129,10 @@ public class Enemy : MonoBehaviour
 
         // hide the enemy (disable the game object)
         enemyPrefabs[enemyIndex].SetActive(false);
+    }
+
+    public void SpawnProjectile()
+    {   
+        
     }
 }
