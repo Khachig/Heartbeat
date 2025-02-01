@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 28
-  productGUID: 8ab2bbe447f744490a027da03492da76
+  productGUID: 8cdd51a98b1534385bd5a33e5147b4a4
   AndroidProfiler: 0
   AndroidFilterTouchesWhenObscured: 0
   AndroidEnableSustainedPerformanceMode: 0
@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: DefaultCompany
-  productName: UnityProject
+  productName: HeartbeatUnity
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -837,14 +837,14 @@ PlayerSettings:
   editorAssembliesCompatibilityLevel: 1
   m_RenderingPath: 1
   m_MobileRenderingPath: 1
-  metroPackageName: UnityProject
+  metroPackageName: HeartbeatUnity
   metroPackageVersion: 
   metroCertificatePath: 
   metroCertificatePassword: 
   metroCertificateSubject: 
   metroCertificateIssuer: 
   metroCertificateNotAfter: 0000000000000000
-  metroApplicationDescription: UnityProject
+  metroApplicationDescription: HeartbeatUnity
   wsaImages: {}
   metroTileShortName: 
   metroTileShowName: 0
@@ -915,10 +915,10 @@ PlayerSettings:
   captureStartupLogs: {}
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
-  cloudProjectId: c34b071e-7a76-4391-961e-ea7be5433031
+  cloudProjectId: 00e5ca00-8d72-4f5b-84fc-6c5f3151e3bb
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: UnityProject
+  projectName: HeartbeatUnity
   organizationId: k_hachig
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
