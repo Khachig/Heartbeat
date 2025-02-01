@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class HealthSystem : MonoBehaviour
 {
-    public int maxHealth = 100;
-    private int currentHealth;
+    public float maxHealth = 100;
+    private float currentHealth;
 
     public TextMeshProUGUI healthText;  // Reference to the TextMeshProUGUI component
 
@@ -19,17 +19,21 @@ public class HealthSystem : MonoBehaviour
     }
 
     // Method to take damage
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         currentHealth -= damage;
-        if (currentHealth < 0) currentHealth = 0;
+        if (currentHealth < 0) {
+            currentHealth = 0;
+            Destroy(gameObject);
+            }
+
 
         // Update the health display
         UpdateHealthText();
     }
 
     // Method to heal
-    public void Heal(int healAmount)
+    public void Heal(float healAmount)
     {
         currentHealth += healAmount;
         if (currentHealth > maxHealth) currentHealth = maxHealth;

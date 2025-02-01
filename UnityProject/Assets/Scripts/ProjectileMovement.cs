@@ -16,7 +16,7 @@ public class ProjectileMovement : MonoBehaviour
     
     public float forwardOffset = 10f; 
     public float enemyDistance = 50f;
-    public int projectileDamage = 10;
+    public float projectileDamage = 10f;
 
     private Vector3 spawnPos;
     private Vector3 targetPos;

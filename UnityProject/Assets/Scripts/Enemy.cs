@@ -8,8 +8,11 @@ public class Enemy : MonoBehaviour
     [SerializeField] private GameObject[] enemyPrefabs = new GameObject[4]; // 0: Enemy1, 1: Enemy2, 2: Enemy3, 3: Enemy4
     [SerializeField] private GameObject[] enemyArrows = new GameObject[4]; // 0: Arrow1, 1: Arrow2, 2: Arrow3, 3: Arrow4
 
-    private int[] enemyDamage;
-    private int[] fireRate;
+    public GameObject projectilePrefab;
+    public float[] enemyDamage = new float[4];
+    public float[] fireRate = new float[4]; // every x seconds
+    public float[] lastFireTime = new float[4];
+    public float[] projectileSpeeds = new float[4];
 
     public Camera mainCamera;
 
@@ -58,6 +61,7 @@ public class Enemy : MonoBehaviour
                 KillEnemy(avaliableIndex[UnityEngine.Random.Range(0, avaliableIndex.Count)]);
             }
         }
+        SpawnProjectile();
     }
 
     public void SpawnEnemy()
@@ -133,6 +137,26 @@ public class Enemy : MonoBehaviour
 
     public void SpawnProjectile()
     {   
-        
+        for (int i = 0; i < enemyInUsed.Length; i++)
+        {
+            if (enemyInUsed[i])
+            {
+                if (Time.time >= lastFireTime[i]+fireRate[i]){
+                    Attack(i);
+                    lastFireTime[i] = Time.time;
+                }
+            }
+        }
+    }
+
+    void Attack(int enemyLane)
+    {
+        GameObject projectile = Instantiate(projectilePrefab, enemyPrefabs[enemyLane].transform.position, Quaternion.identity);
+        ProjectileMovement projScript = projectile.GetComponent<ProjectileMovement>();
+        projScript.projectileDamage = enemyDamage[enemyLane];
+        projScript.enemyLane = enemyLane;
+        projScript.projectileSpeed = projectileSpeeds[enemyLane];
+        projScript.mainCamera = mainCamera;
+        // projScript.waypoints = pathWaypoints; // Assign waypoints
     }
 }

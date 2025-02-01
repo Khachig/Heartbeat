@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5141538703606801666}
   - component: {fileID: 2207536612357407392}
   - component: {fileID: 3061644694097828123}
+  - component: {fileID: 8390661867409493778}
   m_Layer: 0
   m_Name: Projectile
   m_TagString: Untagged
@@ -65,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 967f61bb1e3e28645a39e0cb647cc79e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -110,3 +111,23 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8390661867409493778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4425165233857190015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 851467f12adb84f709f1f543ea6341cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
+  enemyLane: 0
+  projectileSpeed: 20
+  numberOfWaypoints: 10
+  tunnelRadius: 10
+  forwardOffset: 10
+  enemyDistance: 50
+  projectileDamage: 10
