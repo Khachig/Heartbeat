@@ -42,6 +42,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CalculatePositions();
         // for testing purpose, press the space key to spawn an enemy
         if (Input.GetKeyDown(KeyCode.Space)) { SpawnEnemy(); }
 
