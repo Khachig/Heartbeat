@@ -9,8 +9,12 @@ public class GameManager : MonoBehaviour
     {
         enemyManager.init();
         enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
-            position = new Vector3(0, 0, 0),
-            rotation = new Quaternion(45, 0, 45, 1),
+            position = new Vector3(2, -1, 5),
+            rotation = new Quaternion(0, 180, 0, 1),
+        });
+        enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
+            position = new Vector3(-2, -1, 3),
+            rotation = new Quaternion(0, 180, 0, 1),
         });
     }
 }

@@ -21,10 +21,10 @@ public class EnemyManager : ScriptableObject
         GameObject enemy = Instantiate(enemyPrefab, parameters.position, Quaternion.identity);
         enemy.transform.eulerAngles = new Vector3(
             parameters.rotation.x,
-            enemy.transform.eulerAngles.y,
+            parameters.rotation.y,
             parameters.rotation.z
         );
-        EnemyBehaviour script = enemy.GetComponent<EnemyBehaviour>();
-        script.init();
+        /* EnemyBehaviour script = enemy.GetComponent<EnemyBehaviour>(); */
+        /* script.init(); */
     }
 }
