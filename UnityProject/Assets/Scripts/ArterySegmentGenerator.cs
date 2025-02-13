@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 public class ArterySegmentGenerator : MonoBehaviour
 {
+    // Assumes Prefab is a pipe shape with the "center" at one end of the pipe
     public GameObject segmentPrefab;
     public float segmentShiftLength;
     public float angleScaling;
@@ -19,7 +20,7 @@ public class ArterySegmentGenerator : MonoBehaviour
     void Start()
     {
         points = new List<Vector3>();
-        currPos = transform.position;
+        currPos = segmentPrefab.transform.position;
         currDirection = new Vector3(0, 0, segmentShiftLength);
         for(int i = 0; i < initialTunnelLength; i++)
             GenerateNewSegment();
@@ -30,12 +31,13 @@ public class ArterySegmentGenerator : MonoBehaviour
     void GenerateNewSegment() {
         prevPos = currPos;
         currPos += currDirection;
-        Vector3 newSegmentPos = Vector3.Lerp(currPos, prevPos, 0.5f);
-        Quaternion newSegmentRotate = Quaternion.LookRotation(currDirection) * Quaternion.Euler(90,0,0);
-        GameObject newSegment = (GameObject)Instantiate(segmentPrefab, newSegmentPos, newSegmentRotate);
+        Vector3 newSegmentPos = currPos; // Set new position to end of old pipe
 
         UpdateCameraPath();
         GenerateNewDirection();
+
+        Quaternion newSegmentRotate = Quaternion.LookRotation(currDirection); // Set new rotation for pipe
+        GameObject newSegment = (GameObject)Instantiate(segmentPrefab, newSegmentPos, newSegmentRotate);
     }
 
     void UpdateCameraPath() {
