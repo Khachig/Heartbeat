@@ -526,6 +526,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyManager: {fileID: 11400000, guid: 37d2a097f28654f6a8888da795536652, type: 2}
+  camera: {fileID: 330585545}
 --- !u!4 &726199526
 Transform:
   m_ObjectHideFlags: 0
