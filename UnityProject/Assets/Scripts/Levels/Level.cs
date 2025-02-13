@@ -1,7 +1,10 @@
 using UnityEngine;
 
-public interface ILevel
+public abstract class Level : MonoBehaviour
 {
+    public delegate void OnLevelComplete();
+    public OnLevelComplete onLevelComplete;
+
     // Call to load the level
-    public void Load(EnemyManager enemyManager, Camera mainCamera);
+    public abstract void Load(EnemyManager enemyManager, Camera mainCamera);
 }

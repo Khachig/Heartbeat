@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class DemoLevel : MonoBehaviour, ILevel
+public class DemoLevel : Level
 {
     private int enemyCount = 0;
     private int maxEnemyCount = 2;
@@ -8,7 +8,7 @@ public class DemoLevel : MonoBehaviour, ILevel
     private EnemyManager enemyManager;
     private Camera mainCamera;
 
-    public void Load(EnemyManager eManager, Camera mCamera)
+    public override void Load(EnemyManager eManager, Camera mCamera)
     {
         enemyManager = eManager;
         mainCamera = mCamera;
@@ -16,7 +16,6 @@ public class DemoLevel : MonoBehaviour, ILevel
         enemyManager.onEnemeyDeath += OnEnemyDeath;
 
         Invoke("SpawnWave", 3);
-
     }
 
     void SpawnWave()
@@ -41,6 +40,10 @@ public class DemoLevel : MonoBehaviour, ILevel
         enemyCount--;
         if (enemyCount == 0) {
             maxEnemyCount++;
+            if (maxEnemyCount == 6) {
+                onLevelComplete?.Invoke();
+                Destroy(gameObject);
+            }
             Invoke("SpawnWave", 3);
         }
     }
