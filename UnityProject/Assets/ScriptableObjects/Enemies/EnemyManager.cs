@@ -3,6 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EnemyManager", menuName = "Scriptable Objects/EnemyManager")]
 public class EnemyManager : ScriptableObject
 {
+    public delegate void OnEnemeyDeath();
+    public OnEnemeyDeath onEnemeyDeath;
     public float spawnForwardOffset = 20f;
     [SerializeField] private GameObject enemyPrefab;
 
@@ -27,7 +29,12 @@ public class EnemyManager : ScriptableObject
             parameters.rotation.z
         );
         enemy.transform.parent = parameters.camera.transform;
-        /* EnemyBehaviour script = enemy.GetComponent<EnemyBehaviour>(); */
-        /* script.init(); */
+        EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+        enemyBehaviour.onEnemeyDestroy += OnEnemeyDestroy;
+    }
+
+    void OnEnemeyDestroy()
+    {
+        onEnemeyDeath.Invoke();
     }
 }

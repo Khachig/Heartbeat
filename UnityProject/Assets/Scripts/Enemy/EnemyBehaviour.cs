@@ -3,6 +3,9 @@ using System.Collections;
 
 public class EnemyBehaviour : MonoBehaviour
 {
+    public delegate void OnEnemeyDestroy();
+    public OnEnemeyDestroy onEnemeyDestroy;
+
     private EnemyData instanceData;
 
     private int randomOffset;
@@ -80,6 +83,7 @@ public class EnemyBehaviour : MonoBehaviour
         if (images.Count == 0)
         {
             CancelInvoke();
+            onEnemeyDestroy?.Invoke();
             Destroy(gameObject);
             return;
         }
