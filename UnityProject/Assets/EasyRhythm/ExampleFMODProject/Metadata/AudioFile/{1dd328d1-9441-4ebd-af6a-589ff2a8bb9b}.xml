@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="AudioFile" id="{1dd328d1-9441-4ebd-af6a-589ff2a8bb9b}">
+		<property name="assetPath">
+			<value>eSM_ThinkingTrack_3.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>150.26088435374149</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{daa3d6b7-1800-4131-b85b-5c627ba7719a}</destination>
+		</relationship>
+	</object>
+</objects>
