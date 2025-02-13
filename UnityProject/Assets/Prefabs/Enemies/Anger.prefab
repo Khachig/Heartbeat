@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3366493744046575598}
   - component: {fileID: 1589579213265935975}
   - component: {fileID: 3628023367066626653}
-  m_Layer: 5
+  m_Layer: 7
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -156,6 +156,14 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: f8e2e23528b4b4fe5ae86859d4b7c8ae, type: 3}
       propertyPath: m_Name
       value: Anger
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f8e2e23528b4b4fe5ae86859d4b7c8ae, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8164078558771037576, guid: f8e2e23528b4b4fe5ae86859d4b7c8ae, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

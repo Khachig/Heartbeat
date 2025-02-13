@@ -22,7 +22,7 @@ public class DemoLevel : Level
     {
         enemyCount = maxEnemyCount;
         float angleStep = 360f / maxEnemyCount;
-        float spawnRadius = 2.5f;
+        float spawnRadius = 5f;
 
         for (int i = 0; i < maxEnemyCount; i++)
         {
