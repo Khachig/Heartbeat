@@ -27,7 +27,11 @@ public class DemoLevel : Level
         for (int i = 0; i < maxEnemyCount; i++)
         {
             float angle = angleStep * i * Mathf.Deg2Rad;
-            Vector3 enemyPosition = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), Random.Range(2,4)) * spawnRadius + mainCamera.transform.position;
+            Vector3 spawnCenter = mainCamera.transform.position + mainCamera.transform.forward * Random.Range(4, 10);
+            Vector3 enemyPosition = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
+            enemyPosition = Vector3.ProjectOnPlane(enemyPosition, mainCamera.transform.forward).normalized * spawnRadius;
+            enemyPosition += spawnCenter;
+
             enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
                 position = enemyPosition,
                 rotation = new Quaternion(0, 180, 0, 1),
