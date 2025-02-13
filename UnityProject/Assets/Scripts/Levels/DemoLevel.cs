@@ -13,7 +13,7 @@ public class DemoLevel : Level
         enemyManager = eManager;
         mainCamera = mCamera;
         enemyManager.init();
-        enemyManager.onEnemeyDeath += OnEnemyDeath;
+        enemyManager.onEnemyDeath += OnEnemyDeath;
 
         Invoke("SpawnWave", 3);
     }
@@ -22,15 +22,17 @@ public class DemoLevel : Level
     {
         enemyCount = maxEnemyCount;
         float angleStep = 360f / maxEnemyCount;
+        float spawnRadius = 2.5f;
 
         for (int i = 0; i < maxEnemyCount; i++)
         {
             float angle = angleStep * i * Mathf.Deg2Rad;
-            Vector3 enemyPosition = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), Random.Range(2,4)) * 2 + mainCamera.transform.position;
+            Vector3 enemyPosition = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), Random.Range(2,4)) * spawnRadius + mainCamera.transform.position;
             enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
                 position = enemyPosition,
                 rotation = new Quaternion(0, 180, 0, 1),
                 camera = mainCamera,
+                arrowArrangement = GetRandomArrowList(maxEnemyCount - 1),
             });
         }
     }
@@ -46,5 +48,13 @@ public class DemoLevel : Level
             }
             Invoke("SpawnWave", 3);
         }
+    }
+
+    ArrowDirection[] GetRandomArrowList(int numArrows)
+    {
+        ArrowDirection[] newList = new ArrowDirection[numArrows];
+        for (int i = 0; i < numArrows; i++)
+            newList[i] = ArrowDirection.RANDOM;
+        return newList;
     }
 }

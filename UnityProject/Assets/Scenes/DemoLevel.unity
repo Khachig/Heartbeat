@@ -276,7 +276,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff633535020254e40a5ce9501bf42e5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 50
+  speed: 100
   rotationSpeed: 10
 --- !u!1 &425896405
 GameObject:
@@ -328,7 +328,7 @@ MonoBehaviour:
   currentLaneIndex: 0
   tunnelRadius: 3
   moveDuration: 0.2
-  forwardOffset: 10
+  forwardOffset: 8
   playerMaxHealth: 100
   playerCurrentHealth: 90
 --- !u!43 &576457314
