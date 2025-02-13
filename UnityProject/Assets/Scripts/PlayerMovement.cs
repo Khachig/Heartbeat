@@ -48,12 +48,12 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void ChangeLane(){
-        if (Input.GetKeyDown(KeyCode.RightArrow)) { 
+        if (Input.GetKeyDown(KeyCode.D)) { 
             currentLaneIndex = (currentLaneIndex + 1) % numLanes;
             Vector3 newposition = GetCurrPosition() + cameraMovement.transform.forward * cameraMovement.speed * moveDuration;
             StartCoroutine(SmoothMove(newposition));
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow)){
+        else if (Input.GetKeyDown(KeyCode.A)){
             currentLaneIndex = (currentLaneIndex - 1);
             if (currentLaneIndex < 0){
                 currentLaneIndex = numLanes-1;

@@ -4,7 +4,7 @@ public class GameManager : MonoBehaviour
 {
     // TODO: include PlayerManager, LevelManager, whatever is needed etc.
     [SerializeField] private EnemyManager enemyManager;
-    public Camera camera;
+    public Camera mainCamera;
 
     void Start()
     {
@@ -12,12 +12,12 @@ public class GameManager : MonoBehaviour
         enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
             position = new Vector3(2, -1, 5),
             rotation = new Quaternion(0, 180, 0, 1),
-            camera = camera,
+            camera = mainCamera,
         });
         enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
             position = new Vector3(-2, -1, 3),
             rotation = new Quaternion(0, 180, 0, 1),
-            camera = camera,
+            camera = mainCamera,
         });
     }
 }
