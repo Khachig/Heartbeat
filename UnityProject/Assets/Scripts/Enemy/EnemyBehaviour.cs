@@ -15,9 +15,12 @@ public class EnemyBehaviour : MonoBehaviour
     public float fireRate = 1f; // every x seconds
     public float lastFireTime = 0f;
     public GameObject projectilePrefab;
+    public Music music;
 
     void Start()
     {
+        if (!music)
+            music = GameObject.Find("Music").GetComponent<Music>();
         // this data is per enemy instance
         instanceData = gameObject.GetComponent<EnemyData>();
         randomOffset = Random.Range(1, 10);
@@ -33,9 +36,10 @@ public class EnemyBehaviour : MonoBehaviour
     {
         gameObject.transform.position = new Vector3(
             gameObject.transform.position.x,
-            gameObject.transform.position.y + 0.01f * Mathf.Sin(Time.frameCount * 0.05f + randomOffset),
+            gameObject.transform.position.y + 0.01f * Mathf.Cos(Time.time * (music.bpm / 60) * Mathf.PI * 2),
             gameObject.transform.position.z
         );
+        PulseArrow();
 
         HandlePlayerInput();
         Attack();
@@ -137,5 +141,13 @@ public class EnemyBehaviour : MonoBehaviour
         GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position, Quaternion.identity);
         ProjectileMovement projScript = projectile.GetComponent<ProjectileMovement>();
         // projScript.projectileDamage = enemyDamage;
+    }
+
+    void PulseArrow()
+    {
+        GameObject nextArrow = (GameObject) images.Peek();
+        float amp = 0.3f;
+        float scale = 1f + amp + amp * Mathf.Cos(Time.time * (music.bpm / 60) * Mathf.PI * 2);
+        nextArrow.transform.localScale = new Vector3(scale, scale, scale);
     }
 }
