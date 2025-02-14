@@ -879,7 +879,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   segmentPrefab: {fileID: 4519535468324821096, guid: fb98aa52a9b73a3408b847af341a6201, type: 3}
-  segmentShiftLength: 460
+  segmentShiftLength: 450
   angleScaling: 10
   generateCooldown: 3
   initialTunnelLength: 3
@@ -1154,6 +1154,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5473282483292991297, guid: fb98aa52a9b73a3408b847af341a6201, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5473282483292991297, guid: fb98aa52a9b73a3408b847af341a6201, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 5473282483292991297, guid: fb98aa52a9b73a3408b847af341a6201, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 12.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5473282483292991297, guid: fb98aa52a9b73a3408b847af341a6201, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -1193,6 +1205,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5473282483292991297, guid: fb98aa52a9b73a3408b847af341a6201, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5537499624559565439, guid: fb98aa52a9b73a3408b847af341a6201, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -1207,7 +1223,7 @@ PrefabInstance:
       objectReference: {fileID: 576457314}
     - target: {fileID: 6686679467522781389, guid: fb98aa52a9b73a3408b847af341a6201, type: 3}
       propertyPath: m_VersionIndex
-      value: 9640
+      value: 9661
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1225,4 +1241,3 @@ SceneRoots:
   - {fileID: 726199526}
   - {fileID: 1412006470}
   - {fileID: 5179948897400454778}
-  - {fileID: 1518653496}

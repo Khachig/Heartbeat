@@ -104,7 +104,6 @@ public class EnemyBehaviour : MonoBehaviour
     void HandlePlayerInput()
     {
         GameObject nextArrow = (GameObject) images.Peek();
-        Debug.Log("nextArrow name " + nextArrow.name);
         if ((Input.GetKeyDown(KeyCode.UpArrow) && nextArrow.name.Equals("UpArrow(Clone)")) ||
             (Input.GetKeyDown(KeyCode.DownArrow) && nextArrow.name.Equals("DownArrow(Clone)")) || 
             // Switch left and right because images are placed "backwards"
