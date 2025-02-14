@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 851467f12adb84f709f1f543ea6341cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainCamera: {fileID: 0}
+  stage: {fileID: 0}
   enemyLane: 0
   projectileDistance: 0
   projectileSpeed: 20

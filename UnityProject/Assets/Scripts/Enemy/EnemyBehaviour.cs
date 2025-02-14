@@ -27,8 +27,6 @@ public class EnemyBehaviour : MonoBehaviour
 
         lastFireTime = Random.Range(0f, 5f);
         fireRate = Random.Range(1f, 5f);
-
-
     }
 
     void Update()
@@ -139,10 +137,5 @@ public class EnemyBehaviour : MonoBehaviour
         GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position, Quaternion.identity);
         ProjectileMovement projScript = projectile.GetComponent<ProjectileMovement>();
         // projScript.projectileDamage = enemyDamage;
-        projScript.spawnPos = gameObject.transform.position;
-        projScript.enemyLane = enemyLane;
-        // projScript.projectileSpeed = projectileSpeed;
-        // projScript.mainCamera = mainCamera;
-        // projScript.waypoints = pathWaypoints; // Assign waypoints
     }
 }

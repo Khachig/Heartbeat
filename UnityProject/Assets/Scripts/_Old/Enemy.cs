@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour
     public float[] lastFireTime = new float[4];
     public float[] projectileSpeeds = new float[4];
 
-    public Camera mainCamera;
+    public Stage stage;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -26,7 +26,7 @@ public class Enemy : MonoBehaviour
     void CalculatePositions(int numLanes = 4)
     {   
         float forwardOffset = 10f;
-        Vector3 targetCenter = mainCamera.transform.position + mainCamera.transform.forward * forwardOffset;
+        Vector3 targetCenter = stage.transform.position + stage.transform.forward * forwardOffset;
         float enemyDistance = 50f;
         Vector3 circleCenter = new Vector3(targetCenter[0], targetCenter[1], targetCenter[2]+enemyDistance);
         // Vector3 targetCenter = playerPlaneLocation.position;
@@ -155,9 +155,8 @@ public class Enemy : MonoBehaviour
         GameObject projectile = Instantiate(projectilePrefab, enemyPrefabs[enemyLane].transform.position, Quaternion.identity);
         ProjectileMovement projScript = projectile.GetComponent<ProjectileMovement>();
         projScript.projectileDamage = enemyDamage[enemyLane];
-        projScript.enemyLane = enemyLane;
         projScript.projectileSpeed = projectileSpeeds[enemyLane];
-        projScript.mainCamera = mainCamera;
+        projScript.stage = stage;
         // projScript.waypoints = pathWaypoints; // Assign waypoints
     }
 }

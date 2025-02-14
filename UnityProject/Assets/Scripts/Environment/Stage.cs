@@ -2,10 +2,13 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using System.Collections.Generic;
 
-public class CameraMovement : MonoBehaviour
+// Script for Stage information and movement
+public class Stage : MonoBehaviour
 {
-    public float speed;
-    public float rotationSpeed;
+    public int numLanes = 4;
+    public float tunnelRadius = 3f;
+    public float speed = 50f;
+    public float rotationSpeed = 10f;
 
 	private Vector3 targetPoint;
 	private Quaternion targetRotation;

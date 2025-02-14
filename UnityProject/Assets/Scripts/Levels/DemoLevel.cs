@@ -2,16 +2,17 @@ using UnityEngine;
 
 public class DemoLevel : Level
 {
+    public Stage stage;
     private int enemyCount = 0;
     private int maxEnemyCount = 2;
 
     private EnemyManager enemyManager;
-    private Camera mainCamera;
 
-    public override void Load(EnemyManager eManager, Camera mCamera)
+    public override void Load(EnemyManager eManager)
     {
+        if (!stage)
+            stage = GameObject.Find("Stage").GetComponent<Stage>();
         enemyManager = eManager;
-        mainCamera = mCamera;
         enemyManager.init();
         enemyManager.onEnemyDeath += OnEnemyDeath;
 
@@ -21,16 +22,14 @@ public class DemoLevel : Level
     void SpawnWave()
     {
         enemyCount = maxEnemyCount;
-        float spawnRadius = 3f;
-        int numLanes = 4;
 
         for (int i = 0; i < maxEnemyCount; i++)
         {
-            Vector3 enemyPosition = GetPositionForLane(i, spawnRadius, numLanes, 20);
+            Vector3 enemyPosition = GetPositionForLane(i, stage.tunnelRadius, stage.numLanes, 20);
             enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
                 position = enemyPosition,
                 rotation = new Quaternion(0, 180, 0, 1),
-                camera = mainCamera,
+                stage = stage,
                 arrowArrangement = GetRandomArrowList(maxEnemyCount),
                 enemyLane = i
             });
@@ -62,9 +61,9 @@ public class DemoLevel : Level
         float angleStep = 360f / numLanes;
         float angle = angleStep * laneIndex * Mathf.Deg2Rad;
 
-        Vector3 spawnCenter = mainCamera.transform.position + mainCamera.transform.forward * offset;
+        Vector3 spawnCenter = stage.transform.position + stage.transform.forward * offset;
         Vector3 newposition = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
-        newposition = Vector3.ProjectOnPlane(newposition, mainCamera.transform.forward).normalized * tunnelRadius + spawnCenter;
+        newposition = Vector3.ProjectOnPlane(newposition, stage.transform.forward).normalized * tunnelRadius + spawnCenter;
         return newposition;
     }
 }

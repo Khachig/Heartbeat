@@ -3,20 +3,18 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     private EnemyManager enemyManager;
-    private Camera mainCamera;
     private Level firstLevel;
 
-    public void Init(EnemyManager eManager, Camera mCamera)
+    public void Init(EnemyManager eManager)
     {
         enemyManager = eManager;
-        mainCamera = mCamera;
         firstLevel = gameObject.AddComponent<DemoLevel>();
         firstLevel.onLevelComplete += OnLevelComplete;
     }
 
     public void StartLevel()
     {
-        firstLevel.Load(enemyManager, mainCamera);
+        firstLevel.Load(enemyManager);
     }
 
     void OnLevelComplete()

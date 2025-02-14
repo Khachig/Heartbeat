@@ -6,5 +6,5 @@ public abstract class Level : MonoBehaviour
     public OnLevelComplete onLevelComplete;
 
     // Call to load the level
-    public abstract void Load(EnemyManager enemyManager, Camera mainCamera);
+    public abstract void Load(EnemyManager enemyManager);
 }

@@ -3,10 +3,8 @@ using System.Collections;
 using TMPro;
 public class PlayerMovement : MonoBehaviour
 {
-    public CameraMovement cameraMovement;
-    public int numLanes;
+    public Stage stage;
     public int currentLaneIndex = 0;
-    public float tunnelRadius;
     public float moveDuration = 0.3f;
     private bool isMoving = false;
     
@@ -21,16 +19,19 @@ public class PlayerMovement : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (!stage)
+            stage = GameObject.Find("Stage").GetComponent<Stage>();
+
         UpdateCircleCenter();
-        MoveWithCamera();
-        angleStep = 360f / numLanes;
+        MoveWithStage();
+        angleStep = 360f / stage.numLanes;
     }
 
     // Update is called once per frame
     void Update()
     {
         UpdateCircleCenter();
-        MoveWithCamera();
+        MoveWithStage();
         if (!isMoving){
             ChangeLane();
         }
@@ -48,10 +49,10 @@ public class PlayerMovement : MonoBehaviour
     void UpdateCircleCenter()
     {
         // Set the center of the movement circle slightly in front of the camera
-        circleCenter = cameraMovement.transform.position + cameraMovement.transform.forward * forwardOffset;
+        circleCenter = stage.transform.position + stage.transform.forward * forwardOffset;
     }
 
-    void MoveWithCamera()
+    void MoveWithStage()
     {
         // Ensure the player stays at the correct position even when the camera moves
         transform.position = GetCurrPosition();
@@ -59,16 +60,16 @@ public class PlayerMovement : MonoBehaviour
 
     void ChangeLane(){
         if (Input.GetKeyDown(KeyCode.D)) { 
-            currentLaneIndex = (currentLaneIndex + 1) % numLanes;
-            Vector3 newposition = GetCurrPosition() + cameraMovement.transform.forward * cameraMovement.speed * moveDuration;
+            currentLaneIndex = (currentLaneIndex + 1) % stage.numLanes;
+            Vector3 newposition = GetCurrPosition() + stage.transform.forward * stage.speed * moveDuration;
             StartCoroutine(SmoothMove(newposition));
         }
         else if (Input.GetKeyDown(KeyCode.A)){
             currentLaneIndex = (currentLaneIndex - 1);
             if (currentLaneIndex < 0){
-                currentLaneIndex = numLanes-1;
+                currentLaneIndex = stage.numLanes-1;
             }
-            Vector3 newposition = GetCurrPosition() + cameraMovement.transform.forward * cameraMovement.speed * moveDuration;
+            Vector3 newposition = GetCurrPosition() + stage.transform.forward * stage.speed * moveDuration;
             StartCoroutine(SmoothMove(newposition));
         }
         
@@ -99,7 +100,7 @@ public class PlayerMovement : MonoBehaviour
     {
         float angle = angleStep * currentLaneIndex * Mathf.Deg2Rad;
         Vector3 newposition = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
-        newposition = Vector3.ProjectOnPlane(newposition, cameraMovement.transform.forward).normalized * tunnelRadius + circleCenter;
+        newposition = Vector3.ProjectOnPlane(newposition, stage.transform.forward).normalized * stage.tunnelRadius + circleCenter;
         return newposition;
     }
 

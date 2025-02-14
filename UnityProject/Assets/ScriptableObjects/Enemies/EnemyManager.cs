@@ -12,7 +12,7 @@ public class EnemyManager : ScriptableObject
     {
         public Vector3 position;
         public Quaternion rotation;
-        public Camera camera;
+        public Stage stage;
         public ArrowDirection[] arrowArrangement;
         public int enemyLane;
     }
@@ -26,14 +26,14 @@ public class EnemyManager : ScriptableObject
     {
         GameObject enemy = Instantiate(
             enemyPrefab,
-            parameters.position + parameters.camera.transform.forward * spawnForwardOffset,
+            parameters.position + parameters.stage.transform.forward * spawnForwardOffset,
             Quaternion.identity);
         enemy.transform.eulerAngles = new Vector3(
             parameters.rotation.x,
             parameters.rotation.y,
             parameters.rotation.z
         );
-        enemy.transform.parent = parameters.camera.transform;
+        enemy.transform.parent = parameters.stage.transform;
         EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
         enemyBehaviour.enemyLane = parameters.enemyLane;
         enemyBehaviour.onEnemyDestroy += OnEnemyDestroy;

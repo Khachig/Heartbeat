@@ -9,7 +9,7 @@ public class ArterySegmentGenerator : MonoBehaviour
     public float angleScaling;
     public float generateCooldown;
     public int initialTunnelLength = 5; 
-    public CameraMovement cameraMovement;
+    public Stage stage;
 
     private Vector3 currPos;
     private Vector3 prevPos;
@@ -33,16 +33,16 @@ public class ArterySegmentGenerator : MonoBehaviour
         currPos += currDirection;
         Vector3 newSegmentPos = currPos; // Set new position to end of old pipe
 
-        UpdateCameraPath();
+        UpdateStagePath();
         GenerateNewDirection();
 
         Quaternion newSegmentRotate = Quaternion.LookRotation(currDirection); // Set new rotation for pipe
         GameObject newSegment = (GameObject)Instantiate(segmentPrefab, newSegmentPos, newSegmentRotate);
     }
 
-    void UpdateCameraPath() {
+    void UpdateStagePath() {
         points.Add(currPos);
-        cameraMovement.SetPoints(points);
+        stage.SetPoints(points);
     }
 
     void GenerateNewDirection() {
