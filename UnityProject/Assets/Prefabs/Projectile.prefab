@@ -31,8 +31,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.7177478, y: -0, z: -0, w: 0.69630325}
   m_LocalPosition: {x: 9.3366, y: 12.3914, z: -10.1299}
-  m_LocalScale: {x: 2.7117438, y: 1.2772, z: 2.6657372}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.77000004, y: 0.3626611, z: 0.75693643}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -91.737, y: 0, z: 0}
@@ -126,12 +126,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
   enemyLane: 0
+  projectileDistance: 0
   projectileSpeed: 20
   numberOfWaypoints: 10
   tunnelRadius: 10
   forwardOffset: 10
   enemyDistance: 50
   projectileDamage: 10
+  spawnPos: {x: 0, y: 0, z: 0}
 --- !u!54 &6349354324374150670
 Rigidbody:
   m_ObjectHideFlags: 0

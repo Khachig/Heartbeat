@@ -3,6 +3,7 @@ using System.Collections.Generic;
 public class ProjectileMovement : MonoBehaviour
 {
     public Camera mainCamera;
+    private CameraMovement cameraMovement;
     public int enemyLane = 0;
 
     public float projectileDistance;
@@ -28,9 +29,11 @@ public class ProjectileMovement : MonoBehaviour
         if (!mainCamera){
             mainCamera = Camera.main;
         }
+        cameraMovement = mainCamera.GetComponent<CameraMovement>();
+        tunnelRadius = 3f;
         // CalculatePositions();
         // spawnPos = enemyPlaneLocation.position + (enemyPlaneLocation.forward * projectileDistance);;
-        transform.position = spawnPos;
+        // transform.position = spawnPos;
         // SetWaypoints();
         
     }
@@ -39,16 +42,17 @@ public class ProjectileMovement : MonoBehaviour
     {
         Vector3 targetCenter = mainCamera.transform.position + mainCamera.transform.forward * 0;
 
-        Vector3 circleCenter = new Vector3(targetCenter[0], targetCenter[1], targetCenter[2]+enemyDistance);
+        Vector3 circleCenter = new Vector3(targetCenter.x, targetCenter.y, targetCenter.z + enemyDistance);
         // Vector3 targetCenter = playerPlaneLocation.position;
         // float tunnelRadius = enemyPlaneLocation.localScale.x/2;
-        Debug.Log("tunnelRadius " + tunnelRadius);
         float angleStep = 360f / numLanes;
 
         float angle = angleStep * enemyLane * Mathf.Deg2Rad;
-        spawnPos = circleCenter + new Vector3(Mathf.Cos(angle) * tunnelRadius, Mathf.Sin(angle) * tunnelRadius, 0);
-        
-        targetPos = targetCenter + new Vector3(Mathf.Cos(angle) * tunnelRadius, Mathf.Sin(angle) * tunnelRadius, 0);
+        spawnPos = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
+        spawnPos = Vector3.ProjectOnPlane(spawnPos, mainCamera.transform.forward).normalized * tunnelRadius + circleCenter;       
+
+        targetPos = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
+        targetPos = Vector3.ProjectOnPlane(targetPos, mainCamera.transform.forward).normalized * tunnelRadius + targetCenter;       
         
     }
 
@@ -105,6 +109,9 @@ public class ProjectileMovement : MonoBehaviour
 
     void Update()
     {
+        if (cameraMovement) {
+            transform.position = Vector3.MoveTowards(transform.position, transform.position + mainCamera.transform.forward.normalized, (cameraMovement.speed / 2f) * Time.deltaTime);
+        }
         if (wayPoints == null) return;
 
         // Move toward the current waypoint
@@ -113,7 +120,7 @@ public class ProjectileMovement : MonoBehaviour
 
         // Debug.Log("waypoint final " + targetPosition.ToString());
         
-        // transform.position = Vector3.MoveTowards(transform.position, targetPosition, projectileSpeed * Time.deltaTime);
+        // transform.position = Vector3.MoveTowards(transform.position, targetPosition, projectileSpeed * Time.deltaTime); 
 
         // Debug.Log("Player: "+ player.position);
 
