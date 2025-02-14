@@ -34,7 +34,17 @@ public class PlayerMovement : MonoBehaviour
         if (!isMoving){
             ChangeLane();
         }
+        
     }
+
+    // take player arrow input and check if it matches the arrow on the enemy, if it does, destroy the arrow
+    void Attack()
+    {
+        // get player key input
+        
+
+    }
+
     void UpdateCircleCenter()
     {
         // Set the center of the movement circle slightly in front of the camera
