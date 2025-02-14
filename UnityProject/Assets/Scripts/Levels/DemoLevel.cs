@@ -21,22 +21,18 @@ public class DemoLevel : Level
     void SpawnWave()
     {
         enemyCount = maxEnemyCount;
-        float angleStep = 360f / maxEnemyCount;
-        float spawnRadius = 5f;
+        float spawnRadius = 3f;
+        int numLanes = 4;
 
         for (int i = 0; i < maxEnemyCount; i++)
         {
-            float angle = angleStep * i * Mathf.Deg2Rad;
-            Vector3 spawnCenter = mainCamera.transform.position + mainCamera.transform.forward * Random.Range(4, 10);
-            Vector3 enemyPosition = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
-            enemyPosition = Vector3.ProjectOnPlane(enemyPosition, mainCamera.transform.forward).normalized * spawnRadius;
-            enemyPosition += spawnCenter;
+            Vector3 enemyPosition = GetPositionForLane(i, spawnRadius, numLanes);
 
             enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
                 position = enemyPosition,
                 rotation = new Quaternion(0, 180, 0, 1),
                 camera = mainCamera,
-                arrowArrangement = GetRandomArrowList(maxEnemyCount - 1),
+                arrowArrangement = GetRandomArrowList(maxEnemyCount),
             });
         }
     }
@@ -46,7 +42,7 @@ public class DemoLevel : Level
         enemyCount--;
         if (enemyCount == 0) {
             maxEnemyCount++;
-            if (maxEnemyCount == 6) {
+            if (maxEnemyCount == 5) {
                 onLevelComplete?.Invoke();
                 Destroy(gameObject);
             }
@@ -60,5 +56,14 @@ public class DemoLevel : Level
         for (int i = 0; i < numArrows; i++)
             newList[i] = ArrowDirection.RANDOM;
         return newList;
+    }
+    Vector3 GetPositionForLane(int laneIndex, float tunnelRadius, int numLanes)
+    {
+        float angleStep = 360f / numLanes;
+        float angle = angleStep * laneIndex * Mathf.Deg2Rad;
+        Vector3 spawnCenter = mainCamera.transform.position + mainCamera.transform.forward * 6;
+        Vector3 newposition = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
+        newposition = Vector3.ProjectOnPlane(newposition, mainCamera.transform.forward).normalized * tunnelRadius + spawnCenter;
+        return newposition;
     }
 }
