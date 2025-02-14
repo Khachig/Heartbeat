@@ -14,6 +14,7 @@ public class EnemyManager : ScriptableObject
         public Quaternion rotation;
         public Camera camera;
         public ArrowDirection[] arrowArrangement;
+        public int enemyLane;
     }
 
     public void init()
@@ -34,6 +35,7 @@ public class EnemyManager : ScriptableObject
         );
         enemy.transform.parent = parameters.camera.transform;
         EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+        enemyBehaviour.enemyLane = parameters.enemyLane;
         enemyBehaviour.onEnemyDestroy += OnEnemyDestroy;
         EnemyData enemyData = enemy.GetComponent<EnemyData>();
         enemyData.init(new EnemyData.EnemyParameters {

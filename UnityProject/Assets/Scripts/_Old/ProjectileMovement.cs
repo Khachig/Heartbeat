@@ -3,7 +3,9 @@ using System.Collections.Generic;
 public class ProjectileMovement : MonoBehaviour
 {
     public Camera mainCamera;
-    public int enemyLane;
+    public int enemyLane = 0;
+
+    public float projectileDistance;
     private Vector3[] wayPoints;
 	private int currentWaypointIndex = 0;
 
@@ -15,24 +17,27 @@ public class ProjectileMovement : MonoBehaviour
     public float tunnelRadius = 10;
     
     public float forwardOffset = 10f; 
-    public float enemyDistance = 50f;
+    public float enemyDistance = 6f;
     public float projectileDamage = 10f;
 
-    private Vector3 spawnPos;
+    public Vector3 spawnPos;
     private Vector3 targetPos;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        CalculatePositions();
+        if (!mainCamera){
+            mainCamera = Camera.main;
+        }
+        // CalculatePositions();
         // spawnPos = enemyPlaneLocation.position + (enemyPlaneLocation.forward * projectileDistance);;
         transform.position = spawnPos;
-        SetWaypoints();
+        // SetWaypoints();
         
     }
 
     void CalculatePositions(int numLanes = 4)
     {
-        Vector3 targetCenter = mainCamera.transform.position + mainCamera.transform.forward * forwardOffset;
+        Vector3 targetCenter = mainCamera.transform.position + mainCamera.transform.forward * 0;
 
         Vector3 circleCenter = new Vector3(targetCenter[0], targetCenter[1], targetCenter[2]+enemyDistance);
         // Vector3 targetCenter = playerPlaneLocation.position;
@@ -108,7 +113,7 @@ public class ProjectileMovement : MonoBehaviour
 
         // Debug.Log("waypoint final " + targetPosition.ToString());
         
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, projectileSpeed * Time.deltaTime);
+        // transform.position = Vector3.MoveTowards(transform.position, targetPosition, projectileSpeed * Time.deltaTime);
 
         // Debug.Log("Player: "+ player.position);
 

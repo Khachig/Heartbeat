@@ -1,0 +1,26 @@
+{
+    "enemytypeA": {
+        "enemyDamage": 25.0,
+        "fireRate": 5.0,
+        "fireTimeOffset": 1.0,
+        "projectileSpeeds": 5.0
+    },
+    "enemytypeB": {
+        "enemyDamage": 20.0,
+        "fireRate": 6.0,
+        "fireTimeOffset": 1.5,
+        "projectileSpeeds": 10.0
+    },
+    "enemytypeC": {
+        "enemyDamage": 15.0,
+        "fireRate": 4.5,
+        "fireTimeOffset": 2.0,
+        "projectileSpeeds": 8.0
+    },
+    "enemytypeD": {
+        "enemyDamage": 5,
+        "fireRate": 0.5,
+        "fireTimeOffset": 0,
+        "projectileSpeeds": 6.0
+    }
+}
