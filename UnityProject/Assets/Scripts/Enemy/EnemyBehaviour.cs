@@ -8,9 +8,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     private EnemyData instanceData;
 
-    private int randomOffset;
     private Queue images;
-    public int enemyLane;
 
     public float fireRate = 1f; // every x seconds
     public float lastFireTime = 0f;
@@ -21,12 +19,12 @@ public class EnemyBehaviour : MonoBehaviour
     {
         if (!music)
             music = GameObject.Find("Music").GetComponent<Music>();
+
         // this data is per enemy instance
         instanceData = gameObject.GetComponent<EnemyData>();
-        randomOffset = Random.Range(1, 10);
         images = new Queue();
 
-        spawnArrows();
+        SpawnArrows();
 
         lastFireTime = Random.Range(0f, 5f);
         fireRate = Random.Range(1f, 5f);
@@ -34,18 +32,43 @@ public class EnemyBehaviour : MonoBehaviour
 
     void Update()
     {
-        gameObject.transform.position = new Vector3(
-            gameObject.transform.position.x,
-            gameObject.transform.position.y + 0.01f * Mathf.Cos(Time.time * (music.bpm / 60) * Mathf.PI * 2),
-            gameObject.transform.position.z
-        );
+        PulseEnemy();
         PulseArrow();
-
         HandlePlayerInput();
         Attack();
+    } 
+
+    void HandlePlayerInput()
+    {
+        GameObject nextArrow = (GameObject) images.Peek();
+        if ((Input.GetKeyDown(KeyCode.UpArrow) && nextArrow.name.Equals("UpArrow(Clone)")) ||
+            (Input.GetKeyDown(KeyCode.DownArrow) && nextArrow.name.Equals("DownArrow(Clone)")) || 
+            // Switch left and right because images are placed "backwards"
+            (Input.GetKeyDown(KeyCode.LeftArrow) && nextArrow.name.Equals("RightArrow(Clone)")) ||
+            (Input.GetKeyDown(KeyCode.RightArrow) && nextArrow.name.Equals("LeftArrow(Clone)"))
+        )
+            RemoveArrow();
     }
 
-    private (float X, float Y) getCoordinatesByIndex(int index)
+    void SpawnArrows()
+    {
+        Canvas canvas = GetComponentInChildren<Canvas>();
+
+        for (int i=0; i<instanceData.arrowArrangement.Length; ++i)
+        {
+            (float X, float Y) spawnCoordinates = GetCoordinatesByIndex(i);
+            GameObject imagePrefab = GetArrowImageFromArrowDirection(instanceData.arrowArrangement[i]);
+            GameObject image = Instantiate(imagePrefab);
+            image.transform.SetParent(canvas.transform, false);
+
+            RectTransform rt = image.GetComponent<RectTransform>();
+            rt.anchoredPosition = new Vector2(spawnCoordinates.X, spawnCoordinates.Y);
+
+            images.Enqueue(image);
+        }
+    }
+
+    (float X, float Y) GetCoordinatesByIndex(int index)
     {
         float spawnOffsetAngle = instanceData.spawnOffsetAngle;
         float spawnRadius = instanceData.spawnArcRadius;
@@ -59,37 +82,7 @@ public class EnemyBehaviour : MonoBehaviour
             spawnRadius * Mathf.Cos(spawnOffsetAngle + (deltaTheta * index)),
             spawnRadius * Mathf.Sin(spawnOffsetAngle + (deltaTheta * index))
         );
-    }
-
-    public void spawnArrows()
-    {
-        Canvas canvas = GetComponentInChildren<Canvas>();
-
-        for (int i=0; i<instanceData.arrowArrangement.Length; ++i)
-        {
-            (float X, float Y) spawnCoordinates = getCoordinatesByIndex(i);
-            GameObject imagePrefab = GetArrowImageFromArrowDirection(instanceData.arrowArrangement[i]);
-            GameObject image = Instantiate(imagePrefab);
-            image.transform.SetParent(canvas.transform, false);
-
-            RectTransform rt = image.GetComponent<RectTransform>();
-            rt.anchoredPosition = new Vector2(spawnCoordinates.X, spawnCoordinates.Y);
-
-            images.Enqueue(image);
-        }
-    }
-
-    void RemoveArrow()
-    {
-        GameObject image = images.Dequeue() as GameObject;
-        Destroy(image);
-        if (images.Count == 0)
-        {
-            onEnemyDestroy?.Invoke();
-            Destroy(gameObject);
-            return;
-        }
-    }
+    } 
 
     GameObject GetArrowImageFromArrowDirection(ArrowDirection direction)
     {
@@ -113,18 +106,16 @@ public class EnemyBehaviour : MonoBehaviour
             return image_list[Random.Range(1, 5) % 4];
         }
     }
-
-    void HandlePlayerInput()
+ 
+    void RemoveArrow()
     {
-        GameObject nextArrow = (GameObject) images.Peek();
-        if ((Input.GetKeyDown(KeyCode.UpArrow) && nextArrow.name.Equals("UpArrow(Clone)")) ||
-            (Input.GetKeyDown(KeyCode.DownArrow) && nextArrow.name.Equals("DownArrow(Clone)")) || 
-            // Switch left and right because images are placed "backwards"
-            (Input.GetKeyDown(KeyCode.LeftArrow) && nextArrow.name.Equals("RightArrow(Clone)")) ||
-            (Input.GetKeyDown(KeyCode.RightArrow) && nextArrow.name.Equals("LeftArrow(Clone)"))
-        )
+        GameObject image = images.Dequeue() as GameObject;
+        Destroy(image);
+        if (images.Count == 0)
         {
-            RemoveArrow();
+            onEnemyDestroy?.Invoke();
+            Destroy(gameObject);
+            return;
         }
     }
 
@@ -135,12 +126,21 @@ public class EnemyBehaviour : MonoBehaviour
             lastFireTime = Time.time;
         }
     }
-    // int enemyLane
+
     void SpawnProjectile()
     {
         GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position, Quaternion.identity);
         ProjectileMovement projScript = projectile.GetComponent<ProjectileMovement>();
         // projScript.projectileDamage = enemyDamage;
+    }
+
+    void PulseEnemy()
+    {
+        gameObject.transform.position = new Vector3(
+            gameObject.transform.position.x,
+            gameObject.transform.position.y + 0.01f * Mathf.Cos(Time.time * (music.bpm / 60) * Mathf.PI * 2),
+            gameObject.transform.position.z
+        );
     }
 
     void PulseArrow()

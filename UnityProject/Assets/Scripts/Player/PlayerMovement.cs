@@ -12,9 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public float forwardOffset = 10f; 
 
     public float playerMaxHealth = 100f;
-    public float playerCurrentHealth = 90f;
-
-    private float angleStep;
+    public float playerCurrentHealth = 100f;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -24,7 +22,6 @@ public class PlayerMovement : MonoBehaviour
 
         UpdateCircleCenter();
         MoveWithStage();
-        angleStep = 360f / stage.numLanes;
     }
 
     // Update is called once per frame
@@ -33,17 +30,9 @@ public class PlayerMovement : MonoBehaviour
         UpdateCircleCenter();
         MoveWithStage();
         if (!isMoving){
-            ChangeLane();
+            HandleChangeLaneInupt();
         }
         
-    }
-
-    // take player arrow input and check if it matches the arrow on the enemy, if it does, destroy the arrow
-    void Attack()
-    {
-        // get player key input
-        
-
     }
 
     void UpdateCircleCenter()
@@ -58,21 +47,27 @@ public class PlayerMovement : MonoBehaviour
         transform.position = GetCurrPosition();
     }
 
-    void ChangeLane(){
-        if (Input.GetKeyDown(KeyCode.D)) { 
+    void HandleChangeLaneInupt()
+    {
+        if (Input.GetKeyDown(KeyCode.D))
+        { 
             currentLaneIndex = (currentLaneIndex + 1) % stage.numLanes;
-            Vector3 newposition = GetCurrPosition() + stage.transform.forward * stage.speed * moveDuration;
-            StartCoroutine(SmoothMove(newposition));
+            ChangeLane();
         }
-        else if (Input.GetKeyDown(KeyCode.A)){
-            currentLaneIndex = (currentLaneIndex - 1);
-            if (currentLaneIndex < 0){
-                currentLaneIndex = stage.numLanes-1;
-            }
-            Vector3 newposition = GetCurrPosition() + stage.transform.forward * stage.speed * moveDuration;
-            StartCoroutine(SmoothMove(newposition));
+        else if (Input.GetKeyDown(KeyCode.A))
+        {
+            currentLaneIndex = (currentLaneIndex - 1) % stage.numLanes;
+            if (currentLaneIndex < 0)
+                currentLaneIndex += stage.numLanes;
+            ChangeLane();
         }
         
+    }
+
+    void ChangeLane()
+    {
+        Vector3 newposition = GetCurrPosition() + stage.transform.forward * stage.speed * moveDuration;
+        StartCoroutine(SmoothMove(newposition));
     }
 
     IEnumerator SmoothMove(Vector3 target)
@@ -98,17 +93,10 @@ public class PlayerMovement : MonoBehaviour
 
     Vector3 GetCurrPosition()
     {
+        float angleStep = 360f / stage.numLanes;
         float angle = angleStep * currentLaneIndex * Mathf.Deg2Rad;
         Vector3 newposition = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
         newposition = Vector3.ProjectOnPlane(newposition, stage.transform.forward).normalized * stage.tunnelRadius + circleCenter;
         return newposition;
     }
-
-    // public void subtractHealth(float damage){
-    //     playerCurrentHealth -= damage;
-    //     healthText.text = "Health: " + playerCurrentHealth.ToString();
-    //     if (playerCurrentHealth <= 0){
-    //         Destroy(gameObject);
-    //     }
-    // }
 }

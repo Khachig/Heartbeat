@@ -35,7 +35,6 @@ public class EnemyManager : ScriptableObject
         );
         enemy.transform.parent = parameters.stage.transform;
         EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
-        enemyBehaviour.enemyLane = parameters.enemyLane;
         enemyBehaviour.onEnemyDestroy += OnEnemyDestroy;
         EnemyData enemyData = enemy.GetComponent<EnemyData>();
         enemyData.init(new EnemyData.EnemyParameters {

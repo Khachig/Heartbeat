@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+
 public class ProjectileMovement : MonoBehaviour
 {
     public Stage stage; 
@@ -16,7 +17,10 @@ public class ProjectileMovement : MonoBehaviour
     void Update()
     {
         // Slow bullet down because of forward moving player
-        transform.position = Vector3.MoveTowards(transform.position, transform.position + stage.transform.forward.normalized, (stage.speed - projectileSpeed) * Time.deltaTime);
+        transform.position = Vector3.MoveTowards(
+            transform.position,
+            transform.position + stage.transform.forward.normalized,
+            (stage.speed - projectileSpeed) * Time.deltaTime);
 
         // If bullet is behind camera, destroy
         if (transform.position.z - stage.transform.position.z < -2f)
