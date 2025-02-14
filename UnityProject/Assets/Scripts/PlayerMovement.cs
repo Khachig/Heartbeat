@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveDuration = 0.3f;
     private bool isMoving = false;
     
-    private Vector3 circleCenter;
+    public Vector3 circleCenter;
     public float forwardOffset = 10f; 
 
     public float playerMaxHealth = 100f;

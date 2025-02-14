@@ -10,6 +10,11 @@ public class EnemyBehaviour : MonoBehaviour
 
     private int randomOffset;
     private Queue images;
+    public int enemyLane;
+
+    public float fireRate = 1f; // every x seconds
+    public float lastFireTime = 0f;
+    public GameObject projectilePrefab;
 
     void Start()
     {
@@ -19,6 +24,11 @@ public class EnemyBehaviour : MonoBehaviour
         images = new Queue();
 
         spawnArrows();
+
+        lastFireTime = Random.Range(0f, 5f);
+        fireRate = Random.Range(1f, 5f);
+
+
     }
 
     void Update()
@@ -30,6 +40,7 @@ public class EnemyBehaviour : MonoBehaviour
         );
 
         HandlePlayerInput();
+        Attack();
     }
 
     private (float X, float Y) getCoordinatesByIndex(int index)
@@ -113,5 +124,25 @@ public class EnemyBehaviour : MonoBehaviour
         {
             RemoveArrow();
         }
+    }
+
+    public void Attack()
+    {   
+        if (Time.time >= lastFireTime+fireRate){
+            SpawnProjectile();
+            lastFireTime = Time.time;
+        }
+    }
+    // int enemyLane
+    void SpawnProjectile()
+    {
+        GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position, Quaternion.identity);
+        ProjectileMovement projScript = projectile.GetComponent<ProjectileMovement>();
+        // projScript.projectileDamage = enemyDamage;
+        projScript.spawnPos = gameObject.transform.position;
+        projScript.enemyLane = enemyLane;
+        // projScript.projectileSpeed = projectileSpeed;
+        // projScript.mainCamera = mainCamera;
+        // projScript.waypoints = pathWaypoints; // Assign waypoints
     }
 }

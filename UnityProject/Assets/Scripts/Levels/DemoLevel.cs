@@ -26,13 +26,13 @@ public class DemoLevel : Level
 
         for (int i = 0; i < maxEnemyCount; i++)
         {
-            Vector3 enemyPosition = GetPositionForLane(i, spawnRadius, numLanes);
-
+            Vector3 enemyPosition = GetPositionForLane(i, spawnRadius, numLanes, 20);
             enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
                 position = enemyPosition,
                 rotation = new Quaternion(0, 180, 0, 1),
                 camera = mainCamera,
                 arrowArrangement = GetRandomArrowList(maxEnemyCount),
+                enemyLane = i
             });
         }
     }
@@ -57,11 +57,12 @@ public class DemoLevel : Level
             newList[i] = ArrowDirection.RANDOM;
         return newList;
     }
-    Vector3 GetPositionForLane(int laneIndex, float tunnelRadius, int numLanes)
+    Vector3 GetPositionForLane(int laneIndex, float tunnelRadius, int numLanes, float offset)
     {
         float angleStep = 360f / numLanes;
         float angle = angleStep * laneIndex * Mathf.Deg2Rad;
-        Vector3 spawnCenter = mainCamera.transform.position + mainCamera.transform.forward * 6;
+
+        Vector3 spawnCenter = mainCamera.transform.position + mainCamera.transform.forward * offset;
         Vector3 newposition = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
         newposition = Vector3.ProjectOnPlane(newposition, mainCamera.transform.forward).normalized * tunnelRadius + spawnCenter;
         return newposition;
