@@ -19,9 +19,6 @@ public class EnemyBehaviour : MonoBehaviour
         images = new Queue();
 
         spawnArrows();
-
-        // TODO: make arrows disappear from player input instead of time
-        InvokeRepeating("RemoveArrow", 2 + (2.8f * Random.Range(0, 2)), 0.7f);
     }
 
     void Update()
@@ -31,6 +28,8 @@ public class EnemyBehaviour : MonoBehaviour
             gameObject.transform.position.y + 0.01f * Mathf.Sin(Time.frameCount * 0.05f + randomOffset),
             gameObject.transform.position.z
         );
+
+        HandlePlayerInput();
     }
 
     private (float X, float Y) getCoordinatesByIndex(int index)
@@ -73,7 +72,6 @@ public class EnemyBehaviour : MonoBehaviour
         Destroy(image);
         if (images.Count == 0)
         {
-            CancelInvoke();
             onEnemyDestroy?.Invoke();
             Destroy(gameObject);
             return;
@@ -100,6 +98,21 @@ public class EnemyBehaviour : MonoBehaviour
                 instanceData.RightPrefab
             };
             return image_list[Random.Range(1, 5) % 4];
+        }
+    }
+
+    void HandlePlayerInput()
+    {
+        GameObject nextArrow = (GameObject) images.Peek();
+        Debug.Log("nextArrow name " + nextArrow.name);
+        if ((Input.GetKeyDown(KeyCode.UpArrow) && nextArrow.name.Equals("UpArrow(Clone)")) ||
+            (Input.GetKeyDown(KeyCode.DownArrow) && nextArrow.name.Equals("DownArrow(Clone)")) || 
+            // Switch left and right because images are placed "backwards"
+            (Input.GetKeyDown(KeyCode.LeftArrow) && nextArrow.name.Equals("RightArrow(Clone)")) ||
+            (Input.GetKeyDown(KeyCode.RightArrow) && nextArrow.name.Equals("LeftArrow(Clone)"))
+        )
+        {
+            RemoveArrow();
         }
     }
 }
