@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 public class EnemyBehaviour : MonoBehaviour
 {
@@ -34,18 +35,18 @@ public class EnemyBehaviour : MonoBehaviour
     {
         PulseEnemy();
         PulseArrow();
-        HandlePlayerInput();
         Attack();
     } 
 
-    void HandlePlayerInput()
+    void OnAttack(InputValue value)
     {
-        GameObject nextArrow = (GameObject) images.Peek();
-        if ((Input.GetKeyDown(KeyCode.UpArrow) && nextArrow.name.Equals("UpArrow(Clone)")) ||
-            (Input.GetKeyDown(KeyCode.DownArrow) && nextArrow.name.Equals("DownArrow(Clone)")) || 
+        Vector2 input = value.Get<Vector2>();
+        GameObject nextArrow = (GameObject)images.Peek();
+        if ((input.y > 0 && nextArrow.name.Equals("UpArrow(Clone)")) ||
+            (input.y < 0 && nextArrow.name.Equals("DownArrow(Clone)")) ||
             // Switch left and right because images are placed "backwards"
-            (Input.GetKeyDown(KeyCode.LeftArrow) && nextArrow.name.Equals("RightArrow(Clone)")) ||
-            (Input.GetKeyDown(KeyCode.RightArrow) && nextArrow.name.Equals("LeftArrow(Clone)"))
+            (input.x < 0 && nextArrow.name.Equals("RightArrow(Clone)")) ||
+            (input.x > 0 && nextArrow.name.Equals("LeftArrow(Clone)"))
         )
             RemoveArrow();
     }
