@@ -4,9 +4,12 @@ using System.Collections;
 public class EnemyBehaviour : MonoBehaviour
 {
     public delegate void OnEnemyDestroy();
+    // To be invoked whenever a single enemy is destroyed
     public OnEnemyDestroy onEnemyDestroy;
 
     private EnemyData instanceData;
+    private Animator enemyAnimator;
+    private EnemyDamageEffect effects;
 
     private Queue images;
 
@@ -22,9 +25,12 @@ public class EnemyBehaviour : MonoBehaviour
 
         // this data is per enemy instance
         instanceData = gameObject.GetComponent<EnemyData>();
+        effects = gameObject.GetComponent<EnemyDamageEffect>();
+        enemyAnimator = gameObject.transform.GetChild(0).GetComponent<Animator>();
         images = new Queue();
 
         SpawnArrows();
+        SetArrowPulseSpeed();
 
         lastFireTime = Random.Range(0f, 5f);
         fireRate = Random.Range(1f, 5f);
@@ -33,21 +39,24 @@ public class EnemyBehaviour : MonoBehaviour
     void Update()
     {
         PulseEnemy();
-        PulseArrow();
-        HandlePlayerInput();
         Attack();
     } 
 
-    void HandlePlayerInput()
+    // Returns true iff input matches the first arrow of this enemy
+    public bool HandlePlayerAttack(KeyCode input)
     {
         GameObject nextArrow = (GameObject) images.Peek();
-        if ((Input.GetKeyDown(KeyCode.UpArrow) && nextArrow.name.Equals("UpArrow(Clone)")) ||
-            (Input.GetKeyDown(KeyCode.DownArrow) && nextArrow.name.Equals("DownArrow(Clone)")) || 
+        if ((input.Equals(KeyCode.UpArrow) && nextArrow.name.Equals("UpArrow(Clone)")) ||
+            (input.Equals(KeyCode.DownArrow) && nextArrow.name.Equals("DownArrow(Clone)")) || 
             // Switch left and right because images are placed "backwards"
-            (Input.GetKeyDown(KeyCode.LeftArrow) && nextArrow.name.Equals("RightArrow(Clone)")) ||
-            (Input.GetKeyDown(KeyCode.RightArrow) && nextArrow.name.Equals("LeftArrow(Clone)"))
+            (input.Equals(KeyCode.LeftArrow) && nextArrow.name.Equals("RightArrow(Clone)")) ||
+            (input.Equals(KeyCode.RightArrow) && nextArrow.name.Equals("LeftArrow(Clone)"))
         )
+        {
             RemoveArrow();
+            return true;
+        }
+        return false;
     }
 
     void SpawnArrows()
@@ -110,12 +119,16 @@ public class EnemyBehaviour : MonoBehaviour
     void RemoveArrow()
     {
         GameObject image = images.Dequeue() as GameObject;
-        Destroy(image);
+        SetArrowPulseSpeed();
+        effects.Flash();
+        Animator arrowAnimator = image.GetComponent<Animator>();
+        arrowAnimator.SetTrigger("ArrowDestroy");
         if (images.Count == 0)
         {
             onEnemyDestroy?.Invoke();
-            Destroy(gameObject);
-            return;
+            enemyAnimator.SetTrigger("EnemyDeath");
+        } else {
+            enemyAnimator.SetTrigger("EnemyHit");
         }
     }
 
@@ -143,11 +156,15 @@ public class EnemyBehaviour : MonoBehaviour
         );
     }
 
-    void PulseArrow()
+    void SetArrowPulseSpeed()
     {
-        GameObject nextArrow = (GameObject) images.Peek();
-        float amp = 0.3f;
-        float scale = 1f + amp + amp * Mathf.Cos(Time.time * (music.bpm / 60) * Mathf.PI * 2);
-        nextArrow.transform.localScale = new Vector3(scale, scale, scale);
+        // TODO: make arrows pulse to beat
+        if (images.Count == 0)
+            return;
+
+        GameObject image = (GameObject) images.Peek();
+        Animator arrowAnimator = image.GetComponent<Animator>();
+        arrowAnimator.SetFloat("ArrowPulseSpeed", music.bpm / 60f);
+        arrowAnimator.SetBool("IsActive", true);
     }
 }

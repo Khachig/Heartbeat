@@ -1,12 +1,17 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 [CreateAssetMenu(fileName = "EnemyManager", menuName = "Scriptable Objects/EnemyManager")]
 public class EnemyManager : ScriptableObject
 {
     public delegate void OnEnemyDeath();
+    // To be invoked whenever a single enemy is destroyed/killed
     public OnEnemyDeath onEnemyDeath;
     public float spawnForwardOffset = 20f;
     [SerializeField] private GameObject enemyPrefab;
+
+    List<GameObject> enemies;
 
     public struct SpawnParameters
     {
@@ -20,6 +25,7 @@ public class EnemyManager : ScriptableObject
     public void init()
     {
         Debug.Log("Scriptable Object Enemy Manager");
+        enemies = new List<GameObject>();
     }
 
     public void spawnEnemy(SpawnParameters parameters)
@@ -40,6 +46,25 @@ public class EnemyManager : ScriptableObject
         enemyData.init(new EnemyData.EnemyParameters {
             arrowArrangement = parameters.arrowArrangement,
         });
+        enemies.Add(enemy);
+    }
+
+    // Returns whether any enemy was hit by the player attack
+    public bool handlePlayerAttack(KeyCode input)
+    {
+        bool match = false;
+        foreach(GameObject enemy in enemies.ToList())
+        {
+            if (enemy == null)
+            {
+                enemies.Remove(enemy);
+                continue;
+            }
+
+            EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+            match |= enemyBehaviour.HandlePlayerAttack(input);
+        }
+        return match;
     }
 
     void OnEnemyDestroy()
