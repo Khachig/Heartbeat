@@ -33,6 +33,7 @@ public class ProjectileMovement : MonoBehaviour
         {
             HealthSystem playerHealth = other.GetComponent<HealthSystem>();
             playerHealth.TakeDamage(projectileDamage);
+			Effects.SpecialEffects.ScreenDamageEffect(0.5f);
             Destroy(gameObject); // Destroy projectile
         }
     }

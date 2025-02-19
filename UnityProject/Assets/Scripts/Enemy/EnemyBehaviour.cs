@@ -4,6 +4,7 @@ using System.Collections;
 public class EnemyBehaviour : MonoBehaviour
 {
     public delegate void OnEnemyDestroy();
+    // To be invoked whenever a single enemy is destroyed
     public OnEnemyDestroy onEnemyDestroy;
 
     private EnemyData instanceData;
@@ -34,20 +35,24 @@ public class EnemyBehaviour : MonoBehaviour
     {
         PulseEnemy();
         PulseArrow();
-        HandlePlayerInput();
         Attack();
     } 
 
-    void HandlePlayerInput()
+    // Returns true iff input matches the first arrow of this enemy
+    public bool HandlePlayerAttack(KeyCode input)
     {
         GameObject nextArrow = (GameObject) images.Peek();
-        if ((Input.GetKeyDown(KeyCode.UpArrow) && nextArrow.name.Equals("UpArrow(Clone)")) ||
-            (Input.GetKeyDown(KeyCode.DownArrow) && nextArrow.name.Equals("DownArrow(Clone)")) || 
+        if ((input.Equals(KeyCode.UpArrow) && nextArrow.name.Equals("UpArrow(Clone)")) ||
+            (input.Equals(KeyCode.DownArrow) && nextArrow.name.Equals("DownArrow(Clone)")) || 
             // Switch left and right because images are placed "backwards"
-            (Input.GetKeyDown(KeyCode.LeftArrow) && nextArrow.name.Equals("RightArrow(Clone)")) ||
-            (Input.GetKeyDown(KeyCode.RightArrow) && nextArrow.name.Equals("LeftArrow(Clone)"))
+            (input.Equals(KeyCode.LeftArrow) && nextArrow.name.Equals("RightArrow(Clone)")) ||
+            (input.Equals(KeyCode.RightArrow) && nextArrow.name.Equals("LeftArrow(Clone)"))
         )
+        {
             RemoveArrow();
+            return true;
+        }
+        return false;
     }
 
     void SpawnArrows()

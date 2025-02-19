@@ -1,0 +1,51 @@
+using UnityEngine;
+
+public class PlayerAttack : MonoBehaviour
+{
+    public EnemyManager enemyManager;
+    public HealthSystem playerHealth;
+    public float missDamage = 10f;
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        HandlePlayerInput();
+    }
+
+    void HandlePlayerInput()
+    {
+        bool hitDirection = false;
+        bool successfulHit = false;
+        // TODO: Handle if it is on beat
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            hitDirection = true;
+            successfulHit = enemyManager.handlePlayerAttack(KeyCode.UpArrow);
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            hitDirection = true;
+            successfulHit = enemyManager.handlePlayerAttack(KeyCode.DownArrow);
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            hitDirection = true;
+            successfulHit = enemyManager.handlePlayerAttack(KeyCode.LeftArrow);
+        }
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            hitDirection = true;
+            successfulHit = enemyManager.handlePlayerAttack(KeyCode.RightArrow);
+        }
+        // Miss
+        if (!successfulHit && hitDirection) {
+			Effects.SpecialEffects.ScreenDamageEffect(0.5f);
+            playerHealth.TakeDamage(missDamage);
+        }
+    }
+}
