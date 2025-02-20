@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine.InputSystem;
 
 [CreateAssetMenu(fileName = "EnemyManager", menuName = "Scriptable Objects/EnemyManager")]
 public class EnemyManager : ScriptableObject
@@ -50,7 +51,7 @@ public class EnemyManager : ScriptableObject
     }
 
     // Returns whether any enemy was hit by the player attack
-    public bool handlePlayerAttack(KeyCode input)
+    public bool handlePlayerAttack(InputValue value)
     {
         bool match = false;
         foreach(GameObject enemy in enemies.ToList())
@@ -62,7 +63,7 @@ public class EnemyManager : ScriptableObject
             }
 
             EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
-            match |= enemyBehaviour.HandlePlayerAttack(input);
+            match |= enemyBehaviour.HandlePlayerAttack(value);
         }
         return match;
     }

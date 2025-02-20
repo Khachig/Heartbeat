@@ -1,15 +1,16 @@
 using UnityEngine;
 using System.Collections;
 using TMPro;
+using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     public Stage stage;
     public int currentLaneIndex = 0;
     public float moveDuration = 0.3f;
     private bool isMoving = false;
-    
+
     public Vector3 circleCenter;
-    public float forwardOffset = 10f; 
+    public float forwardOffset = 10f;
 
     public float playerMaxHealth = 100f;
     public float playerCurrentHealth = 100f;
@@ -29,10 +30,6 @@ public class PlayerMovement : MonoBehaviour
     {
         UpdateCircleCenter();
         MoveWithStage();
-        if (!isMoving){
-            HandleChangeLaneInupt();
-        }
-        
     }
 
     void UpdateCircleCenter()
@@ -47,21 +44,31 @@ public class PlayerMovement : MonoBehaviour
         transform.position = GetCurrPosition();
     }
 
-    void HandleChangeLaneInupt()
+    void OnMove(InputValue value)
     {
-        if (Input.GetKeyDown(KeyCode.D))
-        { 
+        // For input handler, only do call back on performed stage
+        // if (!context.performed)
+            // return;
+
+        if (isMoving)
+            return;
+
+        Vector2 moveInput = value.Get<Vector2>();
+        // Vector2 moveInput = context.ReadValue<Vector2>();
+
+        if (moveInput.x > 0)
+        {
             currentLaneIndex = (currentLaneIndex + 1) % stage.numLanes;
             ChangeLane();
         }
-        else if (Input.GetKeyDown(KeyCode.A))
+        else if (moveInput.x < 0)
         {
             currentLaneIndex = (currentLaneIndex - 1) % stage.numLanes;
             if (currentLaneIndex < 0)
                 currentLaneIndex += stage.numLanes;
             ChangeLane();
         }
-        
+
     }
 
     void ChangeLane()

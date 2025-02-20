@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 public class EnemyBehaviour : MonoBehaviour
 {
@@ -43,14 +44,15 @@ public class EnemyBehaviour : MonoBehaviour
     } 
 
     // Returns true iff input matches the first arrow of this enemy
-    public bool HandlePlayerAttack(KeyCode input)
+    public bool HandlePlayerAttack(InputValue value)
     {
-        GameObject nextArrow = (GameObject) images.Peek();
-        if ((input.Equals(KeyCode.UpArrow) && nextArrow.name.Equals("UpArrow(Clone)")) ||
-            (input.Equals(KeyCode.DownArrow) && nextArrow.name.Equals("DownArrow(Clone)")) || 
+        Vector2 input = value.Get<Vector2>();
+        GameObject nextArrow = (GameObject)images.Peek();
+        if ((input.y > 0 && nextArrow.name.Equals("UpArrow(Clone)")) ||
+            (input.y < 0 && nextArrow.name.Equals("DownArrow(Clone)")) ||
             // Switch left and right because images are placed "backwards"
-            (input.Equals(KeyCode.LeftArrow) && nextArrow.name.Equals("RightArrow(Clone)")) ||
-            (input.Equals(KeyCode.RightArrow) && nextArrow.name.Equals("LeftArrow(Clone)"))
+            (input.x < 0 && nextArrow.name.Equals("RightArrow(Clone)")) ||
+            (input.x > 0 && nextArrow.name.Equals("LeftArrow(Clone)"))
         )
         {
             RemoveArrow();
