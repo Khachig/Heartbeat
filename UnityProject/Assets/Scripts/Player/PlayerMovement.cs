@@ -44,17 +44,17 @@ public class PlayerMovement : MonoBehaviour
         transform.position = GetCurrPosition();
     }
 
-    void OnMove(InputValue value)
+    public void OnMove(InputAction.CallbackContext context)
     {
         // For input handler, only do call back on performed stage
-        // if (!context.performed)
-            // return;
+        if (!context.performed)
+            return;
 
         if (isMoving)
             return;
 
-        Vector2 moveInput = value.Get<Vector2>();
-        // Vector2 moveInput = context.ReadValue<Vector2>();
+        // Vector2 moveInput = value.Get<Vector2>();
+        Vector2 moveInput = context.ReadValue<Vector2>();
 
         if (moveInput.x > 0)
         {

@@ -44,9 +44,11 @@ public class EnemyBehaviour : MonoBehaviour
     } 
 
     // Returns true iff input matches the first arrow of this enemy
-    public bool HandlePlayerAttack(InputValue value)
+    public bool HandlePlayerAttack(Vector2 input)
     {
-        Vector2 input = value.Get<Vector2>();
+        if (images.Count == 0)
+            return true;       
+
         GameObject nextArrow = (GameObject)images.Peek();
         if ((input.y > 0 && nextArrow.name.Equals("UpArrow(Clone)")) ||
             (input.y < 0 && nextArrow.name.Equals("DownArrow(Clone)")) ||

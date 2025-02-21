@@ -51,7 +51,7 @@ public class EnemyManager : ScriptableObject
     }
 
     // Returns whether any enemy was hit by the player attack
-    public bool handlePlayerAttack(InputValue value)
+    public bool handlePlayerAttack(Vector2 input)
     {
         bool match = false;
         foreach(GameObject enemy in enemies.ToList())
@@ -63,7 +63,7 @@ public class EnemyManager : ScriptableObject
             }
 
             EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
-            match |= enemyBehaviour.HandlePlayerAttack(value);
+            match |= enemyBehaviour.HandlePlayerAttack(input);
         }
         return match;
     }
