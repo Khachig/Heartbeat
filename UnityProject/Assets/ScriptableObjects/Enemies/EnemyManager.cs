@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using UnityEngine.InputSystem;
 
@@ -11,8 +12,9 @@ public class EnemyManager : ScriptableObject
     public OnEnemyDeath onEnemyDeath;
     public float spawnForwardOffset = 20f;
     [SerializeField] private GameObject enemyPrefab;
-
     List<GameObject> enemies;
+
+    public EnemyMovement enemyMovement;
 
     public struct SpawnParameters
     {
@@ -48,6 +50,7 @@ public class EnemyManager : ScriptableObject
             arrowArrangement = parameters.arrowArrangement,
         });
         enemies.Add(enemy);
+        enemyMovement.addEnemy(parameters.enemyLane, enemy);
     }
 
     // Returns whether any enemy was hit by the player attack

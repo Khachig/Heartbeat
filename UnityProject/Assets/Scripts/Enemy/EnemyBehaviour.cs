@@ -20,6 +20,7 @@ public class EnemyBehaviour : MonoBehaviour
     public EasyRhythmAudioManager audioManager;
 
     private float bpm;
+    public int enemyLane;
 
     void Start()
     {
