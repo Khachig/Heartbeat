@@ -271,7 +271,7 @@ MonoBehaviour:
   fireRate: 1
   lastFireTime: 0
   projectilePrefab: {fileID: 4425165233857190015, guid: c52cb80ac33d24b30b4d690f7b1976c6, type: 3}
-  music: {fileID: 0}
+  audioManager: {fileID: 0}
 --- !u!114 &4928105621437212312
 MonoBehaviour:
   m_ObjectHideFlags: 0

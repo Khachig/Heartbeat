@@ -647,6 +647,8 @@ MonoBehaviour:
   enemyManager: {fileID: 11400000, guid: 37d2a097f28654f6a8888da795536652, type: 2}
   playerHealth: {fileID: 1632627565}
   missDamage: 10
+  hitThreshold: 0.15
+  audioManager: {fileID: 0}
 --- !u!43 &576457314
 Mesh:
   m_ObjectHideFlags: 0

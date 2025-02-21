@@ -20,7 +20,8 @@ public class EnemyBehaviour : MonoBehaviour
     public EasyRhythmAudioManager audioManager;
 
     private float bpm;
-    public int enemyLane;
+    private bool needsResetEnemyAnimation = true;
+    private bool needsResetArrowAnimation = true;
 
     void Start()
     {
@@ -39,6 +40,9 @@ public class EnemyBehaviour : MonoBehaviour
         SpawnArrows();
         SetArrowPulseSpeed();
         SetEnemyPulseSpeed();
+
+        needsResetEnemyAnimation = true;
+        needsResetArrowAnimation = true;
 
         lastFireTime = Random.Range(0f, 5f);
         fireRate = Random.Range(1f, 5f);
@@ -67,6 +71,11 @@ public class EnemyBehaviour : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void QueueResetEnemyAnim()
+    {
+        needsResetEnemyAnimation = true;
     }
 
     void SpawnArrows()
@@ -142,7 +151,7 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
-    public void Attack()
+    void Attack()
     {   
         if (Time.time >= lastFireTime+fireRate){
             SpawnProjectile();
@@ -165,7 +174,7 @@ public class EnemyBehaviour : MonoBehaviour
         GameObject image = (GameObject) images.Peek();
         Animator arrowAnimator = image.GetComponent<Animator>();
         arrowAnimator.SetFloat("ArrowPulseSpeed", bpm / 60f);
-        arrowAnimator.SetBool("IsActive", true);
+        needsResetArrowAnimation = true;
     }
 
     void SetEnemyPulseSpeed()
@@ -175,6 +184,20 @@ public class EnemyBehaviour : MonoBehaviour
 
     void OnBeatCaptured()
     {
-        // Debug.Log("bpm: " + bpm);
+        if (needsResetEnemyAnimation)
+        {
+            enemyAnimator.SetTrigger("Reset");
+            needsResetEnemyAnimation = false;
+        }
+        if (needsResetArrowAnimation)
+        {
+            if (images.Count == 0)
+                return;
+
+            GameObject image = (GameObject) images.Peek();
+            Animator arrowAnimator = image.GetComponent<Animator>();
+            arrowAnimator.SetTrigger("Reset");
+            needsResetArrowAnimation = false;
+        }
     }
 }

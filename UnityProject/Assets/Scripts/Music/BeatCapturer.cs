@@ -6,7 +6,6 @@ public class BeatCapturer : MonoBehaviour, IEasyListener
     public static OnBeatCapture onBeatCapture;
     public void OnBeat(EasyEvent audioEvent)
     {
-        // Debug.Log("Beat captured!");
         onBeatCapture?.Invoke();
     }
 
