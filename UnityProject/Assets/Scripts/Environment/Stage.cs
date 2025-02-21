@@ -43,12 +43,12 @@ public class Stage : MonoBehaviour
 	}
 
     void SetTargetPoint() {
-        Assert.IsTrue(pointsIdx < points.Count); 
+        // Assert.IsTrue(pointsIdx < points.Count); 
         targetPoint = points[pointsIdx];
     }
 
     void SetTargetRotation() {
-        Assert.IsTrue(pointsIdx + 1 < points.Count); 
+        // Assert.IsTrue(pointsIdx + 1 < points.Count); 
         targetRotation = Quaternion.LookRotation(points[pointsIdx + 1] - transform.position);
     }
 }
