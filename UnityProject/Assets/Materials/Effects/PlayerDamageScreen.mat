@@ -40,7 +40,7 @@ Material:
     - _blur: 0.5
     - _vignette_blur: 2.5
     - _vignette_darkening: 1
-    - _vignette_radius: 1
+    - _vignette_radius: 0.84764314
     - _vignette_softness: 1.2
     m_Colors:
     - _tint: {r: 0.72327036, g: 0, b: 0, a: 0}

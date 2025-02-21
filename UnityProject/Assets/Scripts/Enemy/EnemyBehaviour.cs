@@ -17,12 +17,17 @@ public class EnemyBehaviour : MonoBehaviour
     public float fireRate = 1f; // every x seconds
     public float lastFireTime = 0f;
     public GameObject projectilePrefab;
-    public Music music;
+    public EasyRhythmAudioManager audioManager;
+
+    private float bpm;
 
     void Start()
     {
-        if (!music)
-            music = GameObject.Find("Music").GetComponent<Music>();
+        if (!audioManager)
+            audioManager = GameObject.Find("EasyRhythmAudioManager").GetComponent<EasyRhythmAudioManager>();
+
+        bpm = audioManager.myAudioEvent.CurrentTempo;
+        BeatCapturer.onBeatCapture += OnBeatCaptured;
 
         // this data is per enemy instance
         instanceData = gameObject.GetComponent<EnemyData>();
@@ -32,6 +37,7 @@ public class EnemyBehaviour : MonoBehaviour
 
         SpawnArrows();
         SetArrowPulseSpeed();
+        SetEnemyPulseSpeed();
 
         lastFireTime = Random.Range(0f, 5f);
         fireRate = Random.Range(1f, 5f);
@@ -39,7 +45,6 @@ public class EnemyBehaviour : MonoBehaviour
 
     void Update()
     {
-        PulseEnemy();
         Attack();
     } 
 
@@ -151,24 +156,24 @@ public class EnemyBehaviour : MonoBehaviour
         // projScript.projectileDamage = enemyDamage;
     }
 
-    void PulseEnemy()
-    {
-        gameObject.transform.position = new Vector3(
-            gameObject.transform.position.x,
-            gameObject.transform.position.y + 0.01f * Mathf.Cos(Time.time * (music.bpm / 60) * Mathf.PI * 2),
-            gameObject.transform.position.z
-        );
-    }
-
     void SetArrowPulseSpeed()
     {
-        // TODO: make arrows pulse to beat
         if (images.Count == 0)
             return;
 
         GameObject image = (GameObject) images.Peek();
         Animator arrowAnimator = image.GetComponent<Animator>();
-        arrowAnimator.SetFloat("ArrowPulseSpeed", music.bpm / 60f);
+        arrowAnimator.SetFloat("ArrowPulseSpeed", bpm / 60f);
         arrowAnimator.SetBool("IsActive", true);
+    }
+
+    void SetEnemyPulseSpeed()
+    {
+        enemyAnimator.SetFloat("EnemyPulseSpeed", bpm / 60f);
+    }
+
+    void OnBeatCaptured()
+    {
+        // Debug.Log("bpm: " + bpm);
     }
 }

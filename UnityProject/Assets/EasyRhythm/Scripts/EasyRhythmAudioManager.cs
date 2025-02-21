@@ -20,6 +20,7 @@ public class EasyRhythmAudioManager : MonoBehaviour
         // Passes the EventReference so EasyEvent can create the FMOD Event instance
         // Passes an array of listeners through (IEasyListener) so the audio event knows which objects want to listen to the callbacks
         myAudioEvent = new EasyEvent(myEventPath, myEventListeners);
+        myAudioEvent.start();
     }
 
     public void Update()
