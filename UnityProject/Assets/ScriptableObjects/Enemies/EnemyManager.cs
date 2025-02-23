@@ -12,7 +12,8 @@ public class EnemyManager : ScriptableObject
     public OnEnemyDeath onEnemyDeath;
     public float spawnForwardOffset = 20f;
     [SerializeField] private GameObject enemyPrefab;
-    List<GameObject> enemies;
+
+    private List<GameObject> enemies;
 
     public EnemyMovement enemyMovement;
 
@@ -22,7 +23,6 @@ public class EnemyManager : ScriptableObject
         public Quaternion rotation;
         public Stage stage;
         public ArrowDirection[] arrowArrangement;
-        public int enemyLane;
     }
 
     public void init()
@@ -31,7 +31,7 @@ public class EnemyManager : ScriptableObject
         enemies = new List<GameObject>();
     }
 
-    public void spawnEnemy(SpawnParameters parameters)
+    public GameObject spawnEnemy(SpawnParameters parameters)
     {
         GameObject enemy = Instantiate(
             enemyPrefab,
@@ -51,6 +51,7 @@ public class EnemyManager : ScriptableObject
         });
         enemies.Add(enemy);
         enemyMovement.addEnemy(parameters.enemyLane, enemy);
+        return enemy;
     }
 
     // Returns whether any enemy was hit by the player attack

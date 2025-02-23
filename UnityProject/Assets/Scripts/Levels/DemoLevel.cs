@@ -7,6 +7,9 @@ public class DemoLevel : Level
     private int maxEnemyCount = 2;
 
     private EnemyManager enemyManager;
+    private EnemyRhythmManager enemyRhythmManager;
+    private string nextWave = "SpawnWave1";
+    private int wave = 1;
 
     public override void Load(EnemyManager eManager)
     {
@@ -15,8 +18,104 @@ public class DemoLevel : Level
         enemyManager = eManager;
         enemyManager.init();
         enemyManager.onEnemyDeath += OnEnemyDeath;
+        enemyRhythmManager = GameObject.Find("EnemyRhythmManager").GetComponent<EnemyRhythmManager>();
 
-        Invoke("SpawnWave", 3);
+        // Invoke("SpawnWave", 3);
+        Invoke(nextWave, 3);
+    }
+
+
+    void SpawnWave1()
+    {
+            Vector3 enemyPosition = GetPositionForLane(0, stage.tunnelRadius, stage.numLanes, 20);
+            GameObject e1 = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
+                position = enemyPosition,
+                rotation = new Quaternion(0, 180, 0, 1),
+                stage = stage,
+                arrowArrangement = new ArrowDirection[] {ArrowDirection.UP},
+            });
+            enemyPosition = GetPositionForLane(1, stage.tunnelRadius, stage.numLanes, 20);
+            GameObject e2 = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
+                position = enemyPosition,
+                rotation = new Quaternion(0, 180, 0, 1),
+                stage = stage,
+                arrowArrangement = new ArrowDirection[] {ArrowDirection.DOWN},
+            });
+            nextWave = "SpawnWave2";
+            enemyCount = 2;
+            enemyRhythmManager.AddEnemy(e1);
+            enemyRhythmManager.AddEnemy(e2);
+            enemyRhythmManager.InitNewSequence();
+
+    }
+    void SpawnWave2()
+    {
+            Vector3 enemyPosition = GetPositionForLane(0, stage.tunnelRadius, stage.numLanes, 20);
+            GameObject e1 = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
+                position = enemyPosition,
+                rotation = new Quaternion(0, 180, 0, 1),
+                stage = stage,
+                arrowArrangement = new ArrowDirection[] {ArrowDirection.UP, ArrowDirection.UP},
+            });
+            enemyPosition = GetPositionForLane(1, stage.tunnelRadius, stage.numLanes, 20);
+            GameObject e2 = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
+                position = enemyPosition,
+                rotation = new Quaternion(0, 180, 0, 1),
+                stage = stage,
+                arrowArrangement = new ArrowDirection[] {ArrowDirection.DOWN},
+            });
+            enemyPosition = GetPositionForLane(2, stage.tunnelRadius, stage.numLanes, 20);
+            GameObject e3 = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
+                position = enemyPosition,
+                rotation = new Quaternion(0, 180, 0, 1),
+                stage = stage,
+                arrowArrangement = new ArrowDirection[] {ArrowDirection.LEFT, ArrowDirection.RIGHT},
+            });
+            nextWave = "SpawnWave3";
+            enemyCount = 3;
+            enemyRhythmManager.AddEnemy(e1);
+            enemyRhythmManager.AddEnemy(e2);
+            enemyRhythmManager.AddEnemy(e3);
+            enemyRhythmManager.InitNewSequence();
+    }
+
+    void SpawnWave3()
+    {
+            Vector3 enemyPosition = GetPositionForLane(0, stage.tunnelRadius, stage.numLanes, 20);
+            GameObject e1 = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
+                position = enemyPosition,
+                rotation = new Quaternion(0, 180, 0, 1),
+                stage = stage,
+                arrowArrangement = new ArrowDirection[] {ArrowDirection.DOWN},
+            });
+            enemyPosition = GetPositionForLane(1, stage.tunnelRadius, stage.numLanes, 20);
+            GameObject e2 = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
+                position = enemyPosition,
+                rotation = new Quaternion(0, 180, 0, 1),
+                stage = stage,
+                arrowArrangement = new ArrowDirection[] {ArrowDirection.RIGHT, ArrowDirection.RIGHT},
+            });
+            enemyPosition = GetPositionForLane(2, stage.tunnelRadius, stage.numLanes, 20);
+            GameObject e3 = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
+                position = enemyPosition,
+                rotation = new Quaternion(0, 180, 0, 1),
+                stage = stage,
+                arrowArrangement = new ArrowDirection[] {ArrowDirection.LEFT, ArrowDirection.LEFT},
+            });
+            enemyPosition = GetPositionForLane(3, stage.tunnelRadius, stage.numLanes, 20);
+            GameObject e4 = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
+                position = enemyPosition,
+                rotation = new Quaternion(0, 180, 0, 1),
+                stage = stage,
+                arrowArrangement = new ArrowDirection[] {ArrowDirection.UP},
+            });
+            nextWave = "Done";
+            enemyCount = 4;
+            enemyRhythmManager.AddEnemy(e1);
+            enemyRhythmManager.AddEnemy(e2);
+            enemyRhythmManager.AddEnemy(e3);
+            enemyRhythmManager.AddEnemy(e4);
+            enemyRhythmManager.InitNewSequence();
     }
 
     void SpawnWave()
@@ -31,7 +130,6 @@ public class DemoLevel : Level
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
                 arrowArrangement = GetRandomArrowList(maxEnemyCount),
-                enemyLane = i
             });
         }
     }
@@ -41,11 +139,13 @@ public class DemoLevel : Level
         enemyCount--;
         if (enemyCount == 0) {
             maxEnemyCount++;
-            if (maxEnemyCount == 5) {
+            // if (maxEnemyCount == 5) {
+            if (nextWave == "Done") {
                 onLevelComplete?.Invoke();
                 Destroy(gameObject);
             }
-            Invoke("SpawnWave", 3);
+            // Invoke("SpawnWave", 3);
+            Invoke(nextWave, 3);
         }
     }
 

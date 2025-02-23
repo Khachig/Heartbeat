@@ -1,6 +1,6 @@
 using System.Collections;
-
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ArrowFlashEffect : MonoBehaviour
 {
@@ -9,7 +9,7 @@ public class ArrowFlashEffect : MonoBehaviour
     public float flashDuration;
 
     // The SpriteRenderer that should flash.
-    public MeshRenderer meshRenderer;
+    public RawImage rawImage;
     
     // The material that was in use, when the script started.
     private Material originalMaterial;
@@ -19,7 +19,7 @@ public class ArrowFlashEffect : MonoBehaviour
 
     void Start()
     {
-        originalMaterial = meshRenderer.material;
+        originalMaterial = rawImage.material;
     }
 
     public void Flash()
@@ -34,11 +34,11 @@ public class ArrowFlashEffect : MonoBehaviour
 
     private IEnumerator FlashRoutine()
     {
-        meshRenderer.material = flashMaterial;
+        rawImage.material = flashMaterial;
 
         yield return new WaitForSeconds(flashDuration);
 
-        meshRenderer.material = originalMaterial;
+        rawImage.material = originalMaterial;
 
         flashRoutine = null;
     }

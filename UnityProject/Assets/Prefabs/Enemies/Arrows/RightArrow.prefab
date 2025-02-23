@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 702445044533886753}
   - component: {fileID: 8255131814739379041}
   - component: {fileID: 890075121449668206}
+  - component: {fileID: 7547507252682814757}
   m_Layer: 5
   m_Name: RightArrow
   m_TagString: Untagged
@@ -108,3 +109,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 072446f228670d2489721c0360be12c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7547507252682814757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4196610935258618360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cd14022c13c9a34f857b1bc02e074b1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: bb653a251b509a84eb671aa6c41bdb88, type: 2}
+  flashDuration: 0.1
+  rawImage: {fileID: 702445044533886753}

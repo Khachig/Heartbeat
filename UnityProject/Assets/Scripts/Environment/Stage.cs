@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Assertions;
 using System.Collections.Generic;
 
 // Script for Stage information and movement
@@ -29,6 +28,8 @@ public class Stage : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
+        if (points.Count < 2)
+            return;
 		transform.position = Vector3.MoveTowards(transform.position, targetPoint, speed * Time.deltaTime);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed *  Time.deltaTime);
 		if (Vector3.Distance(transform.position, targetPoint) < 15f) 
@@ -43,12 +44,10 @@ public class Stage : MonoBehaviour
 	}
 
     void SetTargetPoint() {
-        // Assert.IsTrue(pointsIdx < points.Count); 
         targetPoint = points[pointsIdx];
     }
 
     void SetTargetRotation() {
-        // Assert.IsTrue(pointsIdx + 1 < points.Count); 
         targetRotation = Quaternion.LookRotation(points[pointsIdx + 1] - transform.position);
     }
 }

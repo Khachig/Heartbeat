@@ -3,6 +3,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerAttack : MonoBehaviour
 {
+    public delegate void OnAttackMiss();
+    public static OnAttackMiss onAttackMiss;
+
     public EnemyManager enemyManager;
     public HealthSystem playerHealth;
     public float missDamage = 10f;
@@ -52,6 +55,7 @@ public class PlayerAttack : MonoBehaviour
     {
         Effects.SpecialEffects.ScreenDamageEffect(0.5f);
         playerHealth.TakeDamage(missDamage);
+        onAttackMiss?.Invoke();
     }
 
     void OnBeatCaptured()

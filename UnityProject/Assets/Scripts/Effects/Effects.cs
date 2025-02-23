@@ -30,6 +30,11 @@ public class Effects : MonoBehaviour
 			SpecialEffects.ScreenDamageEffect(Random.Range(0.1f, 1));
 	}
 
+	private void PlayerHealEffect() 
+	{
+		// TODO: make player heal effect
+	}
+
 	private void ScreenDamageEffect(float intensity) 
 	{
 		if(screenDamageTask != null)
@@ -69,5 +74,6 @@ public class Effects : MonoBehaviour
 	public static class SpecialEffects
 	{
 		public static void ScreenDamageEffect(float intensity) => instance.ScreenDamageEffect(intensity);
+		public static void PlayerHealEffect() => instance.PlayerHealEffect();
 	}
 }
