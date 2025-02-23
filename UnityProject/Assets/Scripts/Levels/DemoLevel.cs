@@ -9,7 +9,6 @@ public class DemoLevel : Level
     private EnemyManager enemyManager;
     private EnemyRhythmManager enemyRhythmManager;
     private string nextWave = "SpawnWave1";
-    private int wave = 1;
 
     public override void Load(EnemyManager eManager)
     {

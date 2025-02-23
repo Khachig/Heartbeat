@@ -1,3 +1,4 @@
+using TMPro;  // Required for TextMeshPro
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,10 +6,16 @@ using Unity.Cinemachine;
 
 public class Effects : MonoBehaviour
 {
+	public GameObject canvas;
+	public GameObject effectTextPrefab;
+	public float popUpDuration = 2f;
 	public Material ScreenDamageMat;
 	public CinemachineImpulseSource impulseSource;
     public float CameraShakeIntensity = 0.5f;
 	private Coroutine screenDamageTask;
+	private GameObject effectTextPopup;
+	private bool isMessageOnScreen = false;
+	private float timeSinceLastPopup;
 
 	private static Effects instance;
  
@@ -22,17 +29,31 @@ public class Effects : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
+		timeSinceLastPopup = Time.time; 
 	}
 
 	private void Update()
 	{
 		if(Input.GetMouseButtonDown(1))
 			SpecialEffects.ScreenDamageEffect(Random.Range(0.1f, 1));
+		if (Time.time - timeSinceLastPopup > popUpDuration)
+			DestroyPopup();
 	}
 
 	private void PlayerHealEffect() 
 	{
-		// TODO: make player heal effect
+		SpawnPopup("Heal!");
+	}
+
+	private void ComboContinueEffect(int comboNum) 
+	{
+		SpawnPopup("Combo: " + comboNum);
+	
+	}
+
+	private void ComboBreakEffect() 
+	{
+		SpawnPopup("Combo broken");
 	}
 
 	private void ScreenDamageEffect(float intensity) 
@@ -42,6 +63,7 @@ public class Effects : MonoBehaviour
 
 		screenDamageTask = StartCoroutine(screenDamage(intensity));
 	}
+
 	private IEnumerator screenDamage(float intensity)
 	{
 		// Cinemachine Camera shake
@@ -63,7 +85,6 @@ public class Effects : MonoBehaviour
 			ScreenDamageMat.SetFloat("_vignette_radius", curRadius);
 			yield return null;
 		}
-		
 	}
 
 	private float Remap(float value, float fromMin, float fromMax, float toMin, float toMax)
@@ -71,9 +92,35 @@ public class Effects : MonoBehaviour
 		return Mathf.Lerp(toMin, toMax, Mathf.InverseLerp(fromMin, fromMax, value));
 	}
 
+	private void SpawnPopup(string message)
+	{
+		if (!isMessageOnScreen)
+		{
+			isMessageOnScreen = true;
+			Vector3 position = effectTextPrefab.transform.position;
+			effectTextPopup = Instantiate(effectTextPrefab, position, Quaternion.identity) as GameObject;
+			effectTextPopup.transform.SetParent(canvas.transform, false);
+		}
+        TextMeshProUGUI textComponent = effectTextPopup.GetComponent<TextMeshProUGUI>();
+        textComponent.text = message;
+		timeSinceLastPopup = Time.time;
+	}
+
+	private void DestroyPopup()
+	{
+		if (!isMessageOnScreen)
+			return;
+
+		isMessageOnScreen = false;
+		Destroy(effectTextPopup);
+		effectTextPopup = null;
+	}
+
 	public static class SpecialEffects
 	{
 		public static void ScreenDamageEffect(float intensity) => instance.ScreenDamageEffect(intensity);
 		public static void PlayerHealEffect() => instance.PlayerHealEffect();
+		public static void ComboContinueEffect(int comboNum) => instance.ComboContinueEffect(comboNum);
+		public static void ComboBreakEffect() => instance.ComboBreakEffect();
 	}
 }

@@ -288,6 +288,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee0c8e7602ba12444b1c781368e43094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvas: {fileID: 1301802704}
+  effectTextPrefab: {fileID: 8594685426196085470, guid: d73488ab0353dd6418be6e2678152bf4, type: 3}
+  popUpDuration: 2
   ScreenDamageMat: {fileID: 2100000, guid: e6bdc3bc86f50f34cb1f99837c6f39e6, type: 2}
   impulseSource: {fileID: 195903536}
   CameraShakeIntensity: 1

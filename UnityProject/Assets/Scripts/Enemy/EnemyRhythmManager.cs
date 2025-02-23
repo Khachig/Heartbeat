@@ -24,6 +24,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     private bool hasStartedCombo = false;
     private bool hasBrokenCombo = false;
     private int nextInComboIdx = 0;
+    private int comboNum = 0;
     private float timeAtLastComboHit;
 
     private void Start()
@@ -81,14 +82,20 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     {
         if (!hasStartedCombo)
             hasStartedCombo = true;
+
+        if (sequenceTimings[nextInComboIdx][0] >= 0)
+            comboNum++;
+
         nextInComboIdx++;
         timeAtLastComboHit = Time.time;
+        Effects.SpecialEffects.ComboContinueEffect(comboNum);
         if (nextInComboIdx == sequenceTimings.Count)
             OnComboComplete();
     }
 
     public void BreakCombo()
     {
+        Effects.SpecialEffects.ComboBreakEffect();
         nextInComboIdx = 0;
         hasBrokenCombo = true;
     }
@@ -178,6 +185,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     private void ResetCombo()
     {
         nextInComboIdx = 0;
+        comboNum = 0;
         hasStartedCombo = false;
         hasBrokenCombo = false;
     }
@@ -191,6 +199,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     private void OnComboComplete()
     {
         sequenceTimings.Clear();
+        Effects.SpecialEffects.PlayerHealEffect();
         playerHealth.Heal(comboHealAmt);
     }
 }
