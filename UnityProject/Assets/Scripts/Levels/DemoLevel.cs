@@ -147,12 +147,10 @@ public class DemoLevel : Level
         enemyCount--;
         if (enemyCount == 0) {
             maxEnemyCount++;
-            // if (maxEnemyCount == 5) {
             if (nextWave == "Done") {
                 onLevelComplete?.Invoke();
                 Destroy(gameObject);
             }
-            // Invoke("SpawnWave", 3);
             Invoke(nextWave, 3);
         }
     }

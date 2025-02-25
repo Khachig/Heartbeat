@@ -8,7 +8,7 @@ public class LevelManager : MonoBehaviour
     public void Init(EnemyManager eManager)
     {
         enemyManager = eManager;
-        firstLevel = gameObject.AddComponent<DemoLevel>();
+        firstLevel = gameObject.AddComponent<EndlessAlphaLevel>();
         firstLevel.onLevelComplete += OnLevelComplete;
     }
 
