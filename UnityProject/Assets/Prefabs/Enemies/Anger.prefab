@@ -150,7 +150,15 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7635826562936255635, guid: f8e2e23528b4b4fe5ae86859d4b7c8ae, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7635826562936255635, guid: f8e2e23528b4b4fe5ae86859d4b7c8ae, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f545602de51ce4f218caae348d81cea1, type: 2}
+    - target: {fileID: -7635826562936255635, guid: f8e2e23528b4b4fe5ae86859d4b7c8ae, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: f545602de51ce4f218caae348d81cea1, type: 2}
     - target: {fileID: 919132149155446097, guid: f8e2e23528b4b4fe5ae86859d4b7c8ae, type: 3}
@@ -272,6 +280,7 @@ MonoBehaviour:
   lastFireTime: 0
   projectilePrefab: {fileID: 4425165233857190015, guid: c52cb80ac33d24b30b4d690f7b1976c6, type: 3}
   audioManager: {fileID: 0}
+  enemyRhythmManager: {fileID: 0}
 --- !u!114 &4928105621437212312
 MonoBehaviour:
   m_ObjectHideFlags: 0
