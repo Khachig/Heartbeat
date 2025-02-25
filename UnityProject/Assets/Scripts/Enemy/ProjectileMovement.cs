@@ -7,6 +7,8 @@ public class ProjectileMovement : MonoBehaviour
     public float projectileSpeed = 20f;
     public float projectileDamage = 10f;
 
+    public EnemyBehaviour parentEnemy;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -24,7 +26,17 @@ public class ProjectileMovement : MonoBehaviour
 
         // If bullet is behind camera, destroy
         if (transform.position.z - stage.transform.position.z < -2f)
+        {
+            if (parentEnemy)
+                parentEnemy.onEnemyDestroy -= OnEnemyDestroy;
             Destroy(gameObject);
+        }
+    }
+
+    public void SetDestroyCallback(EnemyBehaviour parentBehaviour)
+    {
+        parentEnemy = parentBehaviour;
+        parentEnemy.onEnemyDestroy += OnEnemyDestroy;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -34,7 +46,16 @@ public class ProjectileMovement : MonoBehaviour
             HealthSystem playerHealth = other.GetComponent<HealthSystem>();
             playerHealth.TakeDamage(projectileDamage);
 			Effects.SpecialEffects.ScreenDamageEffect(0.5f);
+
+            if (parentEnemy)
+                parentEnemy.onEnemyDestroy -= OnEnemyDestroy;
             Destroy(gameObject); // Destroy projectile
         }
+    }
+
+    private void OnEnemyDestroy()
+    {
+        if (gameObject)
+            Destroy(gameObject);
     }
 }

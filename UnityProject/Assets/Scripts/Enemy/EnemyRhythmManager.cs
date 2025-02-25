@@ -21,6 +21,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     // If the first elem is -1, do nothing on that beat
     private List<Vector2> sequenceTimings = new List<Vector2>();
     private int sequenceIndex = 0;
+    private int sequenceNum = 1;
     private bool hasStartedCombo = false;
     private bool hasBrokenCombo = false;
     private int nextInComboIdx = 0;
@@ -84,18 +85,21 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             hasStartedCombo = true;
 
         if (sequenceTimings[nextInComboIdx][0] >= 0)
+        {
             comboNum++;
+            Effects.SpecialEffects.ComboContinueEffect(comboNum);
+        }
 
         nextInComboIdx++;
         timeAtLastComboHit = Time.time;
-        Effects.SpecialEffects.ComboContinueEffect(comboNum);
         if (nextInComboIdx == sequenceTimings.Count)
             OnComboComplete();
     }
 
     public void BreakCombo()
     {
-        Effects.SpecialEffects.ComboBreakEffect();
+        if (nextInComboIdx > 0)
+            Effects.SpecialEffects.ComboBreakEffect();
         nextInComboIdx = 0;
         hasBrokenCombo = true;
     }
@@ -106,6 +110,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         {
             lastSequenceStartBar = audioEvent.CurrentBar;
             sequenceIndex = 0;
+            sequenceNum = 1;
         }
 
         // Vector2 indices = sequenceTimings[sequenceIndex];
@@ -118,9 +123,11 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         if (!HasBrokenCombo() && indices[0] >= 0)
         {
             EnemyBehaviour enemy = enemies[(int)indices[0]].GetComponent<EnemyBehaviour>();
-            enemy.FlashArrow((int)indices[1]);
+            enemy.FlashArrow((int)indices[1], sequenceNum);
         }
         sequenceIndex++;
+        if (sequenceIndex < sequenceTimings.Count && sequenceTimings[sequenceIndex][0] >= 0)
+            sequenceNum++;
 
         if (hasStartedCombo && !HasBrokenCombo() &&
             Time.time - timeAtLastComboHit > audioEvent.BeatLength() * 1.5f)
@@ -169,6 +176,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         currSequenceLength = beatsInSequence / beatsPerBar;
         sequenceTimings = newSequenceTimings;
         sequenceIndex = 0;
+        sequenceNum = 1;
     }
 
     private int GetEnemyIndex(GameObject enemy)

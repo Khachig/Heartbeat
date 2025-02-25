@@ -8,14 +8,16 @@ public class Effects : MonoBehaviour
 {
 	public GameObject canvas;
 	public GameObject effectTextPrefab;
-	public float popUpDuration = 2f;
+	public float popupDuration = 2f;
 	public Material ScreenDamageMat;
 	public CinemachineImpulseSource impulseSource;
     public float CameraShakeIntensity = 0.5f;
 	private Coroutine screenDamageTask;
 	private GameObject effectTextPopup;
+	private Animator textAnimator;
 	private bool isMessageOnScreen = false;
 	private float timeSinceLastPopup;
+	private Coroutine popupFadeRoutine;
 
 	private static Effects instance;
  
@@ -34,9 +36,7 @@ public class Effects : MonoBehaviour
 
 	private void Update()
 	{
-		if(Input.GetMouseButtonDown(1))
-			SpecialEffects.ScreenDamageEffect(Random.Range(0.1f, 1));
-		if (Time.time - timeSinceLastPopup > popUpDuration)
+		if (Time.time - timeSinceLastPopup > popupDuration)
 			DestroyPopup();
 	}
 
@@ -94,6 +94,9 @@ public class Effects : MonoBehaviour
 
 	private void SpawnPopup(string message)
 	{
+		if (popupFadeRoutine != null)
+			StopCoroutine(popupFadeRoutine);
+
 		if (!isMessageOnScreen)
 		{
 			isMessageOnScreen = true;
@@ -101,8 +104,11 @@ public class Effects : MonoBehaviour
 			effectTextPopup = Instantiate(effectTextPrefab, position, Quaternion.identity) as GameObject;
 			effectTextPopup.transform.SetParent(canvas.transform, false);
 		}
+		textAnimator = effectTextPopup.GetComponent<Animator>();
+		textAnimator.SetTrigger("Pulse");
         TextMeshProUGUI textComponent = effectTextPopup.GetComponent<TextMeshProUGUI>();
         textComponent.text = message;
+        popupFadeRoutine = StartCoroutine(PopupFadeRoutine(textComponent));
 		timeSinceLastPopup = Time.time;
 	}
 
@@ -112,9 +118,33 @@ public class Effects : MonoBehaviour
 			return;
 
 		isMessageOnScreen = false;
+		if (popupFadeRoutine != null)
+			StopCoroutine(popupFadeRoutine);
 		Destroy(effectTextPopup);
 		effectTextPopup = null;
+		textAnimator = null;
 	}
+
+	private IEnumerator PopupFadeRoutine(TextMeshProUGUI textComponent)
+    {
+        Color32 startColor = new Color32(255, 255, 255, 255);
+        Color32 endColor = new Color32(255, 255, 255, 0);
+        textComponent.color = startColor;
+
+        float elapsedTime = 0f;
+
+        while (elapsedTime < popupDuration)
+        {
+            float t = elapsedTime / popupDuration; // Normalize time
+			textComponent.color = Color32.Lerp(startColor, endColor, t);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        textComponent.color = endColor;
+
+        popupFadeRoutine = null;
+    }
 
 	public static class SpecialEffects
 	{

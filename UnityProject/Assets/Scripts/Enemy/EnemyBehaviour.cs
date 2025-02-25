@@ -25,6 +25,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     private float bpm;
     private bool needsResetEnemyAnimation = true;
     private bool needsResetArrowAnimation = true;
+    private bool isDead = false; // To ensure no attacks during death animation;
 
     void Start()
     {
@@ -91,7 +92,8 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     }
 
     // Emphasizes the arrow at arrowIndex based on the original arrow arrangement
-    public void FlashArrow(int arrowIndex)
+    // with label number above arrow
+    public void FlashArrow(int arrowIndex, int label)
     {
         int numArrowsDestroyed = instanceData.arrowArrangement.Length - arrows.Count;
         int realIndex = arrowIndex - numArrowsDestroyed;
@@ -101,7 +103,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         
         GameObject arrow = arrows[realIndex];
         ArrowFlashEffect arrowEffect = arrow.GetComponent<ArrowFlashEffect>();
-        arrowEffect.Flash();
+        arrowEffect.Flash(label);
     }
 
     void SpawnArrows()
@@ -172,6 +174,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         arrowAnimator.SetTrigger("ArrowDestroy");
         if (arrows.Count == 0)
         {
+            isDead = true;
             onEnemyDestroy?.Invoke();
             enemyRhythmManager.RemoveEnemy(gameObject);
             enemyAnimator.SetTrigger("EnemyDeath");
@@ -182,7 +185,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
 
     void Attack()
     {   
-        if (Time.time >= lastFireTime+fireRate){
+        if (Time.time >= lastFireTime+fireRate && !isDead){
             SpawnProjectile();
             lastFireTime = Time.time;
         }
@@ -192,6 +195,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     {
         GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position, Quaternion.identity);
         ProjectileMovement projScript = projectile.GetComponent<ProjectileMovement>();
+        projScript.SetDestroyCallback(this);
         // projScript.projectileDamage = enemyDamage;
     }
 
