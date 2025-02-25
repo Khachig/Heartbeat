@@ -45,7 +45,9 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         {
             beatsPerBar = audioManager.myAudioEvent.TimeSigAsArray()[0];
             if (beatsPerBar > 0)
+            {
                 GenerateSequenceTimings();
+            }
         }
     }
 
@@ -113,8 +115,6 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             sequenceNum = 1;
         }
 
-        // Vector2 indices = sequenceTimings[sequenceIndex];
-        // Debug.Log("indices " + indices[0] + ", " + indices[1]);
         if (sequenceTimings.Count == 0)
             return;
         
@@ -177,6 +177,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         sequenceTimings = newSequenceTimings;
         sequenceIndex = 0;
         sequenceNum = 1;
+        lastSequenceStartBar = 1; // Reset this so sequence starts playing at next bar
     }
 
     private int GetEnemyIndex(GameObject enemy)

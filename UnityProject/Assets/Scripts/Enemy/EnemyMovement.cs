@@ -24,19 +24,16 @@ public class EnemyMovement : MonoBehaviour
     void Update()
     {
         if (Time.time >= lastMove+moveInterval){
-            // Debug.Log("MoveLanes");
             moveEnemiesTowardPlayer();
             lastMove = Time.time;
         }
     }
     public bool addEnemy(int newLane, GameObject newEnemy){
         if (!(activeEnemies[newLane] == null)){
-            Debug.Log("Error spawning enemy: Existing enemy in lane");
             return false;
         }
         else{
             activeEnemies[newLane] = newEnemy;
-            Debug.Log("Added Enemy");
             return true;
         }
     }
@@ -54,7 +51,6 @@ public class EnemyMovement : MonoBehaviour
             if ((currLane % 2) != (playerLane%2)) // distance 1, move towards
             {
                 if (newLanePositions[playerLane]==null){
-                    Debug.Log($"Move to playerlane, {currLane}, {playerLane}, {currLane%2}, {playerLane%2}");
                     moveEnemyToLane(currLane, playerLane, newLanePositions);
                 }
             }
@@ -63,12 +59,10 @@ public class EnemyMovement : MonoBehaviour
                 int lowerLane = (((currLane-1) % 4) + 4) % 4;
                 int upperLane = (currLane+1) % 4;
                 if (newLanePositions[lowerLane] == null){
-                    Debug.Log($"Move to lower");
                     moveEnemyToLane(currLane, lowerLane, newLanePositions);
                     
                 }
                 else if (newLanePositions[upperLane] == null){
-                    Debug.Log($"Move to upper");
                     moveEnemyToLane(currLane, upperLane, newLanePositions);
                 }
             }
@@ -78,10 +72,8 @@ public class EnemyMovement : MonoBehaviour
 
     public void moveEnemyToLane(int prevLane, int newLane, GameObject[] newLanePositions){
         if (activeEnemies[prevLane] == null){
-            Debug.Log("Error: No enemy in lane");
             return;
         }
-        Debug.Log($"Move {prevLane} to {newLane}");
         GameObject targetEnemy = activeEnemies[prevLane];
         
         newLanePositions[prevLane] = null;

@@ -32,6 +32,7 @@ public class DemoLevel : Level
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
                 arrowArrangement = new ArrowDirection[] {ArrowDirection.UP},
+                enemyLane = 0,
             });
             enemyPosition = GetPositionForLane(1, stage.tunnelRadius, stage.numLanes, 20);
             GameObject e2 = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
@@ -39,13 +40,13 @@ public class DemoLevel : Level
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
                 arrowArrangement = new ArrowDirection[] {ArrowDirection.DOWN},
+                enemyLane = 1,
             });
             nextWave = "SpawnWave2";
             enemyCount = 2;
             enemyRhythmManager.AddEnemy(e1);
             enemyRhythmManager.AddEnemy(e2);
             enemyRhythmManager.InitNewSequence();
-
     }
     void SpawnWave2()
     {
@@ -55,6 +56,7 @@ public class DemoLevel : Level
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
                 arrowArrangement = new ArrowDirection[] {ArrowDirection.UP, ArrowDirection.UP},
+                enemyLane = 0,
             });
             enemyPosition = GetPositionForLane(1, stage.tunnelRadius, stage.numLanes, 20);
             GameObject e2 = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
@@ -62,6 +64,7 @@ public class DemoLevel : Level
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
                 arrowArrangement = new ArrowDirection[] {ArrowDirection.DOWN},
+                enemyLane = 1,
             });
             enemyPosition = GetPositionForLane(2, stage.tunnelRadius, stage.numLanes, 20);
             GameObject e3 = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
@@ -69,6 +72,7 @@ public class DemoLevel : Level
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
                 arrowArrangement = new ArrowDirection[] {ArrowDirection.LEFT, ArrowDirection.RIGHT},
+                enemyLane = 2,
             });
             nextWave = "SpawnWave3";
             enemyCount = 3;
@@ -86,6 +90,7 @@ public class DemoLevel : Level
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
                 arrowArrangement = new ArrowDirection[] {ArrowDirection.DOWN},
+                enemyLane = 0,
             });
             enemyPosition = GetPositionForLane(1, stage.tunnelRadius, stage.numLanes, 20);
             GameObject e2 = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
@@ -93,6 +98,7 @@ public class DemoLevel : Level
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
                 arrowArrangement = new ArrowDirection[] {ArrowDirection.RIGHT, ArrowDirection.RIGHT},
+                enemyLane = 1,
             });
             enemyPosition = GetPositionForLane(2, stage.tunnelRadius, stage.numLanes, 20);
             GameObject e3 = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
@@ -100,6 +106,7 @@ public class DemoLevel : Level
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
                 arrowArrangement = new ArrowDirection[] {ArrowDirection.LEFT, ArrowDirection.LEFT},
+                enemyLane = 2,
             });
             enemyPosition = GetPositionForLane(3, stage.tunnelRadius, stage.numLanes, 20);
             GameObject e4 = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
@@ -107,6 +114,7 @@ public class DemoLevel : Level
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
                 arrowArrangement = new ArrowDirection[] {ArrowDirection.UP},
+                enemyLane = 3,
             });
             nextWave = "Done";
             enemyCount = 4;
@@ -129,6 +137,7 @@ public class DemoLevel : Level
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
                 arrowArrangement = GetRandomArrowList(maxEnemyCount),
+                enemyLane = i,
             });
         }
     }

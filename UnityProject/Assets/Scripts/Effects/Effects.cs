@@ -8,15 +8,17 @@ public class Effects : MonoBehaviour
 {
 	public GameObject canvas;
 	public GameObject effectTextPrefab;
+	public GameObject missTextPrefab;
 	public float popupDuration = 2f;
 	public Material ScreenDamageMat;
 	public CinemachineImpulseSource impulseSource;
     public float CameraShakeIntensity = 0.5f;
 	private Coroutine screenDamageTask;
 	private GameObject effectTextPopup;
+	private GameObject missTextPopup;
 	private Animator textAnimator;
-	private bool isMessageOnScreen = false;
 	private float timeSinceLastPopup;
+	private float timeSinceLastMissPopup;
 	private Coroutine popupFadeRoutine;
 
 	private static Effects instance;
@@ -37,23 +39,33 @@ public class Effects : MonoBehaviour
 	private void Update()
 	{
 		if (Time.time - timeSinceLastPopup > popupDuration)
-			DestroyPopup();
+			DestroyPopup(ref effectTextPopup);
+		if (Time.time - timeSinceLastMissPopup > popupDuration)
+			DestroyPopup(ref missTextPopup);
 	}
 
 	private void PlayerHealEffect() 
 	{
-		SpawnPopup("Heal!");
+		SpawnPopup("HEAL!", effectTextPrefab, ref effectTextPopup);
+		timeSinceLastPopup = Time.time;
 	}
 
 	private void ComboContinueEffect(int comboNum) 
 	{
-		SpawnPopup("Combo: " + comboNum);
-	
+		SpawnPopup("COMBO: " + comboNum, effectTextPrefab, ref effectTextPopup);
+		timeSinceLastPopup = Time.time;
 	}
 
 	private void ComboBreakEffect() 
 	{
-		SpawnPopup("Combo broken");
+		SpawnPopup("COMBO BROKEN", effectTextPrefab, ref effectTextPopup);
+		timeSinceLastPopup = Time.time;
+	}
+
+	private void MissEffect() 
+	{
+		SpawnPopup("MISS", missTextPrefab, ref missTextPopup);
+		timeSinceLastMissPopup = Time.time;
 	}
 
 	private void ScreenDamageEffect(float intensity) 
@@ -92,36 +104,32 @@ public class Effects : MonoBehaviour
 		return Mathf.Lerp(toMin, toMax, Mathf.InverseLerp(fromMin, fromMax, value));
 	}
 
-	private void SpawnPopup(string message)
+	private void SpawnPopup(string message, GameObject prefab, ref GameObject textPopup)
 	{
 		if (popupFadeRoutine != null)
 			StopCoroutine(popupFadeRoutine);
 
-		if (!isMessageOnScreen)
+		if (!textPopup)
 		{
-			isMessageOnScreen = true;
-			Vector3 position = effectTextPrefab.transform.position;
-			effectTextPopup = Instantiate(effectTextPrefab, position, Quaternion.identity) as GameObject;
-			effectTextPopup.transform.SetParent(canvas.transform, false);
+			textPopup = Instantiate(prefab, prefab.transform.position, Quaternion.identity) as GameObject;
+			textPopup.transform.SetParent(canvas.transform, false);
 		}
-		textAnimator = effectTextPopup.GetComponent<Animator>();
+		textAnimator = textPopup.GetComponent<Animator>();
 		textAnimator.SetTrigger("Pulse");
-        TextMeshProUGUI textComponent = effectTextPopup.GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI textComponent = textPopup.GetComponent<TextMeshProUGUI>();
         textComponent.text = message;
         popupFadeRoutine = StartCoroutine(PopupFadeRoutine(textComponent));
-		timeSinceLastPopup = Time.time;
 	}
 
-	private void DestroyPopup()
+	private void DestroyPopup(ref GameObject textPopup)
 	{
-		if (!isMessageOnScreen)
+		if (!textPopup)
 			return;
 
-		isMessageOnScreen = false;
 		if (popupFadeRoutine != null)
 			StopCoroutine(popupFadeRoutine);
-		Destroy(effectTextPopup);
-		effectTextPopup = null;
+		Destroy(textPopup);
+		textPopup = null;
 		textAnimator = null;
 	}
 
@@ -152,5 +160,6 @@ public class Effects : MonoBehaviour
 		public static void PlayerHealEffect() => instance.PlayerHealEffect();
 		public static void ComboContinueEffect(int comboNum) => instance.ComboContinueEffect(comboNum);
 		public static void ComboBreakEffect() => instance.ComboBreakEffect();
+		public static void MissEffect() => instance.MissEffect();
 	}
 }

@@ -23,6 +23,7 @@ public class EnemyManager : ScriptableObject
         public Quaternion rotation;
         public Stage stage;
         public ArrowDirection[] arrowArrangement;
+        public int enemyLane;
     }
 
     public void init()

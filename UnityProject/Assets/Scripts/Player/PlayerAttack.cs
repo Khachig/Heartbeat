@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerAttack : MonoBehaviour
+public class PlayerAttack : MonoBehaviour, IEasyListener
 {
     public delegate void OnAttackMiss();
     public static OnAttackMiss onAttackMiss;
@@ -19,17 +19,15 @@ public class PlayerAttack : MonoBehaviour
         if (!audioManager)
             audioManager = GameObject.Find("EasyRhythmAudioManager").GetComponent<EasyRhythmAudioManager>();
 
+        audioManager.AddListener(this);
         beatLength = audioManager.myAudioEvent.BeatLength();
         timeAtLastBeat = Time.time;
-        BeatCapturer.onBeatCapture += OnBeatCaptured;
     }
 
     void Update()
     {
         if (beatLength == 0)
-        {
             beatLength = audioManager.myAudioEvent.BeatLength();
-        }
     }
 
     public void OnAttack(InputAction.CallbackContext context)
@@ -53,12 +51,13 @@ public class PlayerAttack : MonoBehaviour
 
     void AttackMiss()
     {
+        Effects.SpecialEffects.MissEffect();
         Effects.SpecialEffects.ScreenDamageEffect(0.5f);
         playerHealth.TakeDamage(missDamage);
         onAttackMiss?.Invoke();
     }
 
-    void OnBeatCaptured()
+    public void OnBeat(EasyEvent audioEvent)
     {
         timeAtLastBeat = Time.time;
     }
