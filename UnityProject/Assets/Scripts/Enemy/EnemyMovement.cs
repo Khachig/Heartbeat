@@ -5,6 +5,7 @@ public class EnemyMovement : MonoBehaviour
 {
     public PlayerMovement playerMovement; 
     public float moveDuration = 0.3f;
+    public float forwardOffset = 20f;
     public Stage stage;
     public GameObject[] activeEnemies = new GameObject[4];
 
@@ -34,6 +35,8 @@ public class EnemyMovement : MonoBehaviour
         }
         else{
             activeEnemies[newLane] = newEnemy;
+            newEnemy.transform.localPosition = GetLanePosition(newLane);
+            newEnemy.transform.localRotation = Quaternion.Euler(0, 180, 0);
             return true;
         }
     }
@@ -47,7 +50,6 @@ public class EnemyMovement : MonoBehaviour
             if (activeEnemies[currLane] == null){
                 continue;
             }
-            // if (i == playerLane)  // distance 0, don't move
             if ((currLane % 2) != (playerLane%2)) // distance 1, move towards
             {
                 if (newLanePositions[playerLane]==null){
@@ -79,28 +81,26 @@ public class EnemyMovement : MonoBehaviour
         newLanePositions[prevLane] = null;
         newLanePositions[newLane] = targetEnemy;
         Transform stageTransform = targetEnemy.transform.parent;
-        Vector3 newposition = GetLanePosition(newLane) + stageTransform.forward * stage.speed * moveDuration;
+        // Vector3 newposition = GetLanePosition(newLane) + stageTransform.forward * stage.speed * moveDuration;
+        Vector3 newposition = GetLanePosition(newLane);
         StartCoroutine(SmoothMove(targetEnemy, newposition));
     }
     IEnumerator SmoothMove(GameObject enemy, Vector3 target)
     {
-        // isMoving = true;
-        Vector3 start = enemy.transform.position;
+        Vector3 start = enemy.transform.localPosition;
         float elapsedTime = 0;
 
         while (elapsedTime < moveDuration)
         {
             float t = elapsedTime / moveDuration; // Normalize time
-            enemy.transform.position = Vector3.Lerp(start, target, t);
+            enemy.transform.localPosition = Vector3.Lerp(start, target, t);
 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
         
-        enemy.transform.position = target; // Ensure precise snapping
+        enemy.transform.localPosition = target; // Ensure precise snapping
         yield return null;
-        
-        // isMoving = false;
     }
 
     Vector3 GetLanePosition(int lane)
@@ -108,8 +108,7 @@ public class EnemyMovement : MonoBehaviour
         float angleStep = 360f / stage.numLanes;
         float angle = angleStep * lane * Mathf.Deg2Rad;
         Vector3 newposition = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
-        Vector3 spawnCenter = stage.transform.position + stage.transform.forward * 20;
-        newposition = Vector3.ProjectOnPlane(newposition, stage.transform.forward).normalized * stage.tunnelRadius + spawnCenter;
+        newposition = newposition.normalized * stage.tunnelRadius + Vector3.forward * forwardOffset;
         return newposition;
     }
     

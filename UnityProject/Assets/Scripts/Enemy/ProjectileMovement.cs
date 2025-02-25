@@ -19,10 +19,10 @@ public class ProjectileMovement : MonoBehaviour
     void Update()
     {
         // Slow bullet down because of forward moving player
-        transform.position = Vector3.MoveTowards(
-            transform.position,
-            transform.position + stage.transform.forward.normalized,
-            (stage.speed - projectileSpeed) * Time.deltaTime);
+        transform.localPosition = Vector3.MoveTowards(
+            transform.localPosition,
+            transform.localPosition - Vector3.forward,
+            projectileSpeed * Time.deltaTime);
 
         // If bullet is behind camera, destroy
         if (transform.position.z - stage.transform.position.z < -2f)

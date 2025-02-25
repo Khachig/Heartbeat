@@ -7,15 +7,9 @@ public class PlayerMovement : MonoBehaviour
     public Stage stage;
     public int currentLaneIndex = 3;
     public float moveDuration = 0.3f;
-    private bool isMoving = false;
-
-    public Vector3 circleCenter;
     public float forwardOffset = 10f;
-
-    public float playerMaxHealth = 100f;
-    public float playerCurrentHealth = 100f;
-    
     public Animator animator;
+    private bool isMoving = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -23,27 +17,7 @@ public class PlayerMovement : MonoBehaviour
         if (!stage)
             stage = GameObject.Find("Stage").GetComponent<Stage>();
 
-        UpdateCircleCenter();
-        MoveWithStage();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        UpdateCircleCenter();
-        MoveWithStage();
-    }
-
-    void UpdateCircleCenter()
-    {
-        // Set the center of the movement circle slightly in front of the camera
-        circleCenter = stage.transform.position + stage.transform.forward * forwardOffset;
-    }
-
-    void MoveWithStage()
-    {
-        // Ensure the player stays at the correct position even when the camera moves
-        transform.position = GetCurrPosition();
+        transform.localPosition = GetCurrPosition();
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -55,7 +29,6 @@ public class PlayerMovement : MonoBehaviour
         if (isMoving)
             return;
 
-        // Vector2 moveInput = value.Get<Vector2>();
         Vector2 moveInput = context.ReadValue<Vector2>();
 
         // Move right
@@ -79,7 +52,8 @@ public class PlayerMovement : MonoBehaviour
 
     void ChangeLane(bool moveLeft)
     {
-        Vector3 newposition = GetCurrPosition() + stage.transform.forward * stage.speed * moveDuration;
+        // Vector3 newposition = GetCurrPosition() + stage.transform.forward * stage.speed * moveDuration;
+        Vector3 newposition = GetCurrPosition();
         Quaternion targetRotation;
         if (moveLeft)
             targetRotation = Quaternion.Euler(0, 0, transform.eulerAngles.z - 90);
@@ -92,23 +66,23 @@ public class PlayerMovement : MonoBehaviour
     IEnumerator SmoothMove(Vector3 target, Quaternion targetRotation)
     {
         isMoving = true;
-        Vector3 start = transform.position;
-        Quaternion startRotation = transform.rotation;
+        Vector3 start = transform.localPosition;
+        Quaternion startRotation = transform.localRotation;
 
         float elapsedTime = 0;
 
         while (elapsedTime < moveDuration)
         {
             float t = elapsedTime / moveDuration; // Normalize time
-            transform.position = Vector3.Lerp(start, target, t);
-            transform.rotation = Quaternion.Lerp(startRotation, targetRotation, t);
+            transform.localPosition = Vector3.Lerp(start, target, t);
+            transform.localRotation = Quaternion.Lerp(startRotation, targetRotation, t);
 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        transform.position = target; // Ensure precise snapping
-        transform.rotation = targetRotation;
+        transform.localPosition = target; // Ensure precise snapping
+        transform.localRotation = targetRotation;
         isMoving = false;
     }
 
@@ -117,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
         float angleStep = 360f / stage.numLanes;
         float angle = angleStep * currentLaneIndex * Mathf.Deg2Rad;
         Vector3 newposition = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
-        newposition = Vector3.ProjectOnPlane(newposition, stage.transform.forward).normalized * stage.tunnelRadius + circleCenter;
+        newposition = newposition.normalized * stage.tunnelRadius + Vector3.forward * forwardOffset;
         return newposition;
     }
 }

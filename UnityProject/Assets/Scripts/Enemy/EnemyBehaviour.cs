@@ -194,6 +194,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     void SpawnProjectile()
     {
         GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position, Quaternion.identity);
+        projectile.transform.parent = transform.parent;
         ProjectileMovement projScript = projectile.GetComponent<ProjectileMovement>();
         projScript.SetDestroyCallback(this);
         // projScript.projectileDamage = enemyDamage;
