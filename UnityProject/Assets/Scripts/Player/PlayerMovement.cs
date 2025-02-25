@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     public Stage stage;
-    public int currentLaneIndex = 0;
+    public int currentLaneIndex = 3;
     public float moveDuration = 0.3f;
     private bool isMoving = false;
 
@@ -14,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
 
     public float playerMaxHealth = 100f;
     public float playerCurrentHealth = 100f;
+    
+    public Animator animator;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -56,45 +58,57 @@ public class PlayerMovement : MonoBehaviour
         // Vector2 moveInput = value.Get<Vector2>();
         Vector2 moveInput = context.ReadValue<Vector2>();
 
+        // Move right
         if (moveInput.x > 0)
         {
+            animator.SetTrigger("MoveRight");
             currentLaneIndex = (currentLaneIndex + 1) % stage.numLanes;
-            ChangeLane();
+            ChangeLane(false);
         }
+        // Move left
         else if (moveInput.x < 0)
         {
+            animator.SetTrigger("MoveLeft");
             currentLaneIndex = (currentLaneIndex - 1) % stage.numLanes;
             if (currentLaneIndex < 0)
                 currentLaneIndex += stage.numLanes;
-            ChangeLane();
+            ChangeLane(true);
         }
 
     }
 
-    void ChangeLane()
+    void ChangeLane(bool moveLeft)
     {
         Vector3 newposition = GetCurrPosition() + stage.transform.forward * stage.speed * moveDuration;
-        StartCoroutine(SmoothMove(newposition));
+        Quaternion targetRotation;
+        if (moveLeft)
+            targetRotation = Quaternion.Euler(0, 0, transform.eulerAngles.z - 90);
+        else
+            targetRotation = Quaternion.Euler(0, 0, transform.eulerAngles.z + 90);
+
+        StartCoroutine(SmoothMove(newposition, targetRotation));
     }
 
-    IEnumerator SmoothMove(Vector3 target)
+    IEnumerator SmoothMove(Vector3 target, Quaternion targetRotation)
     {
         isMoving = true;
         Vector3 start = transform.position;
+        Quaternion startRotation = transform.rotation;
+
         float elapsedTime = 0;
 
         while (elapsedTime < moveDuration)
         {
             float t = elapsedTime / moveDuration; // Normalize time
-            // TODO: fix ease-in, ease-out animation
-            // float t = Mathf.SmoothStep(0, 1, t); // Apply ease-in, ease-out
             transform.position = Vector3.Lerp(start, target, t);
+            transform.rotation = Quaternion.Lerp(startRotation, targetRotation, t);
 
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         transform.position = target; // Ensure precise snapping
+        transform.rotation = targetRotation;
         isMoving = false;
     }
 
