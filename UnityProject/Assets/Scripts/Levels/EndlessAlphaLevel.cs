@@ -22,7 +22,7 @@ public class EndlessAlphaLevel : Level
         enemyManager.onEnemyDeath += OnEnemyDeath;
         enemyRhythmManager = GameObject.Find("EnemyRhythmManager").GetComponent<EnemyRhythmManager>();
 
-        Invoke("SpawnWave", 3);
+        Invoke("SpawnWave", 5f);
     }
 
     void SpawnWave()
