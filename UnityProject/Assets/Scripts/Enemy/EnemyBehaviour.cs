@@ -10,25 +10,25 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     // To be invoked whenever a single enemy is destroyed
     public OnEnemyDestroy onEnemyDestroy;
 
-    private EnemyData instanceData;
-    private Animator enemyAnimator;
-    private EnemyDamageEffect effects;
+    protected EnemyData instanceData;
+    protected Animator enemyAnimator;
+    protected EnemyDamageEffect effects;
 
-    private List<GameObject> arrows;
+    protected List<GameObject> arrows;
 
     public float fireRate = 1f; // every x seconds
-    private float fireRateMultiplier = 1f;
+    protected float fireRateMultiplier = 1f;
     public float lastFireTime = 0f;
     public GameObject projectilePrefab;
     public EasyRhythmAudioManager audioManager;
     public EnemyRhythmManager enemyRhythmManager;
 
-    private float bpm;
-    private bool needsResetEnemyAnimation = true;
-    private bool needsResetArrowAnimation = true;
-    private bool isDead = false; // To ensure no attacks during death animation;
+    protected float bpm;
+    protected bool needsResetEnemyAnimation = true;
+    protected bool needsResetArrowAnimation = true;
+    protected bool isDead = false; // To ensure no attacks during death animation;
 
-    void Start()
+    protected void Start()
     {
         if (!audioManager)
             audioManager = GameObject.Find("EasyRhythmAudioManager").GetComponent<EasyRhythmAudioManager>();
@@ -112,7 +112,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         arrowEffect.Flash(label);
     }
 
-    void SpawnArrows()
+    protected void SpawnArrows()
     {
         Canvas canvas = GetComponentInChildren<Canvas>();
 
@@ -169,7 +169,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         }
     }
  
-    void RemoveArrow()
+    protected virtual void RemoveArrow()
     {
         GameObject arrow = arrows[0];
         arrows.RemoveAt(0);
@@ -197,7 +197,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         }
     }
 
-    void SpawnProjectile()
+    protected void SpawnProjectile()
     {
         GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position, Quaternion.identity);
         projectile.transform.parent = transform.parent;
@@ -206,7 +206,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         // projScript.projectileDamage = enemyDamage;
     }
 
-    void SetArrowPulseSpeed()
+    protected void SetArrowPulseSpeed()
     {
         if (arrows.Count == 0)
             return;

@@ -12,6 +12,7 @@ public class EnemyManager : ScriptableObject
     public OnEnemyDeath onEnemyDeath;
     public float spawnForwardOffset = 20f;
     [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private GameObject bossPrefab;
 
     private List<GameObject> enemies;
 
@@ -52,6 +53,29 @@ public class EnemyManager : ScriptableObject
         });
         enemies.Add(enemy);
         enemyMovement.addEnemy(parameters.enemyLane, enemy);
+        return enemy;
+    }
+    
+    public GameObject spawnBoss(SpawnParameters parameters)
+    {
+        GameObject enemy = Instantiate(
+            bossPrefab,
+            parameters.position + parameters.stage.transform.forward * spawnForwardOffset,
+            Quaternion.identity);
+        enemy.transform.eulerAngles = new Vector3(
+            parameters.rotation.x,
+            parameters.rotation.y,
+            parameters.rotation.z
+        );
+        enemy.transform.parent = parameters.stage.transform;
+        BossBehaviour enemyBehaviour = enemy.GetComponent<BossBehaviour>();
+        enemyBehaviour.SetStage(parameters.stage);
+        enemyBehaviour.onEnemyDestroy += OnEnemyDestroy;
+        EnemyData enemyData = enemy.GetComponent<EnemyData>();
+        enemyData.init(new EnemyData.EnemyParameters {
+            arrowArrangement = parameters.arrowArrangement,
+        });
+        enemies.Add(enemy);
         return enemy;
     }
 
