@@ -4310,9 +4310,21 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -175
       objectReference: {fileID: 0}
+    - target: {fileID: 3528277037060648977, guid: a9d51b499333d46619e2f64c66a68122, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -72.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3849846547551269136, guid: a9d51b499333d46619e2f64c66a68122, type: 3}
+      propertyPath: m_text
+      value: Press <Return> to Play
+      objectReference: {fileID: 0}
     - target: {fileID: 3930499493244074018, guid: a9d51b499333d46619e2f64c66a68122, type: 3}
       propertyPath: m_Color.a
       value: 0.078431375
+      objectReference: {fileID: 0}
+    - target: {fileID: 4151598988519371509, guid: a9d51b499333d46619e2f64c66a68122, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 74.9
       objectReference: {fileID: 0}
     - target: {fileID: 4483610857332218382, guid: a9d51b499333d46619e2f64c66a68122, type: 3}
       propertyPath: m_Name
@@ -4330,6 +4342,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 52
       objectReference: {fileID: 0}
+    - target: {fileID: 5018302417031075281, guid: a9d51b499333d46619e2f64c66a68122, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 73.1
+      objectReference: {fileID: 0}
     - target: {fileID: 5312367944746313844, guid: a9d51b499333d46619e2f64c66a68122, type: 3}
       propertyPath: m_Color.a
       value: 0.13333334
@@ -4345,6 +4361,10 @@ PrefabInstance:
     - target: {fileID: 7210928786243289463, guid: a9d51b499333d46619e2f64c66a68122, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: -446
+      objectReference: {fileID: 0}
+    - target: {fileID: 8457387205923859356, guid: a9d51b499333d46619e2f64c66a68122, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -76.100006
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

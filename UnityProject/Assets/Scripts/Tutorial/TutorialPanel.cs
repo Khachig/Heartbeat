@@ -13,6 +13,9 @@ public class TutorialPanelScript : MonoBehaviour
             canvasGroup = gameObject.AddComponent<CanvasGroup>();
         }
 
+        // Pause game while tutorial is active
+        Time.timeScale = 0;
+
         Invoke("HidePanel", displayTime);
     }
 
@@ -29,5 +32,8 @@ public class TutorialPanelScript : MonoBehaviour
         canvasGroup.alpha = 0;  // Makes the panel invisible
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
+
+        // Unpause game
+        Time.timeScale = 1;
     }
 }

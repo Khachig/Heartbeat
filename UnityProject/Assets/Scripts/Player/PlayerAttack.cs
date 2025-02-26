@@ -35,6 +35,10 @@ public class PlayerAttack : MonoBehaviour, IEasyListener
         // For input handler, only do call back on performed stage
         if (!context.performed)
             return;
+
+        // Only attack when game is unpaused
+        if (Time.timeScale == 0)
+            return;
         
         // Missed timing
         if (Time.time - timeAtLastBeat > hitThreshold && // lateness threshold
