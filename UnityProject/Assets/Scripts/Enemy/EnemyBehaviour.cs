@@ -17,6 +17,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     private List<GameObject> arrows;
 
     public float fireRate = 1f; // every x seconds
+    private float fireRateMultiplier = 1f;
     public float lastFireTime = 0f;
     public GameObject projectilePrefab;
     public EasyRhythmAudioManager audioManager;
@@ -50,14 +51,19 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         needsResetEnemyAnimation = true;
         needsResetArrowAnimation = true;
 
-        lastFireTime = Random.Range(0f, 5f);
-        fireRate = Random.Range(1f, 5f);
+        lastFireTime = Random.Range(0f, 3f);
+        fireRate = Random.Range(1f, 3f);
     }
 
     void Update()
     {
         Attack();
     } 
+
+    public void SetFireRateMultiplier(float mult)
+    {
+        fireRateMultiplier = mult;
+    }
 
     // Returns true iff input matches the first arrow of this enemy
     public bool HandlePlayerAttack(Vector2 input)
@@ -185,7 +191,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
 
     void Attack()
     {   
-        if (Time.time >= lastFireTime+fireRate && !isDead){
+        if (Time.time >= lastFireTime + fireRate * fireRateMultiplier && !isDead){
             SpawnProjectile();
             lastFireTime = Time.time;
         }

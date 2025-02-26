@@ -1,4 +1,6 @@
 using UnityEngine;
+using System.Linq;
+using System.Collections.Generic;
 
 public class EndlessAlphaLevel : Level
 {
@@ -9,6 +11,7 @@ public class EndlessAlphaLevel : Level
 
     private EnemyManager enemyManager;
     private EnemyRhythmManager enemyRhythmManager;
+    private float fireRateMult = 1f;
 
     public override void Load(EnemyManager eManager)
     {
@@ -26,31 +29,35 @@ public class EndlessAlphaLevel : Level
     {
         enemyCount = maxEnemyCount;
 
-        for (int i = 0; i < maxEnemyCount; i++)
-        {
-            SpawnEnemy(i);
-        }
-        enemyRhythmManager.InitNewSequence();
-    }
+        if (wave <= 3)
+            SpawnEasyWave();
+        else
+            SpawnHardWave();
+    } 
 
     void OnEnemyDeath()
     {
         enemyCount--;
         if (enemyCount == 0) {
             wave++;
-            if (maxEnemyCount < 4)
+            if (2 < wave && wave < 5)
                 maxEnemyCount++;
+            if (wave >= 5)
+            {
+                fireRateMult *= 0.75f;
+                enemyManager.setFireRateMultForAllEnemies(fireRateMult);
+            }
             Invoke("SpawnWave", 3);
         }
     }
 
-    void SpawnEnemy(int lane)
+    void SpawnEnemy(int lane, ArrowDirection[] arrowDirections)
     {
         GameObject enemy = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
             position = Vector3.zero,
             rotation = Quaternion.identity,
             stage = stage,
-            arrowArrangement = GetArrowList(lane),
+            arrowArrangement = arrowDirections,
             enemyLane = lane,
         });
         enemyRhythmManager.AddEnemy(enemy);
@@ -86,5 +93,58 @@ public class EndlessAlphaLevel : Level
                 newList = new ArrowDirection[] {ArrowDirection.RANDOM, ArrowDirection.RANDOM};
         }
         return newList;
+    }
+    
+    void SpawnEasyWave()
+    {
+        for (int i = 0; i < maxEnemyCount; i++)
+        {
+            ArrowDirection[] arrowDirections = GetArrowList(i);
+            SpawnEnemy(i, arrowDirections);
+        }
+        enemyRhythmManager.InitNewSequence();
+    }
+
+    void SpawnHardWave()
+    {
+        List<ArrowDirection[]> possibleArrangements = new List<ArrowDirection[]>
+            {
+                new ArrowDirection[] {ArrowDirection.UP},
+                new ArrowDirection[] {ArrowDirection.DOWN},
+                new ArrowDirection[] {ArrowDirection.LEFT},
+                new ArrowDirection[] {ArrowDirection.RIGHT},
+                new ArrowDirection[] {ArrowDirection.UP, ArrowDirection.UP},
+                new ArrowDirection[] {ArrowDirection.DOWN, ArrowDirection.DOWN},
+                new ArrowDirection[] {ArrowDirection.LEFT, ArrowDirection.LEFT},
+                new ArrowDirection[] {ArrowDirection.RIGHT, ArrowDirection.RIGHT},
+                new ArrowDirection[] {ArrowDirection.UP, ArrowDirection.DOWN},
+                new ArrowDirection[] {ArrowDirection.LEFT, ArrowDirection.RIGHT},
+                new ArrowDirection[] {ArrowDirection.LEFT, ArrowDirection.DOWN},
+                new ArrowDirection[] {ArrowDirection.UP, ArrowDirection.RIGHT},
+            };
+
+        for (int i = 0; i < maxEnemyCount; i++)
+        {
+            if (possibleArrangements.Count == 0)
+                break;
+
+            int idx = Random.Range(0, possibleArrangements.Count);
+            ArrowDirection[] chosenDirections = possibleArrangements[idx];
+
+            foreach (ArrowDirection[] arrangement in possibleArrangements.ToList())
+            {
+                foreach (ArrowDirection direction in chosenDirections)
+                {
+                    if (arrangement.Contains(direction))
+                    {
+                        possibleArrangements.Remove(arrangement);
+                        break;
+                    }
+                }
+
+            }
+            SpawnEnemy(i, chosenDirections);
+        }
+        enemyRhythmManager.InitNewSequence();
     }
 }

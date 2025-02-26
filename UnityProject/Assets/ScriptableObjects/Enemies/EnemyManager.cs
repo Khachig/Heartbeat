@@ -73,6 +73,21 @@ public class EnemyManager : ScriptableObject
         return match;
     }
 
+    public void setFireRateMultForAllEnemies(float mult)
+    {
+        foreach(GameObject enemy in enemies.ToList())
+        {
+            if (enemy == null)
+            {
+                enemies.Remove(enemy);
+                continue;
+            }
+
+            EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+            enemyBehaviour.SetFireRateMultiplier(mult);
+        }
+    }
+
     void OnEnemyDestroy()
     {
         onEnemyDeath.Invoke();
