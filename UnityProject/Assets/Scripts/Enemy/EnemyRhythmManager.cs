@@ -25,7 +25,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     private bool hasStartedCombo = false;
     private bool hasBrokenCombo = false;
     private int nextInComboIdx = 0;
-    private int comboNum = 0;
+    public int comboNum = 0;
     private float timeAtLastComboHit;
 
     private void Start()

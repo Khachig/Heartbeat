@@ -25,7 +25,7 @@ public class ProjectileMovement : MonoBehaviour
             projectileSpeed * Time.deltaTime);
 
         // If bullet is behind camera, destroy
-        if (transform.position.z - stage.transform.position.z < -2f)
+        if (transform.localPosition.z < -2f)
         {
             if (parentEnemy)
                 parentEnemy.onEnemyDestroy -= OnEnemyDestroy;

@@ -27,10 +27,10 @@ public class EndlessAlphaLevel : Level
 
     void SpawnWave()
     {
-        enemyCount = maxEnemyCount;
-
         if (wave <= 3)
             SpawnEasyWave();
+        else if (wave % 5 == 0)
+            SpawnBossWave();
         else
             SpawnHardWave();
     } 
@@ -101,6 +101,7 @@ public class EndlessAlphaLevel : Level
         {
             ArrowDirection[] arrowDirections = GetArrowList(i);
             SpawnEnemy(i, arrowDirections);
+            enemyCount++;
         }
         enemyRhythmManager.InitNewSequence();
     }
@@ -144,7 +145,25 @@ public class EndlessAlphaLevel : Level
 
             }
             SpawnEnemy(i, chosenDirections);
+            enemyCount++;
         }
+        enemyRhythmManager.InitNewSequence();
+    }
+
+    void SpawnBossWave()
+    {
+        enemyCount++;
+        GameObject enemy = enemyManager.spawnBoss(new EnemyManager.SpawnParameters {
+            position = Vector3.zero,
+            rotation = Quaternion.identity,
+            stage = stage,
+            arrowArrangement = new ArrowDirection[] {ArrowDirection.RANDOM,
+                                                     ArrowDirection.RANDOM,
+                                                     ArrowDirection.RANDOM,
+                                                     ArrowDirection.RANDOM},
+            enemyLane = 1,
+        });
+        enemyRhythmManager.AddEnemy(enemy);
         enemyRhythmManager.InitNewSequence();
     }
 }
