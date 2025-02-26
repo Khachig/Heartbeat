@@ -40,4 +40,9 @@ public class EasyRhythmAudioManager : MonoBehaviour
 
         }
     }
+
+    public void AddListener(IEasyListener listener)
+    {
+        myAudioEvent.AddListener(listener);
+    }
 }

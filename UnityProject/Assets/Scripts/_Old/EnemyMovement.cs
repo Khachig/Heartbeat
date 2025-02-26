@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class EnemyMovement : MonoBehaviour
+public class OldEnemyMovement : MonoBehaviour
 {
     public float hover_distance = 0.005f;
     public float hover_speed = 0.05f;

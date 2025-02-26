@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Destroyable: MonoBehaviour
+public class AnimEvents : MonoBehaviour
 {
     public void DestroyObject()
     {
@@ -10,5 +10,10 @@ public class Destroyable: MonoBehaviour
     public void DestroyParent()
     {
         Destroy(transform.parent.gameObject);
+    }
+
+    public void QueueResetEnemyAnim()
+    {
+        transform.parent.GetComponent<EnemyBehaviour>().QueueResetEnemyAnim();
     }
 }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using UnityEngine.InputSystem;
 
@@ -12,7 +13,9 @@ public class EnemyManager : ScriptableObject
     public float spawnForwardOffset = 20f;
     [SerializeField] private GameObject enemyPrefab;
 
-    List<GameObject> enemies;
+    private List<GameObject> enemies;
+
+    public EnemyMovement enemyMovement;
 
     public struct SpawnParameters
     {
@@ -29,7 +32,7 @@ public class EnemyManager : ScriptableObject
         enemies = new List<GameObject>();
     }
 
-    public void spawnEnemy(SpawnParameters parameters)
+    public GameObject spawnEnemy(SpawnParameters parameters)
     {
         GameObject enemy = Instantiate(
             enemyPrefab,
@@ -48,6 +51,8 @@ public class EnemyManager : ScriptableObject
             arrowArrangement = parameters.arrowArrangement,
         });
         enemies.Add(enemy);
+        enemyMovement.addEnemy(parameters.enemyLane, enemy);
+        return enemy;
     }
 
     // Returns whether any enemy was hit by the player attack
@@ -66,6 +71,21 @@ public class EnemyManager : ScriptableObject
             match |= enemyBehaviour.HandlePlayerAttack(input);
         }
         return match;
+    }
+
+    public void setFireRateMultForAllEnemies(float mult)
+    {
+        foreach(GameObject enemy in enemies.ToList())
+        {
+            if (enemy == null)
+            {
+                enemies.Remove(enemy);
+                continue;
+            }
+
+            EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+            enemyBehaviour.SetFireRateMultiplier(mult);
+        }
     }
 
     void OnEnemyDestroy()

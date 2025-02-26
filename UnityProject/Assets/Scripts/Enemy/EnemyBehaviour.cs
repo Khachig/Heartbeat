@@ -1,8 +1,10 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
-public class EnemyBehaviour : MonoBehaviour
+// TODO make arrows a separate class
+public class EnemyBehaviour : MonoBehaviour, IEasyListener
 {
     public delegate void OnEnemyDestroy();
     // To be invoked whenever a single enemy is destroyed
@@ -12,35 +14,45 @@ public class EnemyBehaviour : MonoBehaviour
     private Animator enemyAnimator;
     private EnemyDamageEffect effects;
 
-    private Queue images;
+    private List<GameObject> arrows;
 
     public float fireRate = 1f; // every x seconds
+    private float fireRateMultiplier = 1f;
     public float lastFireTime = 0f;
     public GameObject projectilePrefab;
     public EasyRhythmAudioManager audioManager;
+    public EnemyRhythmManager enemyRhythmManager;
 
     private float bpm;
+    private bool needsResetEnemyAnimation = true;
+    private bool needsResetArrowAnimation = true;
+    private bool isDead = false; // To ensure no attacks during death animation;
 
     void Start()
     {
         if (!audioManager)
             audioManager = GameObject.Find("EasyRhythmAudioManager").GetComponent<EasyRhythmAudioManager>();
+        if (!enemyRhythmManager)
+            enemyRhythmManager= GameObject.Find("EnemyRhythmManager").GetComponent<EnemyRhythmManager>();
 
+        audioManager.AddListener(this);
         bpm = audioManager.myAudioEvent.CurrentTempo;
-        BeatCapturer.onBeatCapture += OnBeatCaptured;
 
         // this data is per enemy instance
         instanceData = gameObject.GetComponent<EnemyData>();
         effects = gameObject.GetComponent<EnemyDamageEffect>();
         enemyAnimator = gameObject.transform.GetChild(0).GetComponent<Animator>();
-        images = new Queue();
+        arrows = new List<GameObject>();
 
         SpawnArrows();
         SetArrowPulseSpeed();
         SetEnemyPulseSpeed();
 
-        lastFireTime = Random.Range(0f, 5f);
-        fireRate = Random.Range(1f, 5f);
+        needsResetEnemyAnimation = true;
+        needsResetArrowAnimation = true;
+
+        lastFireTime = Random.Range(0f, 3f);
+        fireRate = Random.Range(1f, 3f);
     }
 
     void Update()
@@ -48,13 +60,18 @@ public class EnemyBehaviour : MonoBehaviour
         Attack();
     } 
 
+    public void SetFireRateMultiplier(float mult)
+    {
+        fireRateMultiplier = mult;
+    }
+
     // Returns true iff input matches the first arrow of this enemy
     public bool HandlePlayerAttack(Vector2 input)
     {
-        if (images.Count == 0)
+        if (arrows.Count == 0)
             return true;       
 
-        GameObject nextArrow = (GameObject)images.Peek();
+        GameObject nextArrow = arrows[0];
         if ((input.y > 0 && nextArrow.name.Equals("UpArrow(Clone)")) ||
             (input.y < 0 && nextArrow.name.Equals("DownArrow(Clone)")) ||
             // Switch left and right because images are placed "backwards"
@@ -62,10 +79,37 @@ public class EnemyBehaviour : MonoBehaviour
             (input.x > 0 && nextArrow.name.Equals("LeftArrow(Clone)"))
         )
         {
+            if (!enemyRhythmManager.HasBrokenCombo() && enemyRhythmManager.IsNextEnemyInCombo(gameObject))
+                enemyRhythmManager.ContinueCombo();
+            // Break the combo if the wrong enemy was hit
+            else if (!enemyRhythmManager.HasBrokenCombo())
+                enemyRhythmManager.BreakCombo();
+
             RemoveArrow();
             return true;
         }
+
         return false;
+    }
+
+    public void QueueResetEnemyAnim()
+    {
+        needsResetEnemyAnimation = true;
+    }
+
+    // Emphasizes the arrow at arrowIndex based on the original arrow arrangement
+    // with label number above arrow
+    public void FlashArrow(int arrowIndex, int label)
+    {
+        int numArrowsDestroyed = instanceData.arrowArrangement.Length - arrows.Count;
+        int realIndex = arrowIndex - numArrowsDestroyed;
+
+        if (realIndex < 0)
+            return;
+        
+        GameObject arrow = arrows[realIndex];
+        ArrowFlashEffect arrowEffect = arrow.GetComponent<ArrowFlashEffect>();
+        arrowEffect.Flash(label);
     }
 
     void SpawnArrows()
@@ -75,14 +119,14 @@ public class EnemyBehaviour : MonoBehaviour
         for (int i=0; i<instanceData.arrowArrangement.Length; ++i)
         {
             (float X, float Y) spawnCoordinates = GetCoordinatesByIndex(i);
-            GameObject imagePrefab = GetArrowImageFromArrowDirection(instanceData.arrowArrangement[i]);
-            GameObject image = Instantiate(imagePrefab);
-            image.transform.SetParent(canvas.transform, false);
+            GameObject arrowPrefab = GetArrowImageFromArrowDirection(instanceData.arrowArrangement[i]);
+            GameObject arrow = Instantiate(arrowPrefab);
+            arrow.transform.SetParent(canvas.transform, false);
 
-            RectTransform rt = image.GetComponent<RectTransform>();
+            RectTransform rt = arrow.GetComponent<RectTransform>();
             rt.anchoredPosition = new Vector2(spawnCoordinates.X, spawnCoordinates.Y);
 
-            images.Enqueue(image);
+            arrows.Add(arrow);
         }
     }
 
@@ -127,23 +171,27 @@ public class EnemyBehaviour : MonoBehaviour
  
     void RemoveArrow()
     {
-        GameObject image = images.Dequeue() as GameObject;
+        GameObject arrow = arrows[0];
+        arrows.RemoveAt(0);
+
         SetArrowPulseSpeed();
         effects.Flash();
-        Animator arrowAnimator = image.GetComponent<Animator>();
+        Animator arrowAnimator = arrow.GetComponent<Animator>();
         arrowAnimator.SetTrigger("ArrowDestroy");
-        if (images.Count == 0)
+        if (arrows.Count == 0)
         {
+            isDead = true;
             onEnemyDestroy?.Invoke();
+            enemyRhythmManager.RemoveEnemy(gameObject);
             enemyAnimator.SetTrigger("EnemyDeath");
         } else {
             enemyAnimator.SetTrigger("EnemyHit");
         }
     }
 
-    public void Attack()
+    void Attack()
     {   
-        if (Time.time >= lastFireTime+fireRate){
+        if (Time.time >= lastFireTime + fireRate * fireRateMultiplier && !isDead){
             SpawnProjectile();
             lastFireTime = Time.time;
         }
@@ -152,28 +200,44 @@ public class EnemyBehaviour : MonoBehaviour
     void SpawnProjectile()
     {
         GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position, Quaternion.identity);
+        projectile.transform.parent = transform.parent;
         ProjectileMovement projScript = projectile.GetComponent<ProjectileMovement>();
+        projScript.SetDestroyCallback(this);
         // projScript.projectileDamage = enemyDamage;
     }
 
     void SetArrowPulseSpeed()
     {
-        if (images.Count == 0)
+        if (arrows.Count == 0)
             return;
 
-        GameObject image = (GameObject) images.Peek();
-        Animator arrowAnimator = image.GetComponent<Animator>();
+        GameObject arrow = arrows[0];
+        Animator arrowAnimator = arrow.GetComponent<Animator>();
         arrowAnimator.SetFloat("ArrowPulseSpeed", bpm / 60f);
-        arrowAnimator.SetBool("IsActive", true);
+        needsResetArrowAnimation = true;
     }
 
     void SetEnemyPulseSpeed()
     {
         enemyAnimator.SetFloat("EnemyPulseSpeed", bpm / 60f);
     }
-
-    void OnBeatCaptured()
+    
+    public void OnBeat(EasyEvent audioEvent)
     {
-        // Debug.Log("bpm: " + bpm);
+        if (needsResetEnemyAnimation)
+        {
+            enemyAnimator.SetTrigger("Reset");
+            needsResetEnemyAnimation = false;
+        }
+        if (arrows.Count == 0)
+            return;
+
+        if (needsResetArrowAnimation)
+        {
+            GameObject arrow = arrows[0];
+            Animator arrowAnimator = arrow.GetComponent<Animator>();
+            arrowAnimator.SetTrigger("Reset");
+            needsResetArrowAnimation = false;
+        }
     }
 }
