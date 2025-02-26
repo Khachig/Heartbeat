@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spawnForwardOffset: 5
   enemyPrefab: {fileID: 8466114321657616639, guid: b2d0888221fb64495af929b5eb1e411f, type: 3}
+  bossPrefab: {fileID: 8466114321657616639, guid: e501954f57f673f4a861f98bd560f01e, type: 3}
+  enemyMovement: {fileID: 0}

@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.Assertions;
 using System.Collections.Generic;
 
 // Script for Stage information and movement
@@ -9,6 +8,7 @@ public class Stage : MonoBehaviour
     public float tunnelRadius = 3f;
     public float speed = 50f;
     public float rotationSpeed = 10f;
+    public GameObject tube;
 
 	private Vector3 targetPoint;
 	private Quaternion targetRotation;
@@ -22,13 +22,23 @@ public class Stage : MonoBehaviour
     }
 
 	void Start () {
-        points = new List<Vector3>{Vector3.zero};
+        points = new List<Vector3>{};
+        if (tube)
+        {
+            for(int i = 0; i < tube.transform.childCount; i++)
+            {
+                Transform point = tube.transform.GetChild(i);
+                points.Add(point.position);
+            }
+        }
 		pointsIdx = 0;
         SetTargetPoint();
 	}
 	
 	// Update is called once per frame
 	void Update () {
+        if (points.Count < 2)
+            return;
 		transform.position = Vector3.MoveTowards(transform.position, targetPoint, speed * Time.deltaTime);
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed *  Time.deltaTime);
 		if (Vector3.Distance(transform.position, targetPoint) < 15f) 
@@ -37,18 +47,16 @@ public class Stage : MonoBehaviour
 		}
         if (Vector3.Distance(transform.position, targetPoint) < 0.1f) 
 		{
-			pointsIdx++;
+			pointsIdx = (pointsIdx + 1) % points.Count;
             SetTargetPoint();
 		}
 	}
 
     void SetTargetPoint() {
-        Assert.IsTrue(pointsIdx < points.Count); 
         targetPoint = points[pointsIdx];
     }
 
     void SetTargetRotation() {
-        Assert.IsTrue(pointsIdx + 1 < points.Count); 
-        targetRotation = Quaternion.LookRotation(points[pointsIdx + 1] - transform.position);
+        targetRotation = Quaternion.LookRotation(points[(pointsIdx + 3) % points.Count] - transform.position);
     }
 }

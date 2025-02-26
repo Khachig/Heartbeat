@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections;
 using System.Linq;
 using UnityEngine.InputSystem;
 
@@ -11,8 +12,11 @@ public class EnemyManager : ScriptableObject
     public OnEnemyDeath onEnemyDeath;
     public float spawnForwardOffset = 20f;
     [SerializeField] private GameObject enemyPrefab;
+    [SerializeField] private GameObject bossPrefab;
 
-    List<GameObject> enemies;
+    private List<GameObject> enemies;
+
+    public EnemyMovement enemyMovement;
 
     public struct SpawnParameters
     {
@@ -29,7 +33,7 @@ public class EnemyManager : ScriptableObject
         enemies = new List<GameObject>();
     }
 
-    public void spawnEnemy(SpawnParameters parameters)
+    public GameObject spawnEnemy(SpawnParameters parameters)
     {
         GameObject enemy = Instantiate(
             enemyPrefab,
@@ -48,6 +52,31 @@ public class EnemyManager : ScriptableObject
             arrowArrangement = parameters.arrowArrangement,
         });
         enemies.Add(enemy);
+        enemyMovement.addEnemy(parameters.enemyLane, enemy);
+        return enemy;
+    }
+    
+    public GameObject spawnBoss(SpawnParameters parameters)
+    {
+        GameObject enemy = Instantiate(
+            bossPrefab,
+            parameters.position + parameters.stage.transform.forward * spawnForwardOffset,
+            Quaternion.identity);
+        enemy.transform.eulerAngles = new Vector3(
+            parameters.rotation.x,
+            parameters.rotation.y,
+            parameters.rotation.z
+        );
+        enemy.transform.parent = parameters.stage.transform;
+        BossBehaviour enemyBehaviour = enemy.GetComponent<BossBehaviour>();
+        enemyBehaviour.SetStage(parameters.stage);
+        enemyBehaviour.onEnemyDestroy += OnEnemyDestroy;
+        EnemyData enemyData = enemy.GetComponent<EnemyData>();
+        enemyData.init(new EnemyData.EnemyParameters {
+            arrowArrangement = parameters.arrowArrangement,
+        });
+        enemies.Add(enemy);
+        return enemy;
     }
 
     // Returns whether any enemy was hit by the player attack
@@ -66,6 +95,21 @@ public class EnemyManager : ScriptableObject
             match |= enemyBehaviour.HandlePlayerAttack(input);
         }
         return match;
+    }
+
+    public void setFireRateMultForAllEnemies(float mult)
+    {
+        foreach(GameObject enemy in enemies.ToList())
+        {
+            if (enemy == null)
+            {
+                enemies.Remove(enemy);
+                continue;
+            }
+
+            EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+            enemyBehaviour.SetFireRateMultiplier(mult);
+        }
     }
 
     void OnEnemyDestroy()
