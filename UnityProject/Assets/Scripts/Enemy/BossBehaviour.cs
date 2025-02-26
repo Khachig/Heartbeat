@@ -52,6 +52,7 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
         effects.Flash();
         Animator arrowAnimator = arrow.GetComponent<Animator>();
         arrowAnimator.SetTrigger("ArrowDestroy");
+        Destroy(arrow, 0.5f);
         if (arrows.Count == 0)
         {
             if (currWave >= numWaves)

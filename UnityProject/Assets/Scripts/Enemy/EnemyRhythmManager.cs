@@ -61,7 +61,9 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             if (sequenceTimings[i][0] == enemyIndex)
                 sequenceTimings[i] = new Vector2(-1, sequenceTimings[i][1]);
         }
-     }
+        // Delete the enemy from scene
+        Destroy(enemy);
+    }
 
     public void InitNewSequence()
     {
