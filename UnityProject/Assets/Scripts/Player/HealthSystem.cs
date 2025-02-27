@@ -11,8 +11,6 @@ public class HealthSystem : MonoBehaviour
     // Reference to the health bar slider component
     public UnityEngine.UI.Slider HealthBar;
 
-
-
     // Start is called before the first frame update
     void Start()
     {

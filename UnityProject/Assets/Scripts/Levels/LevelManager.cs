@@ -2,23 +2,26 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+    private Stage stage;
     private EnemyManager enemyManager;
+    private EnemyRhythmManager enemyRhythmManager;
     private Level firstLevel;
 
     private bool paused = false;
     private CanvasGroup canvasGroup;
 
-    public void Init(EnemyManager eManager)
+    public void Init(Stage stg, EnemyManager eManager, EnemyRhythmManager erManager)
     {
+        stage = stg;
         enemyManager = eManager;
-        // firstLevel = gameObject.AddComponent<DemoLevel>();
+        enemyRhythmManager = erManager;
         firstLevel = gameObject.AddComponent<EndlessAlphaLevel>();
         firstLevel.onLevelComplete += OnLevelComplete;
     }
 
     public void StartLevel()
     {
-        firstLevel.Load(enemyManager);
+        firstLevel.Load(stage, enemyManager, enemyRhythmManager);
     }
 
     void OnLevelComplete()

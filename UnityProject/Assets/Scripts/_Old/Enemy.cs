@@ -156,7 +156,7 @@ public class Enemy : MonoBehaviour
         ProjectileMovement projScript = projectile.GetComponent<ProjectileMovement>();
         projScript.projectileDamage = enemyDamage[enemyLane];
         projScript.projectileSpeed = projectileSpeeds[enemyLane];
-        projScript.stage = stage;
+        // projScript.stage = stage;
         // projScript.waypoints = pathWaypoints; // Assign waypoints
     }
 }

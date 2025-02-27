@@ -15,12 +15,6 @@ public class Stage : MonoBehaviour
     private List<Vector3> points;
 	private int pointsIdx;
 
-    // To be used by tunnel generation to set points for camera path
-    public void SetPoints(List<Vector3> newPoints) {
-        this.points = newPoints;
-        SetTargetPoint();
-    }
-
 	void Start () {
         points = new List<Vector3>{};
         if (tube)

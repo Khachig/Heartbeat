@@ -3,14 +3,14 @@ using System.Collections;
 using System;
 public class EnemyMovement : MonoBehaviour
 {
+    public Stage stage;
     public PlayerMovement playerMovement; 
     public float moveDuration = 0.3f;
     public float forwardOffset = 20f;
-    public Stage stage;
-    public GameObject[] activeEnemies = new GameObject[4];
-
     public float moveInterval = 1f;
+
     private float lastMove = 0f;
+    private GameObject[] activeEnemies = new GameObject[4];
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -29,6 +29,7 @@ public class EnemyMovement : MonoBehaviour
             lastMove = Time.time;
         }
     }
+
     public bool addEnemy(int newLane, GameObject newEnemy){
         if (!(activeEnemies[newLane] == null)){
             return false;
@@ -85,6 +86,7 @@ public class EnemyMovement : MonoBehaviour
         Vector3 newposition = GetLanePosition(newLane);
         StartCoroutine(SmoothMove(targetEnemy, newposition));
     }
+
     IEnumerator SmoothMove(GameObject enemy, Vector3 target)
     {
         Vector3 start = enemy.transform.localPosition;

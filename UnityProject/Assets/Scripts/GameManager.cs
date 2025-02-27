@@ -5,12 +5,15 @@ public class GameManager : MonoBehaviour
     // TODO: include PlayerManager, LevelManager, whatever is needed etc.
     [SerializeField] private EnemyManager enemyManager;
     public LevelManager levelManager;
+    public Stage stage;
     public EnemyMovement enemyMovement;
+    public EasyRhythmAudioManager audioManager;
+    public EnemyRhythmManager enemyRhythmManager;
 
     void Start()
     {
-        levelManager.Init(enemyManager);
+        enemyManager.init(enemyMovement, audioManager, enemyRhythmManager);
+        levelManager.Init(stage, enemyManager, enemyRhythmManager);
         levelManager.StartLevel();
-        enemyManager.enemyMovement = enemyMovement;
     }
 }
