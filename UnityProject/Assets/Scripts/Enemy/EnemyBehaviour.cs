@@ -3,39 +3,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
-// TODO make arrows a separate class
 public class EnemyBehaviour : MonoBehaviour, IEasyListener
 {
     public delegate void OnEnemyDestroy();
     // To be invoked whenever a single enemy is destroyed
     public OnEnemyDestroy onEnemyDestroy;
 
+    public GameObject projectilePrefab;
+    public float fireRate = 1f; // every x seconds
+    public float lastFireTime = 0f;
+
+    protected float fireRateMultiplier = 1f;
+    protected Stage stage;
+    protected EnemyRhythmManager enemyRhythmManager;
     protected EnemyData instanceData;
     protected Animator enemyAnimator;
     protected EnemyDamageEffect effects;
-
     protected List<GameObject> arrows;
-
-    public float fireRate = 1f; // every x seconds
-    protected float fireRateMultiplier = 1f;
-    public float lastFireTime = 0f;
-    public GameObject projectilePrefab;
-    public EasyRhythmAudioManager audioManager;
-    public EnemyRhythmManager enemyRhythmManager;
-
-    protected float bpm;
     protected bool needsResetEnemyAnimation = true;
     protected bool needsResetArrowAnimation = true;
     protected bool isDead = false; // To ensure no attacks during death animation;
 
+    private EasyRhythmAudioManager audioManager;
+    private float bpm;
+
     protected void Start()
     {
-        if (!audioManager)
-            audioManager = GameObject.Find("EasyRhythmAudioManager").GetComponent<EasyRhythmAudioManager>();
-        if (!enemyRhythmManager)
-            enemyRhythmManager= GameObject.Find("EnemyRhythmManager").GetComponent<EnemyRhythmManager>();
-
-        audioManager.AddListener(this);
         bpm = audioManager.myAudioEvent.CurrentTempo;
 
         // this data is per enemy instance
@@ -59,6 +52,14 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     {
         Attack();
     } 
+
+    public void Init(Stage stg, EasyRhythmAudioManager aManager, EnemyRhythmManager erManager)
+    {
+        stage = stg;
+        enemyRhythmManager = erManager;
+        audioManager = aManager;
+        audioManager.AddListener(this);
+    }
 
     public void SetFireRateMultiplier(float mult)
     {
@@ -177,20 +178,21 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         SetArrowPulseSpeed();
         effects.Flash();
         Animator arrowAnimator = arrow.GetComponent<Animator>();
+        // Animator will call destroy on arrow
         arrowAnimator.SetTrigger("ArrowDestroy");
-        Destroy(arrow, 0.5f);
         if (arrows.Count == 0)
         {
             isDead = true;
             onEnemyDestroy?.Invoke();
             enemyRhythmManager.RemoveEnemy(gameObject);
+            // Animator will call destroy on enemy
             enemyAnimator.SetTrigger("EnemyDeath");
         } else {
             enemyAnimator.SetTrigger("EnemyHit");
         }
     }
 
-    void Attack()
+    protected virtual void Attack()
     {   
         if (Time.time >= lastFireTime + fireRate * fireRateMultiplier && !isDead){
             SpawnProjectile();
@@ -198,13 +200,12 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         }
     }
 
-    protected void SpawnProjectile()
+    private void SpawnProjectile()
     {
         GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position, Quaternion.identity);
         projectile.transform.parent = transform.parent;
         ProjectileMovement projScript = projectile.GetComponent<ProjectileMovement>();
-        projScript.SetDestroyCallback(this);
-        // projScript.projectileDamage = enemyDamage;
+        projScript.Init(stage, this);
     }
 
     protected void SetArrowPulseSpeed()
@@ -218,7 +219,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         needsResetArrowAnimation = true;
     }
 
-    void SetEnemyPulseSpeed()
+    private void SetEnemyPulseSpeed()
     {
         enemyAnimator.SetFloat("EnemyPulseSpeed", bpm / 60f);
     }

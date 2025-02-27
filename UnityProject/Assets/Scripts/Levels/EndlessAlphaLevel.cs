@@ -4,23 +4,21 @@ using System.Collections.Generic;
 
 public class EndlessAlphaLevel : Level
 {
-    public Stage stage;
     private int enemyCount = 0;
     private int maxEnemyCount = 1;
     private int wave = 1;
 
+    private Stage stage;
     private EnemyManager enemyManager;
     private EnemyRhythmManager enemyRhythmManager;
     private float fireRateMult = 1f;
 
-    public override void Load(EnemyManager eManager)
+    public override void Load(Stage stg, EnemyManager eManager, EnemyRhythmManager erManager)
     {
-        if (!stage)
-            stage = GameObject.Find("Stage").GetComponent<Stage>();
+        stage = stg;
+        enemyRhythmManager = erManager;
         enemyManager = eManager;
-        enemyManager.init();
         enemyManager.onEnemyDeath += OnEnemyDeath;
-        enemyRhythmManager = GameObject.Find("EnemyRhythmManager").GetComponent<EnemyRhythmManager>();
 
         Invoke("SpawnWave", 5f);
     }

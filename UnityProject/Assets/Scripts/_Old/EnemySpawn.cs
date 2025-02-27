@@ -21,7 +21,7 @@ public class EnemySpawn : MonoBehaviour
         );
 
         EnemyManager script = enemy.GetComponent<EnemyManager>();
-        script.init();
+        // script.init();
 
         /* enemyPrefab.SetActive(true); */
     }

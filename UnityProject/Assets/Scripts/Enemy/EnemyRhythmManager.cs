@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 public class EnemyRhythmManager : MonoBehaviour, IEasyListener
 {
     public HealthSystem playerHealth;
+    public EasyRhythmAudioManager audioManager;
     public float comboHealAmt;
-    private EasyRhythmAudioManager audioManager;
     private List<GameObject> enemies = new List<GameObject>();
 
     // Number of bars the current sequence will flash for
@@ -34,9 +34,12 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         timeAtLastComboHit = Time.time;
 
         if (!audioManager)
+        {
             audioManager = GameObject.Find("EasyRhythmAudioManager").GetComponent<EasyRhythmAudioManager>();
-        audioManager.AddListener(this);
-        beatsPerBar = audioManager.myAudioEvent.TimeSigAsArray()[0];
+            audioManager.AddListener(this);
+        }
+
+        beatsPerBar = audioManager.myAudioEvent.TimeSigAsArray()[1];
     }
 
     private void Update()
@@ -45,9 +48,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         {
             beatsPerBar = audioManager.myAudioEvent.TimeSigAsArray()[0];
             if (beatsPerBar > 0)
-            {
                 GenerateSequenceTimings();
-            }
         }
     }
 
@@ -61,8 +62,6 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             if (sequenceTimings[i][0] == enemyIndex)
                 sequenceTimings[i] = new Vector2(-1, sequenceTimings[i][1]);
         }
-        // Delete the enemy from scene
-        Destroy(enemy);
     }
 
     public void InitNewSequence()
