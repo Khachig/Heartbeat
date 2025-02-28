@@ -2514,7 +2514,7 @@ MonoBehaviour:
       Data2: 1098540614
       Data3: 258972071
       Data4: -698015668
-    Path: event:/TestTrack
+    Path: event:/Music/TestTrack
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 2
