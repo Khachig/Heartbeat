@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine.InputSystem;
+using FMODUnity;
 
 public class EnemyRhythmManager : MonoBehaviour, IEasyListener
 {
@@ -9,6 +10,9 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     public float comboHealAmt;
     private EasyRhythmAudioManager audioManager;
     private List<GameObject> enemies = new List<GameObject>();
+
+    //public StudioEventEmitter ComboHit;
+    //public EventReference ComboFail;
 
     // Number of bars the current sequence will flash for
     private int currSequenceLength = 1;
@@ -91,6 +95,9 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         if (sequenceTimings[nextInComboIdx][0] >= 0)
         {
             comboNum++;
+            //ComboHit.SetParameter("ComboCount", comboNum);
+            //ComboHit.Play();
+            //RuntimeManager.PlayOneShot(ComboHit, transform.position);
             Effects.SpecialEffects.ComboContinueEffect(comboNum);
         }
 
@@ -104,6 +111,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     {
         if (nextInComboIdx > 0)
             Effects.SpecialEffects.ComboBreakEffect();
+            //RuntimeManager.PlayOneShot(ComboFail, transform.position);
         nextInComboIdx = 0;
         hasBrokenCombo = true;
     }
