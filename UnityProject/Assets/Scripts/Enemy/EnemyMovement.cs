@@ -3,14 +3,13 @@ using System.Collections;
 using System;
 public class EnemyMovement : MonoBehaviour, IEasyListener
 {
-    public Stage stage;
     public PlayerMovement playerMovement; 
     public float moveDuration = 0.3f;
     public float forwardOffset = 20f;
     public float moveInterval = 1f;
 
     private float lastMove = 0f;
-    private GameObject[] activeEnemies = new GameObject[4];
+    private GameObject[] activeEnemies;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,6 +18,7 @@ public class EnemyMovement : MonoBehaviour, IEasyListener
             GameObject playerObject = GameObject.FindWithTag("Player");
             playerMovement = playerObject.GetComponent<PlayerMovement>();
         }
+        activeEnemies = new GameObject[Stage.Lanes.GetNumLanes()];
     }
 
     public bool addEnemy(int newLane, GameObject newEnemy){
@@ -35,10 +35,10 @@ public class EnemyMovement : MonoBehaviour, IEasyListener
     // does actual movement here
     public void moveEnemiesTowardPlayer(){
         int playerLane = playerMovement.currentLaneIndex;
-        GameObject[] newLanePositions = new GameObject[4]; // New array with the same size
-        Array.Copy(activeEnemies, newLanePositions, 4);
-        for (int i = playerLane-1; i > playerLane-4; i--){ // goes downwards in lane num, 0->3->2->1, 3->2->1->0
-            int currLane = ((i % 4) + 4) % 4;
+        GameObject[] newLanePositions = new GameObject[Stage.Lanes.GetNumLanes()]; // New array with the same size
+        Array.Copy(activeEnemies, newLanePositions, Stage.Lanes.GetNumLanes());
+        for (int i = playerLane-1; i > playerLane-Stage.Lanes.GetNumLanes(); i--){ // goes downwards in lane num, 0->3->2->1, 3->2->1->0
+            int currLane = Stage.Lanes.GetModLane(i);
             if (activeEnemies[currLane] == null){
                 continue;
             }
@@ -50,8 +50,8 @@ public class EnemyMovement : MonoBehaviour, IEasyListener
             }
             else if ((currLane % 2) == (playerLane%2)) // distance 2, move to distance 1, going down
             {
-                int lowerLane = (((currLane-1) % 4) + 4) % 4;
-                int upperLane = (currLane+1) % 4;
+                int lowerLane = Stage.Lanes.GetModLane(currLane - 1);
+                int upperLane = Stage.Lanes.GetModLane(currLane + 1);
                 if (newLanePositions[lowerLane] == null){
                     moveEnemyToLane(currLane, lowerLane, newLanePositions);
                     
@@ -73,7 +73,6 @@ public class EnemyMovement : MonoBehaviour, IEasyListener
         newLanePositions[prevLane] = null;
         newLanePositions[newLane] = targetEnemy;
         Transform stageTransform = targetEnemy.transform.parent;
-        // Vector3 newposition = GetLanePosition(newLane) + stageTransform.forward * stage.speed * moveDuration;
         Vector3 newposition = GetLanePosition(newLane);
         StartCoroutine(SmoothMove(targetEnemy, newposition));
     }
@@ -98,10 +97,7 @@ public class EnemyMovement : MonoBehaviour, IEasyListener
 
     Vector3 GetLanePosition(int lane)
     {
-        float angleStep = 360f / stage.numLanes;
-        float angle = angleStep * lane * Mathf.Deg2Rad;
-        Vector3 newposition = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
-        newposition = newposition.normalized * stage.tunnelRadius + Vector3.forward * forwardOffset;
+        Vector3 newposition = Stage.Lanes.GetXYPosForLane(lane) + Vector3.forward * forwardOffset;
         return newposition;
     }
 

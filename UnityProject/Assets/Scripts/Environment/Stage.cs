@@ -15,6 +15,20 @@ public class Stage : MonoBehaviour
     private List<Vector3> points;
 	private int pointsIdx;
 
+	private static Stage instance;
+
+    private void Awake()
+	{
+		if(instance == null)
+		{
+			instance = this;
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
+	}
+
 	void Start () {
         points = new List<Vector3>{};
         if (tube)
@@ -46,11 +60,32 @@ public class Stage : MonoBehaviour
 		}
 	}
 
-    void SetTargetPoint() {
+    private Vector3 GetXYPosForLane(int laneIdx)
+    {
+        float angleStep = 360f / numLanes;
+        // -90 bc we want lane 0 to be at bottom of screen
+        float angle = (angleStep * laneIdx - 90) * Mathf.Deg2Rad;
+        Vector3 newposition = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
+        newposition = newposition.normalized * tunnelRadius;
+        return newposition;
+    }
+    private int GetModLane(int lane)
+    {
+        return ((lane % numLanes) + numLanes) % numLanes;
+    }
+
+    private void SetTargetPoint() {
         targetPoint = points[pointsIdx];
     }
 
-    void SetTargetRotation() {
+    private void SetTargetRotation() {
         targetRotation = Quaternion.LookRotation(points[(pointsIdx + 3) % points.Count] - transform.position);
     }
+    
+    public static class Lanes
+	{
+		public static int GetNumLanes() => instance.numLanes;
+		public static int GetModLane(int lane) => instance.GetModLane(lane);
+		public static Vector3 GetXYPosForLane(int laneIdx) => instance.GetXYPosForLane(laneIdx);
+	}
 }

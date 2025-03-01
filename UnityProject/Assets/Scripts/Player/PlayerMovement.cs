@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour, IEasyListener
 {
     public Animator animator;
-    public Stage stage;
     public int currentLaneIndex = 3;
     public float moveDuration = 0.3f;
     public float forwardOffset = 10f;
@@ -18,9 +17,6 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if (!stage)
-            stage = GameObject.Find("Stage").GetComponent<Stage>();
-
         timeAtLastBeat = Time.time;
         transform.localPosition = GetCurrPosition();
     }
@@ -44,54 +40,44 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
 
         Vector2 moveInput = context.ReadValue<Vector2>();
 
-        if (currentLaneIndex == 1 || currentLaneIndex == 3) {
-            // if character is at the top or bottom of the tunnel, only allow left or right key press
-            if (currentLaneIndex == 1 && moveInput.x > 0) {
-                ClockwiseLaneChange();
-            } else if (currentLaneIndex == 3 && moveInput.x < 0) {
-                ClockwiseLaneChange();
-            } else if (currentLaneIndex == 1 && moveInput.x < 0) {
-                CounterClockwiseLaneChange();
-            } else if (currentLaneIndex == 3 && moveInput.x > 0) {
-                CounterClockwiseLaneChange();  
-            }
-        } else {
-            // if character is in the middle of the tunnel, only allow top or bottom key press
-            if (currentLaneIndex == 2 && moveInput.y > 0) {
-                ClockwiseLaneChange();
-            } else if (currentLaneIndex == 2 && moveInput.y < 0) {
-                CounterClockwiseLaneChange();
-            } else if (currentLaneIndex == 0 && moveInput.y > 0) {
-                CounterClockwiseLaneChange();
-            } else if (currentLaneIndex == 0 && moveInput.y < 0) {
-                ClockwiseLaneChange();
-            }
-        }   
+        if ((IsOnTopLane(currentLaneIndex) && moveInput.x > 0) ||
+            (IsOnBottomLane(currentLaneIndex) && moveInput.x < 0) ||
+            (IsOnRightLane(currentLaneIndex) && moveInput.y < 0) ||
+            (IsOnLeftLane(currentLaneIndex) && moveInput.y > 0))
+        {
+            ClockwiseLaneChange();
+        }
+        else if ((IsOnTopLane(currentLaneIndex) && moveInput.x < 0) ||
+            (IsOnBottomLane(currentLaneIndex) && moveInput.x > 0) ||
+            (IsOnRightLane(currentLaneIndex) && moveInput.y > 0) ||
+            (IsOnLeftLane(currentLaneIndex) && moveInput.y < 0))
+        {
+            CounterClockwiseLaneChange();
+        }
     }
 
     void ClockwiseLaneChange() {
         animator.SetTrigger("MoveLeft");
-        currentLaneIndex = (currentLaneIndex - 1) % stage.numLanes;
-        if (currentLaneIndex < 0)
-            currentLaneIndex += stage.numLanes;
+        currentLaneIndex = Stage.Lanes.GetModLane(currentLaneIndex - 1);
         ChangeLane(true);
     }
 
     void CounterClockwiseLaneChange() {
         animator.SetTrigger("MoveRight");
-        currentLaneIndex = (currentLaneIndex + 1) % stage.numLanes;
+        currentLaneIndex = Stage.Lanes.GetModLane(currentLaneIndex + 1);
         ChangeLane(false);
     }
 
     void ChangeLane(bool moveLeft)
     {
-        // Vector3 newposition = GetCurrPosition() + stage.transform.forward * stage.speed * moveDuration;
         Vector3 newposition = GetCurrPosition();
         Quaternion targetRotation;
+        float angleStep = 360f / Stage.Lanes.GetNumLanes();
+
         if (moveLeft)
-            targetRotation = Quaternion.Euler(0, 0, transform.eulerAngles.z - 90);
+            targetRotation = Quaternion.Euler(0, 0, transform.eulerAngles.z - angleStep);
         else
-            targetRotation = Quaternion.Euler(0, 0, transform.eulerAngles.z + 90);
+            targetRotation = Quaternion.Euler(0, 0, transform.eulerAngles.z + angleStep);
 
         StartCoroutine(SmoothMove(newposition, targetRotation));
     }
@@ -121,12 +107,25 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
 
     Vector3 GetCurrPosition()
     {
-        float angleStep = 360f / stage.numLanes;
-        float angle = angleStep * currentLaneIndex * Mathf.Deg2Rad;
-        Vector3 newposition = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
-        newposition = newposition.normalized * stage.tunnelRadius + Vector3.forward * forwardOffset;
+        Vector3 newposition = Stage.Lanes.GetXYPosForLane(currentLaneIndex) + Vector3.forward * forwardOffset;
         return newposition;
     }
+
+    bool IsOnTopLane(int lane) { return lane == (Stage.Lanes.GetNumLanes() / 2); }
+
+    bool IsOnBottomLane(int lane) { return lane == 0; } 
+    
+    bool IsOnLeftLane(int lane)
+    {
+        return (Stage.Lanes.GetNumLanes() / 2) < lane &&
+               lane < Stage.Lanes.GetNumLanes();
+    } 
+
+    bool IsOnRightLane(int lane)
+    {
+        return 0 < lane &&
+               lane < (Stage.Lanes.GetNumLanes() / 2);
+    } 
 
     public void OnBeat(EasyEvent audioEvent)
     {

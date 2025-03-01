@@ -17,7 +17,6 @@ public class PulsableManager : MonoBehaviour
                 foreach (Pulsable pulsable in myPulsables)
                 {
                     pulsable.Init(bpm, audioManager);
-                    Debug.Log("initing pusable w bpm! " + bpm);
                 }
             }
         }

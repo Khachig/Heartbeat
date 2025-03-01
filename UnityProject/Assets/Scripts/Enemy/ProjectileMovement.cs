@@ -8,7 +8,6 @@ public class ProjectileMovement : MonoBehaviour
     public float projectileDamage = 10f;
     public EventReference PlayerHurt;
 
-    private Stage stage; 
     private EnemyBehaviour parentEnemy;
 
     void Update()
@@ -28,9 +27,8 @@ public class ProjectileMovement : MonoBehaviour
         }
     }
 
-    public void Init(Stage stg, EnemyBehaviour pBehaviour)
+    public void Init(EnemyBehaviour pBehaviour)
     {
-        stage = stg;
         SetDestroyCallback(pBehaviour);
     }
 

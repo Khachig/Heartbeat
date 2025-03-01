@@ -113,7 +113,7 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
     {
         for (int i = 0; i < 6; i++)
         {
-            int r = Random.Range(0, stage.numLanes);
+            int r = Random.Range(0, Stage.Lanes.GetNumLanes());
             SpawnProjectile(r);
             yield return new WaitForSeconds(sprayRate);
         }
@@ -122,10 +122,10 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
     
     void NeedleFire()
     {
-        int r = Random.Range(0, stage.numLanes);
+        int r = Random.Range(0, Stage.Lanes.GetNumLanes());
         for (int i = 0; i < 3; i++)
         {
-            SpawnProjectile((r + i) % stage.numLanes);
+            SpawnProjectile((r + i) % Stage.Lanes.GetNumLanes());
         }
     }
 
@@ -136,15 +136,12 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
         projectile.transform.parent = transform.parent;
         projectile.transform.localPosition = pos;
         ProjectileMovement projScript = projectile.GetComponent<ProjectileMovement>();
-        projScript.Init(stage, this);
+        projScript.Init(this);
     }
 
     Vector3 GetLanePosition(int lane)
     {
-        float angleStep = 360f / stage.numLanes;
-        float angle = angleStep * lane * Mathf.Deg2Rad;
-        Vector3 newposition = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
-        newposition = newposition.normalized * stage.tunnelRadius + Vector3.forward * 25f;
+        Vector3 newposition = Stage.Lanes.GetXYPosForLane(lane) + Vector3.forward * 25f;
         return newposition;
     }
 }

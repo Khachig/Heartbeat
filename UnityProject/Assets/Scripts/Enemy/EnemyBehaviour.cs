@@ -17,7 +17,6 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     public EventReference EnemyDefeat;
 
     protected float fireRateMultiplier = 1f;
-    protected Stage stage;
     protected EnemyRhythmManager enemyRhythmManager;
     protected EnemyData instanceData;
     protected Animator enemyAnimator;
@@ -42,9 +41,8 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         fireRate = Random.Range(1f, 3f);
     }
 
-    public void Init(Stage stg, EasyRhythmAudioManager aManager, EnemyRhythmManager erManager)
+    public void Init(EasyRhythmAudioManager aManager, EnemyRhythmManager erManager)
     {
-        stage = stg;
         enemyRhythmManager = erManager;
         audioManager = aManager;
         audioManager.AddListener(this);
@@ -192,7 +190,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position, Quaternion.identity);
         projectile.transform.parent = transform.parent;
         ProjectileMovement projScript = projectile.GetComponent<ProjectileMovement>();
-        projScript.Init(stage, this);
+        projScript.Init(this);
     }
 
     protected void SetArrowPulsable()

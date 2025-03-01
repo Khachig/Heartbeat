@@ -67,19 +67,18 @@ public class EnemyManager : ScriptableObject
         enemy.transform.parent = parameters.stage.transform;
 
         InitEnemyData(enemy, parameters.arrowArrangement);
-        InitEnemyBehaviour(enemy, parameters.stage, audioManager, enemyRhythmManager);
+        InitEnemyBehaviour(enemy, audioManager, enemyRhythmManager);
         InitEnemyPulsable(enemy, audioManager);
 
         return enemy;
     }
 
     private void InitEnemyBehaviour(GameObject enemy,
-                                    Stage stage,
                                     EasyRhythmAudioManager audioManager,
                                     EnemyRhythmManager enemyRhythmManager)
     {
         EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
-        enemyBehaviour.Init(stage, audioManager, enemyRhythmManager);
+        enemyBehaviour.Init(audioManager, enemyRhythmManager);
         enemyBehaviour.onEnemyDestroy += OnEnemyDestroy;
     }
 

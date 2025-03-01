@@ -1759,8 +1759,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 973693057}
-  stage: {fileID: 1518974362}
-  currentLaneIndex: 3
+  currentLaneIndex: 0
   moveDuration: 0.2
   forwardOffset: 8
   hitThreshold: 0.1
@@ -4250,7 +4249,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f1a07357158b4cd599fbfdca01b793f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stage: {fileID: 1518974362}
   playerMovement: {fileID: 425896408}
   moveDuration: 0.2
   forwardOffset: 25
