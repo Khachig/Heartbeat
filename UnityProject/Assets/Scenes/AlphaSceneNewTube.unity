@@ -1761,7 +1761,7 @@ MonoBehaviour:
   animator: {fileID: 973693057}
   stage: {fileID: 1518974362}
   currentLaneIndex: 3
-  moveDuration: 0.3
+  moveDuration: 0.2
   forwardOffset: 8
   hitThreshold: 0.1
 --- !u!114 &425896409
@@ -2783,7 +2783,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 484319349946170942, guid: 8595f0764810a614892c69b124c77240, type: 3}
       propertyPath: myEventListeners.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 484319349946170942, guid: 8595f0764810a614892c69b124c77240, type: 3}
       propertyPath: 'myEventListeners.Array.data[0]'
@@ -2800,7 +2800,7 @@ PrefabInstance:
     - target: {fileID: 484319349946170942, guid: 8595f0764810a614892c69b124c77240, type: 3}
       propertyPath: 'myEventListeners.Array.data[3]'
       value: 
-      objectReference: {fileID: 425896408}
+      objectReference: {fileID: 1037017649}
     - target: {fileID: 484319349946170943, guid: 8595f0764810a614892c69b124c77240, type: 3}
       propertyPath: m_LocalPosition.x
       value: -261.92075
@@ -4252,7 +4252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stage: {fileID: 1518974362}
   playerMovement: {fileID: 425896408}
-  moveDuration: 0.3
+  moveDuration: 0.2
   forwardOffset: 25
   moveInterval: 1
 --- !u!4 &1037017650

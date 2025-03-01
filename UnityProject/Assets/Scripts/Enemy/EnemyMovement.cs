@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System;
-public class EnemyMovement : MonoBehaviour
+public class EnemyMovement : MonoBehaviour, IEasyListener
 {
     public Stage stage;
     public PlayerMovement playerMovement; 
@@ -18,15 +18,6 @@ public class EnemyMovement : MonoBehaviour
         if (!playerMovement){
             GameObject playerObject = GameObject.FindWithTag("Player");
             playerMovement = playerObject.GetComponent<PlayerMovement>();
-        }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Time.time >= lastMove+moveInterval){
-            moveEnemiesTowardPlayer();
-            lastMove = Time.time;
         }
     }
 
@@ -113,5 +104,16 @@ public class EnemyMovement : MonoBehaviour
         newposition = newposition.normalized * stage.tunnelRadius + Vector3.forward * forwardOffset;
         return newposition;
     }
-    
+
+    public void OnBeat(EasyEvent audioEvent)
+    {
+        if (Time.time >= lastMove+moveInterval &&
+            (audioEvent.CurrentBeat == 2 ||
+             audioEvent.CurrentBeat == 4)
+            )
+        {
+            moveEnemiesTowardPlayer();
+            lastMove = Time.time;
+        }
+    }
 }
