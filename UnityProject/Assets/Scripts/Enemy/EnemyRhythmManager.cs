@@ -124,7 +124,12 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             if (enemies.Count == 0)
                 OnComboComplete();
             else
-                BreakCombo();
+            {
+                if (enemies[0].GetComponent<BossBehaviour>() == null)
+                    BreakCombo();
+                else
+                    OnComboComplete();
+            }
         }
     }
 }
