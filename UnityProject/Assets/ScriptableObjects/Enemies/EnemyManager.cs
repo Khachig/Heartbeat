@@ -16,7 +16,9 @@ public class EnemyManager : ScriptableObject
 
     private List<GameObject> enemies;
 
-    public EnemyMovement enemyMovement;
+    private EnemyMovement enemyMovement;
+    private EasyRhythmAudioManager audioManager;
+    private EnemyRhythmManager enemyRhythmManager;
 
     public struct SpawnParameters
     {
@@ -27,9 +29,12 @@ public class EnemyManager : ScriptableObject
         public int enemyLane;
     }
 
-    public void init()
+    public void init(EnemyMovement eMovement, EasyRhythmAudioManager aManager, EnemyRhythmManager erManager)
     {
         Debug.Log("Scriptable Object Enemy Manager");
+        enemyMovement = eMovement;
+        audioManager = aManager;
+        enemyRhythmManager = erManager;
         enemies = new List<GameObject>();
     }
 
@@ -45,12 +50,16 @@ public class EnemyManager : ScriptableObject
             parameters.rotation.z
         );
         enemy.transform.parent = parameters.stage.transform;
+
         EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+        enemyBehaviour.Init(parameters.stage, audioManager, enemyRhythmManager);
         enemyBehaviour.onEnemyDestroy += OnEnemyDestroy;
+
         EnemyData enemyData = enemy.GetComponent<EnemyData>();
         enemyData.init(new EnemyData.EnemyParameters {
             arrowArrangement = parameters.arrowArrangement,
         });
+
         enemies.Add(enemy);
         enemyMovement.addEnemy(parameters.enemyLane, enemy);
         return enemy;
@@ -68,13 +77,16 @@ public class EnemyManager : ScriptableObject
             parameters.rotation.z
         );
         enemy.transform.parent = parameters.stage.transform;
+
         BossBehaviour enemyBehaviour = enemy.GetComponent<BossBehaviour>();
-        enemyBehaviour.SetStage(parameters.stage);
+        enemyBehaviour.Init(parameters.stage, audioManager, enemyRhythmManager);
         enemyBehaviour.onEnemyDestroy += OnEnemyDestroy;
+
         EnemyData enemyData = enemy.GetComponent<EnemyData>();
         enemyData.init(new EnemyData.EnemyParameters {
             arrowArrangement = parameters.arrowArrangement,
         });
+
         enemies.Add(enemy);
         return enemy;
     }

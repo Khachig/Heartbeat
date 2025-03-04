@@ -3,18 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
 
-// TODO make arrows a separate class
 public class BossBehaviour : EnemyBehaviour, IEasyListener
 {
-    public PlayerMovement playerMovement; 
-    public Stage stage;
     public int numWaves = 3;
     public float burstRate = 0.1f;
     public float sprayRate = 0.2f;
+
+    private PlayerMovement playerMovement; 
     private int currWave = 1;
-
     private Coroutine currRoutine;
-
 
     void Start()
     {
@@ -33,16 +30,6 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
         transform.localRotation = Quaternion.Euler(0, 180, 0);
     }
 
-    public void SetStage(Stage stg)
-    {
-        stage = stg;
-    }
-
-    void Update()
-    {
-        Attack();
-    } 
- 
     protected override void RemoveArrow()
     {
         GameObject arrow = arrows[0];
@@ -51,8 +38,8 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
         SetArrowPulseSpeed();
         effects.Flash();
         Animator arrowAnimator = arrow.GetComponent<Animator>();
+        // Animator will call destroy on arrow
         arrowAnimator.SetTrigger("ArrowDestroy");
-        Destroy(arrow, 0.5f);
         if (arrows.Count == 0)
         {
             if (currWave >= numWaves)
@@ -60,6 +47,7 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
                 isDead = true;
                 onEnemyDestroy?.Invoke();
                 enemyRhythmManager.RemoveEnemy(gameObject);
+                // Animator will call destroy on enemy
                 enemyAnimator.SetTrigger("EnemyDeath");
             }
             else
@@ -91,7 +79,7 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
         return newList;
     }
 
-    void Attack()
+    protected override void Attack()
     {   
         if (Time.time >= lastFireTime + fireRate * fireRateMultiplier && !isDead && currRoutine == null){
             int r = Random.Range(0, 3);
@@ -149,7 +137,7 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
         projectile.transform.parent = transform.parent;
         projectile.transform.localPosition = pos;
         ProjectileMovement projScript = projectile.GetComponent<ProjectileMovement>();
-        projScript.SetDestroyCallback(this);
+        projScript.Init(stage, this);
     }
 
     Vector3 GetLanePosition(int lane)

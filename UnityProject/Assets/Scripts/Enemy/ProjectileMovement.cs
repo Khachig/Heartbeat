@@ -4,19 +4,12 @@ using FMODUnity;
 
 public class ProjectileMovement : MonoBehaviour
 {
-    public Stage stage; 
     public float projectileSpeed = 20f;
     public float projectileDamage = 10f;
-
-    public EnemyBehaviour parentEnemy;
     public EventReference PlayerHurt;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        if (!stage)
-            stage = GameObject.Find("Stage").GetComponent<Stage>();
-    }
+    private Stage stage; 
+    private EnemyBehaviour parentEnemy;
 
     void Update()
     {
@@ -33,6 +26,12 @@ public class ProjectileMovement : MonoBehaviour
                 parentEnemy.onEnemyDestroy -= OnEnemyDestroy;
             Destroy(gameObject);
         }
+    }
+
+    public void Init(Stage stg, EnemyBehaviour pBehaviour)
+    {
+        stage = stg;
+        SetDestroyCallback(pBehaviour);
     }
 
     public void SetDestroyCallback(EnemyBehaviour parentBehaviour)

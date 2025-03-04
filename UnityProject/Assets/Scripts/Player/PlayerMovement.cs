@@ -4,11 +4,11 @@ using TMPro;
 using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
+    public Animator animator;
     public Stage stage;
     public int currentLaneIndex = 3;
     public float moveDuration = 0.3f;
     public float forwardOffset = 10f;
-    public Animator animator;
     private bool isMoving = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

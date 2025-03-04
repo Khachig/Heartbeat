@@ -10,14 +10,12 @@ public class DemoLevel : Level
     private EnemyRhythmManager enemyRhythmManager;
     private string nextWave = "SpawnWave1";
 
-    public override void Load(EnemyManager eManager)
+    public override void Load(Stage stg, EnemyManager eManager, EnemyRhythmManager erManager)
     {
-        if (!stage)
-            stage = GameObject.Find("Stage").GetComponent<Stage>();
+        stage = stg;
+        enemyRhythmManager = erManager;
         enemyManager = eManager;
-        enemyManager.init();
         enemyManager.onEnemyDeath += OnEnemyDeath;
-        enemyRhythmManager = GameObject.Find("EnemyRhythmManager").GetComponent<EnemyRhythmManager>();
 
         // Invoke("SpawnWave", 3);
         Invoke(nextWave, 3);
