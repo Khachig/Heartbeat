@@ -1265,6 +1265,7 @@ GameObject:
   - component: {fileID: 330585547}
   - component: {fileID: 330585548}
   - component: {fileID: 330585549}
+  - component: {fileID: 330585550}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1430,6 +1431,39 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
+--- !u!114 &330585550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 330585543}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollisionTag: 
+  EventReference:
+    Guid:
+      Data1: -1461921477
+      Data2: 1273809697
+      Data3: -1037004385
+      Data4: 2146016199
+    Path: event:/ComboEvent/ComboHit
+  Event: 
+  EventPlayTrigger: 1
+  EventStopTrigger: 0
+  AllowFadeout: 0
+  TriggerOnce: 1
+  Preload: 0
+  NonRigidbodyVelocity: 0
+  Params:
+  - Name: ComboCount
+    Value: 0
+  OverrideAttenuation: 0
+  OverrideMinDistance: 1
+  OverrideMaxDistance: 20
 --- !u!1001 &374056403
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2514,7 +2548,7 @@ MonoBehaviour:
       Data2: 1098540614
       Data3: 258972071
       Data4: -698015668
-    Path: event:/TestTrack
+    Path: event:/Music/TestTrack
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 2
@@ -2681,7 +2715,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 484319349946170942, guid: 8595f0764810a614892c69b124c77240, type: 3}
       propertyPath: myEventPath
-      value: event:/TestTrack
+      value: event:/Music/TestTrack
       objectReference: {fileID: 0}
     - target: {fileID: 484319349946170942, guid: 8595f0764810a614892c69b124c77240, type: 3}
       propertyPath: myEventListeners.Array.size

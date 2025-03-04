@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using FMODUnity;
 
 // TODO make arrows a separate class
 public class EnemyBehaviour : MonoBehaviour, IEasyListener
@@ -22,6 +23,8 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     public GameObject projectilePrefab;
     public EasyRhythmAudioManager audioManager;
     public EnemyRhythmManager enemyRhythmManager;
+    public EventReference EnemyShoot;
+    public EventReference EnemyDefeat;
 
     protected float bpm;
     protected bool needsResetEnemyAnimation = true;
@@ -185,6 +188,8 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
             onEnemyDestroy?.Invoke();
             enemyRhythmManager.RemoveEnemy(gameObject);
             enemyAnimator.SetTrigger("EnemyDeath");
+            RuntimeManager.PlayOneShot(EnemyDefeat, transform.position);
+
         } else {
             enemyAnimator.SetTrigger("EnemyHit");
         }
@@ -194,6 +199,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     {   
         if (Time.time >= lastFireTime + fireRate * fireRateMultiplier && !isDead){
             SpawnProjectile();
+            RuntimeManager.PlayOneShot(EnemyShoot, transform.position);
             lastFireTime = Time.time;
         }
     }

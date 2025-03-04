@@ -31,23 +31,43 @@ public class PlayerMovement : MonoBehaviour
 
         Vector2 moveInput = context.ReadValue<Vector2>();
 
-        // Move right
-        if (moveInput.x > 0)
-        {
-            animator.SetTrigger("MoveRight");
-            currentLaneIndex = (currentLaneIndex + 1) % stage.numLanes;
-            ChangeLane(false);
-        }
-        // Move left
-        else if (moveInput.x < 0)
-        {
-            animator.SetTrigger("MoveLeft");
-            currentLaneIndex = (currentLaneIndex - 1) % stage.numLanes;
-            if (currentLaneIndex < 0)
-                currentLaneIndex += stage.numLanes;
-            ChangeLane(true);
-        }
+        if (currentLaneIndex == 1 || currentLaneIndex == 3) {
+            // if character is at the top or bottom of the tunnel, only allow left or right key press
+            if (currentLaneIndex == 1 && moveInput.x > 0) {
+                ClockwiseLaneChange();
+            } else if (currentLaneIndex == 3 && moveInput.x < 0) {
+                ClockwiseLaneChange();
+            } else if (currentLaneIndex == 1 && moveInput.x < 0) {
+                CounterClockwiseLaneChange();
+            } else if (currentLaneIndex == 3 && moveInput.x > 0) {
+                CounterClockwiseLaneChange();  
+            }
+        } else {
+            // if character is in the middle of the tunnel, only allow top or bottom key press
+            if (currentLaneIndex == 2 && moveInput.y > 0) {
+                ClockwiseLaneChange();
+            } else if (currentLaneIndex == 2 && moveInput.y < 0) {
+                CounterClockwiseLaneChange();
+            } else if (currentLaneIndex == 0 && moveInput.y > 0) {
+                CounterClockwiseLaneChange();
+            } else if (currentLaneIndex == 0 && moveInput.y < 0) {
+                ClockwiseLaneChange();
+            }
+        }   
+    }
 
+    void ClockwiseLaneChange() {
+        animator.SetTrigger("MoveLeft");
+        currentLaneIndex = (currentLaneIndex - 1) % stage.numLanes;
+        if (currentLaneIndex < 0)
+            currentLaneIndex += stage.numLanes;
+        ChangeLane(true);
+    }
+
+    void CounterClockwiseLaneChange() {
+        animator.SetTrigger("MoveRight");
+        currentLaneIndex = (currentLaneIndex + 1) % stage.numLanes;
+        ChangeLane(false);
     }
 
     void ChangeLane(bool moveLeft)

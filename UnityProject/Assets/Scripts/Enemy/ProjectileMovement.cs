@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using FMODUnity;
 
 public class ProjectileMovement : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class ProjectileMovement : MonoBehaviour
     public float projectileDamage = 10f;
 
     public EnemyBehaviour parentEnemy;
+    public EventReference PlayerHurt;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -46,6 +48,7 @@ public class ProjectileMovement : MonoBehaviour
             HealthSystem playerHealth = other.GetComponent<HealthSystem>();
             playerHealth.TakeDamage(projectileDamage);
 			Effects.SpecialEffects.ScreenDamageEffect(0.5f);
+            RuntimeManager.PlayOneShot(PlayerHurt, transform.position);
 
             if (parentEnemy)
                 parentEnemy.onEnemyDestroy -= OnEnemyDestroy;

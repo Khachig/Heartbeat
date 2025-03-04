@@ -125,15 +125,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stage: {fileID: 0}
-  enemyLane: 0
-  projectileDistance: 0
   projectileSpeed: 20
-  numberOfWaypoints: 10
-  tunnelRadius: 10
-  forwardOffset: 10
-  enemyDistance: 50
   projectileDamage: 10
-  spawnPos: {x: 0, y: 0, z: 0}
+  parentEnemy: {fileID: 0}
+  PlayerHurt:
+    Guid:
+      Data1: 11468303
+      Data2: 1338130652
+      Data3: 92380037
+      Data4: -2040567202
+    Path: event:/PlayerEvent/PlayerHurt
 --- !u!54 &6349354324374150670
 Rigidbody:
   m_ObjectHideFlags: 0

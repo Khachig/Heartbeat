@@ -142,6 +142,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f70f59ca02a5847d186210ad27868da7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  fireRate: 1
+  lastFireTime: 0
+  projectilePrefab: {fileID: 0}
+  audioManager: {fileID: 0}
+  enemyRhythmManager: {fileID: 0}
+  EnemyShoot:
+    Guid:
+      Data1: 1160114324
+      Data2: 1307066720
+      Data3: -1908675182
+      Data4: -40941661
+    Path: event:/EnemyEvent/EnemyShoot
+  EnemyDefeat:
+    Guid:
+      Data1: 1810763230
+      Data2: 1111862520
+      Data3: 1493000860
+      Data4: 1858991063
+    Path: event:/EnemyEvent/EnemyDefeat
 --- !u!1 &4224316992569706766
 GameObject:
   m_ObjectHideFlags: 0

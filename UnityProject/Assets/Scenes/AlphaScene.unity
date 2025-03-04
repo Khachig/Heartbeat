@@ -590,10 +590,7 @@ MonoBehaviour:
   stage: {fileID: 1518974362}
   currentLaneIndex: 3
   moveDuration: 0.3
-  circleCenter: {x: 0, y: 0, z: 0}
   forwardOffset: 8
-  playerMaxHealth: 100
-  playerCurrentHealth: 90
   animator: {fileID: 973693057}
 --- !u!114 &425896409
 MonoBehaviour:
@@ -861,7 +858,7 @@ MonoBehaviour:
       Data2: 1098540614
       Data3: 258972071
       Data4: -698015668
-    Path: event:/TestTrack
+    Path: event:/Music/TestTrack
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 2
@@ -1864,8 +1861,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 65d54a23f99464874952c318ca11e72e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 100
+  initialHealth: 0
   healthText: {fileID: 1236317486}
+  HealthBar: {fileID: 0}
 --- !u!136 &973693056
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1987,6 +1985,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMovement: {fileID: 425896408}
   moveDuration: 0.3
+  forwardOffset: 20
   stage: {fileID: 1518974362}
   activeEnemies:
   - {fileID: 0}
@@ -2572,6 +2571,7 @@ MonoBehaviour:
   tunnelRadius: 3
   speed: 50
   rotationSpeed: 10
+  tube: {fileID: 0}
 --- !u!114 &1518974363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2705,6 +2705,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 973693055}
   comboHealAmt: 10
+  comboNum: 0
 --- !u!4 &1608770181
 Transform:
   m_ObjectHideFlags: 0

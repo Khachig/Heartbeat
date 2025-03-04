@@ -297,6 +297,20 @@ MonoBehaviour:
   projectilePrefab: {fileID: 4425165233857190015, guid: c52cb80ac33d24b30b4d690f7b1976c6, type: 3}
   audioManager: {fileID: 0}
   enemyRhythmManager: {fileID: 0}
+  EnemyShoot:
+    Guid:
+      Data1: 1160114324
+      Data2: 1307066720
+      Data3: -1908675182
+      Data4: -40941661
+    Path: event:/EnemyEvent/EnemyShoot
+  EnemyDefeat:
+    Guid:
+      Data1: 1810763230
+      Data2: 1111862520
+      Data3: 1493000860
+      Data4: 1858991063
+    Path: event:/EnemyEvent/EnemyDefeat
   playerMovement: {fileID: 0}
   stage: {fileID: 0}
   numWaves: 3
