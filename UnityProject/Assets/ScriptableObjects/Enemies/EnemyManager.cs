@@ -111,6 +111,9 @@ public class EnemyManager : ScriptableObject
             }
 
             EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+            if (enemyBehaviour.IsDead())
+                continue;
+
             match |= enemyBehaviour.HandlePlayerAttack(input);
         }
         return match;
@@ -127,6 +130,9 @@ public class EnemyManager : ScriptableObject
             }
 
             EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+            if (enemyBehaviour.IsDead())
+                continue;
+
             enemyBehaviour.SetFireRateMultiplier(mult);
         }
     }

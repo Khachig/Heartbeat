@@ -5765,7 +5765,20 @@ MonoBehaviour:
   playerHealth: {fileID: 973693055}
   audioManager: {fileID: 419586457}
   comboHealAmt: 10
-  comboNum: 0
+  ComboHit:
+    Guid:
+      Data1: -1461921477
+      Data2: 1273809697
+      Data3: -1037004385
+      Data4: 2146016199
+    Path: event:/ComboEvent/ComboHit
+  ComboFail:
+    Guid:
+      Data1: 793887894
+      Data2: 1103108452
+      Data3: 1759718323
+      Data4: -1649356717
+    Path: event:/ComboEvent/ComboFail
 --- !u!4 &1608770181
 Transform:
   m_ObjectHideFlags: 0

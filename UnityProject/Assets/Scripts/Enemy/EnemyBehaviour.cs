@@ -54,6 +54,8 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         fireRateMultiplier = mult;
     }
 
+    public bool IsDead() { return isDead; }
+
     // Returns true iff input matches the first arrow of this enemy
     public bool HandlePlayerAttack(Vector2 input)
     {
@@ -68,12 +70,6 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
             (input.x > 0 && nextArrow.name.Equals("LeftArrow(Clone)"))
         )
         {
-            if (!enemyRhythmManager.HasBrokenCombo() && enemyRhythmManager.IsNextEnemyInCombo(gameObject))
-                enemyRhythmManager.ContinueCombo();
-            // Break the combo if the wrong enemy was hit
-            else if (!enemyRhythmManager.HasBrokenCombo())
-                enemyRhythmManager.BreakCombo();
-
             RemoveArrow();
             return true;
         }
@@ -81,19 +77,14 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         return false;
     }
 
-    // Emphasizes the arrow at arrowIndex based on the original arrow arrangement
-    // with label number above arrow
-    public void FlashArrow(int arrowIndex, int label)
+    public void FlashArrow(int arrowIndex)
     {
-        int numArrowsDestroyed = instanceData.arrowArrangement.Length - arrows.Count;
-        int realIndex = arrowIndex - numArrowsDestroyed;
-
-        if (realIndex < 0)
+        if (arrowIndex >= arrows.Count)
             return;
         
-        GameObject arrow = arrows[realIndex];
+        GameObject arrow = arrows[arrowIndex];
         ArrowFlashEffect arrowEffect = arrow.GetComponent<ArrowFlashEffect>();
-        arrowEffect.Flash(label);
+        arrowEffect.Flash();
     }
 
     protected void SpawnArrows()
@@ -208,5 +199,6 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     public void OnBeat(EasyEvent audioEvent)
     {
         Attack();
+        FlashArrow(audioEvent.CurrentBeat - 1);
     }
 }
