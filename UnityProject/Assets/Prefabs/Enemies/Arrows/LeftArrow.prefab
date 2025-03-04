@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 362305014342606549}
   - component: {fileID: -8746198501225971125}
   - component: {fileID: 386701209185589983}
+  - component: {fileID: 8269286413025580711}
   m_Layer: 5
   m_Name: LeftArrow
   m_TagString: Untagged
@@ -127,6 +128,19 @@ MonoBehaviour:
   labelDuration: 0.5
   labelComponent: {fileID: 6892521867122517785}
   rawImage: {fileID: 895704419788827961}
+--- !u!114 &8269286413025580711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3919153399642393051}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82b9ef59f2e0e8040bb8eb483424d434, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 362305014342606549}
 --- !u!1 &6498921258103724465
 GameObject:
   m_ObjectHideFlags: 0

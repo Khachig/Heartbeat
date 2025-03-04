@@ -6,7 +6,6 @@ public class PlayerAttack : MonoBehaviour, IEasyListener
     public delegate void OnAttackMiss();
     public static OnAttackMiss onAttackMiss;
 
-    public EasyRhythmAudioManager audioManager;
     public EnemyManager enemyManager;
     public HealthSystem playerHealth;
     public float missDamage = 10f;
@@ -16,19 +15,7 @@ public class PlayerAttack : MonoBehaviour, IEasyListener
 
     void Start()
     {
-        if (!audioManager)
-        {
-            audioManager = GameObject.Find("EasyRhythmAudioManager").GetComponent<EasyRhythmAudioManager>();
-            audioManager.AddListener(this);
-        }
-        beatLength = audioManager.myAudioEvent.BeatLength();
         timeAtLastBeat = Time.time;
-    }
-
-    void Update()
-    {
-        if (beatLength == 0)
-            beatLength = audioManager.myAudioEvent.BeatLength();
     }
 
     public void OnAttack(InputAction.CallbackContext context)
@@ -64,6 +51,8 @@ public class PlayerAttack : MonoBehaviour, IEasyListener
 
     public void OnBeat(EasyEvent audioEvent)
     {
+        if (beatLength == 0)
+            beatLength = audioEvent.BeatLength();
         timeAtLastBeat = Time.time;
     }
 }

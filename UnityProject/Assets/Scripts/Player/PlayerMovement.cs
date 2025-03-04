@@ -2,13 +2,17 @@ using UnityEngine;
 using System.Collections;
 using TMPro;
 using UnityEngine.InputSystem;
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, IEasyListener
 {
     public Animator animator;
     public Stage stage;
     public int currentLaneIndex = 3;
     public float moveDuration = 0.3f;
     public float forwardOffset = 10f;
+    public float hitThreshold = 0.1f;
+
+    private float timeAtLastBeat;
+    private float beatLength;
     private bool isMoving = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -17,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
         if (!stage)
             stage = GameObject.Find("Stage").GetComponent<Stage>();
 
+        timeAtLastBeat = Time.time;
         transform.localPosition = GetCurrPosition();
     }
 
@@ -28,6 +33,14 @@ public class PlayerMovement : MonoBehaviour
 
         if (isMoving)
             return;
+
+        if (Time.time - timeAtLastBeat > hitThreshold && // lateness threshold
+            timeAtLastBeat + beatLength - Time.time > hitThreshold) // earliness threshold
+        {
+            // Do any penalty for moving out of time
+            Debug.Log("Missed Movement Timing");
+            return;
+        }
 
         Vector2 moveInput = context.ReadValue<Vector2>();
 
@@ -113,5 +126,12 @@ public class PlayerMovement : MonoBehaviour
         Vector3 newposition = new Vector3(Mathf.Cos(angle), Mathf.Sin(angle), 0);
         newposition = newposition.normalized * stage.tunnelRadius + Vector3.forward * forwardOffset;
         return newposition;
+    }
+
+    public void OnBeat(EasyEvent audioEvent)
+    {
+        if (beatLength == 0)
+            beatLength = audioEvent.BeatLength();
+        timeAtLastBeat = Time.time;
     }
 }

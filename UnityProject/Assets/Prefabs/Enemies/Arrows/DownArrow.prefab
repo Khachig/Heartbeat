@@ -150,6 +150,7 @@ GameObject:
   - component: {fileID: -7939931547347879201}
   - component: {fileID: 5489237787443930081}
   - component: {fileID: 5908139625671631606}
+  - component: {fileID: 5147769638977189216}
   m_Layer: 5
   m_Name: DownArrow
   m_TagString: Untagged
@@ -263,3 +264,16 @@ MonoBehaviour:
   labelDuration: 0.5
   labelComponent: {fileID: 6176445102260538577}
   rawImage: {fileID: 1117271268447643184}
+--- !u!114 &5147769638977189216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5197133300777824675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82b9ef59f2e0e8040bb8eb483424d434, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: -7939931547347879201}

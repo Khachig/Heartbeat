@@ -211,6 +211,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8164078558771037576, guid: f8e2e23528b4b4fe5ae86859d4b7c8ae, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7125211414508564933}
+    - targetCorrespondingSourceObject: {fileID: 8164078558771037576, guid: f8e2e23528b4b4fe5ae86859d4b7c8ae, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7238194875558660811}
   m_SourcePrefab: {fileID: 100100000, guid: f8e2e23528b4b4fe5ae86859d4b7c8ae, type: 3}
 --- !u!1 &644126890656571430 stripped
 GameObject:
@@ -251,6 +254,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 072446f228670d2489721c0360be12c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7238194875558660811
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 644126890656571430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82b9ef59f2e0e8040bb8eb483424d434, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 6168401854466945747}
 --- !u!23 &8049304714480955075 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: -7635826562936255635, guid: f8e2e23528b4b4fe5ae86859d4b7c8ae, type: 3}
@@ -292,11 +308,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b3150fd84fbf67a4fa7332dcfe90073c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectilePrefab: {fileID: 4425165233857190015, guid: c52cb80ac33d24b30b4d690f7b1976c6, type: 3}
   fireRate: 1
   lastFireTime: 0
-  projectilePrefab: {fileID: 4425165233857190015, guid: c52cb80ac33d24b30b4d690f7b1976c6, type: 3}
-  audioManager: {fileID: 0}
-  enemyRhythmManager: {fileID: 0}
   EnemyShoot:
     Guid:
       Data1: 1160114324
@@ -311,8 +325,6 @@ MonoBehaviour:
       Data3: 1493000860
       Data4: 1858991063
     Path: event:/EnemyEvent/EnemyDefeat
-  playerMovement: {fileID: 0}
-  stage: {fileID: 0}
   numWaves: 3
   burstRate: 0.1
   sprayRate: 0.2

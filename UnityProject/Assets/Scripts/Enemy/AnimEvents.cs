@@ -11,9 +11,4 @@ public class AnimEvents : MonoBehaviour
     {
         Destroy(transform.parent.gameObject);
     }
-
-    public void QueueResetEnemyAnim()
-    {
-        transform.parent.GetComponent<EnemyBehaviour>().QueueResetEnemyAnim();
-    }
 }

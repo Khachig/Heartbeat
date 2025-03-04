@@ -35,7 +35,7 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
         GameObject arrow = arrows[0];
         arrows.RemoveAt(0);
 
-        SetArrowPulseSpeed();
+        SetArrowPulsable();
         effects.Flash();
         Animator arrowAnimator = arrow.GetComponent<Animator>();
         // Animator will call destroy on arrow
@@ -66,8 +66,7 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
         currWave++;
         instanceData.arrowArrangement = GetRandomArrowArrangement(4);
         SpawnArrows();
-        SetArrowPulseSpeed();
-        needsResetArrowAnimation = true;
+        SetArrowPulsable();
         enemyRhythmManager.InitNewSequence();
     }
 

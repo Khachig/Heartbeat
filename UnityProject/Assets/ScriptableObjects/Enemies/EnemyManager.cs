@@ -40,26 +40,7 @@ public class EnemyManager : ScriptableObject
 
     public GameObject spawnEnemy(SpawnParameters parameters)
     {
-        GameObject enemy = Instantiate(
-            enemyPrefab,
-            parameters.position + parameters.stage.transform.forward * spawnForwardOffset,
-            Quaternion.identity);
-        enemy.transform.eulerAngles = new Vector3(
-            parameters.rotation.x,
-            parameters.rotation.y,
-            parameters.rotation.z
-        );
-        enemy.transform.parent = parameters.stage.transform;
-
-        EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
-        enemyBehaviour.Init(parameters.stage, audioManager, enemyRhythmManager);
-        enemyBehaviour.onEnemyDestroy += OnEnemyDestroy;
-
-        EnemyData enemyData = enemy.GetComponent<EnemyData>();
-        enemyData.init(new EnemyData.EnemyParameters {
-            arrowArrangement = parameters.arrowArrangement,
-        });
-
+        GameObject enemy = spawnEnemyHelper(parameters, enemyPrefab); 
         enemies.Add(enemy);
         enemyMovement.addEnemy(parameters.enemyLane, enemy);
         return enemy;
@@ -67,8 +48,15 @@ public class EnemyManager : ScriptableObject
     
     public GameObject spawnBoss(SpawnParameters parameters)
     {
+        GameObject enemy = spawnEnemyHelper(parameters, bossPrefab);
+        enemies.Add(enemy);
+        return enemy;
+    }
+
+    private GameObject spawnEnemyHelper(SpawnParameters parameters, GameObject prefab)
+    {
         GameObject enemy = Instantiate(
-            bossPrefab,
+            prefab,
             parameters.position + parameters.stage.transform.forward * spawnForwardOffset,
             Quaternion.identity);
         enemy.transform.eulerAngles = new Vector3(
@@ -78,17 +66,37 @@ public class EnemyManager : ScriptableObject
         );
         enemy.transform.parent = parameters.stage.transform;
 
-        BossBehaviour enemyBehaviour = enemy.GetComponent<BossBehaviour>();
-        enemyBehaviour.Init(parameters.stage, audioManager, enemyRhythmManager);
-        enemyBehaviour.onEnemyDestroy += OnEnemyDestroy;
+        InitEnemyData(enemy, parameters.arrowArrangement);
+        InitEnemyBehaviour(enemy, parameters.stage, audioManager, enemyRhythmManager);
+        InitEnemyPulsable(enemy, audioManager);
 
+        return enemy;
+    }
+
+    private void InitEnemyBehaviour(GameObject enemy,
+                                    Stage stage,
+                                    EasyRhythmAudioManager audioManager,
+                                    EnemyRhythmManager enemyRhythmManager)
+    {
+        EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+        enemyBehaviour.Init(stage, audioManager, enemyRhythmManager);
+        enemyBehaviour.onEnemyDestroy += OnEnemyDestroy;
+    }
+
+    private void InitEnemyPulsable(GameObject enemy, EasyRhythmAudioManager audioManager)
+    {
+        // For enemy prefab, pulsable is in its first child: default
+        Pulsable pulsable = enemy.transform.GetChild(0).GetComponent<Pulsable>();
+        float bpm = audioManager.myAudioEvent.CurrentTempo;
+        pulsable.Init(bpm, audioManager);
+    }
+
+    private void InitEnemyData(GameObject enemy, ArrowDirection[] arrowDirections)
+    {
         EnemyData enemyData = enemy.GetComponent<EnemyData>();
         enemyData.init(new EnemyData.EnemyParameters {
-            arrowArrangement = parameters.arrowArrangement,
+            arrowArrangement = arrowDirections,
         });
-
-        enemies.Add(enemy);
-        return enemy;
     }
 
     // Returns whether any enemy was hit by the player attack

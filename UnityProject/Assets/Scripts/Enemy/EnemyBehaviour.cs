@@ -23,17 +23,12 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     protected Animator enemyAnimator;
     protected EnemyDamageEffect effects;
     protected List<GameObject> arrows;
-    protected bool needsResetEnemyAnimation = true;
-    protected bool needsResetArrowAnimation = true;
     protected bool isDead = false; // To ensure no attacks during death animation;
 
     private EasyRhythmAudioManager audioManager;
-    private float bpm;
 
     protected void Start()
     {
-        bpm = audioManager.myAudioEvent.CurrentTempo;
-
         // this data is per enemy instance
         instanceData = gameObject.GetComponent<EnemyData>();
         effects = gameObject.GetComponent<EnemyDamageEffect>();
@@ -41,20 +36,11 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         arrows = new List<GameObject>();
 
         SpawnArrows();
-        SetArrowPulseSpeed();
-        SetEnemyPulseSpeed();
-
-        needsResetEnemyAnimation = true;
-        needsResetArrowAnimation = true;
+        SetArrowPulsable();
 
         lastFireTime = Random.Range(0f, 3f);
         fireRate = Random.Range(1f, 3f);
     }
-
-    void Update()
-    {
-        Attack();
-    } 
 
     public void Init(Stage stg, EasyRhythmAudioManager aManager, EnemyRhythmManager erManager)
     {
@@ -94,11 +80,6 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         }
 
         return false;
-    }
-
-    public void QueueResetEnemyAnim()
-    {
-        needsResetEnemyAnimation = true;
     }
 
     // Emphasizes the arrow at arrowIndex based on the original arrow arrangement
@@ -178,7 +159,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         GameObject arrow = arrows[0];
         arrows.RemoveAt(0);
 
-        SetArrowPulseSpeed();
+        SetArrowPulsable();
         effects.Flash();
         Animator arrowAnimator = arrow.GetComponent<Animator>();
         // Animator will call destroy on arrow
@@ -214,38 +195,18 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         projScript.Init(stage, this);
     }
 
-    protected void SetArrowPulseSpeed()
+    protected void SetArrowPulsable()
     {
         if (arrows.Count == 0)
             return;
 
         GameObject arrow = arrows[0];
-        Animator arrowAnimator = arrow.GetComponent<Animator>();
-        arrowAnimator.SetFloat("ArrowPulseSpeed", bpm / 60f);
-        needsResetArrowAnimation = true;
-    }
-
-    private void SetEnemyPulseSpeed()
-    {
-        enemyAnimator.SetFloat("EnemyPulseSpeed", bpm / 60f);
+        Pulsable arrowPulsable = arrow.GetComponent<Pulsable>();
+        arrowPulsable.Init(audioManager.myAudioEvent.CurrentTempo, audioManager);
     }
     
     public void OnBeat(EasyEvent audioEvent)
     {
-        if (needsResetEnemyAnimation)
-        {
-            enemyAnimator.SetTrigger("Reset");
-            needsResetEnemyAnimation = false;
-        }
-        if (arrows.Count == 0)
-            return;
-
-        if (needsResetArrowAnimation)
-        {
-            GameObject arrow = arrows[0];
-            Animator arrowAnimator = arrow.GetComponent<Animator>();
-            arrowAnimator.SetTrigger("Reset");
-            needsResetArrowAnimation = false;
-        }
+        Attack();
     }
 }

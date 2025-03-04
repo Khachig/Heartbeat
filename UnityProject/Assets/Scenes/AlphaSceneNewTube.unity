@@ -1799,6 +1799,7 @@ MonoBehaviour:
   currentLaneIndex: 3
   moveDuration: 0.3
   forwardOffset: 8
+  hitThreshold: 0.1
 --- !u!114 &425896409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1811,7 +1812,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a49f4b03f8472c42a2f1ff6b96c2d81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioManager: {fileID: 419586457}
   enemyManager: {fileID: 11400000, guid: 37d2a097f28654f6a8888da795536652, type: 2}
   playerHealth: {fileID: 973693055}
   missDamage: 10
@@ -2640,7 +2640,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 484319349946170942, guid: 8595f0764810a614892c69b124c77240, type: 3}
       propertyPath: myEventListeners.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 484319349946170942, guid: 8595f0764810a614892c69b124c77240, type: 3}
       propertyPath: 'myEventListeners.Array.data[0]'
@@ -2650,6 +2650,10 @@ PrefabInstance:
       propertyPath: 'myEventListeners.Array.data[1]'
       value: 
       objectReference: {fileID: 425896409}
+    - target: {fileID: 484319349946170942, guid: 8595f0764810a614892c69b124c77240, type: 3}
+      propertyPath: 'myEventListeners.Array.data[2]'
+      value: 
+      objectReference: {fileID: 425896408}
     - target: {fileID: 484319349946170943, guid: 8595f0764810a614892c69b124c77240, type: 3}
       propertyPath: m_LocalPosition.x
       value: -261.92075
