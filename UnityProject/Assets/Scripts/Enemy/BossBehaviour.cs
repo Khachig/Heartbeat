@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using FMODUnity;
 
 public class BossBehaviour : EnemyBehaviour, IEasyListener
 {
@@ -49,14 +50,17 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
                 enemyRhythmManager.RemoveEnemy(gameObject);
                 // Animator will call destroy on enemy
                 enemyAnimator.SetTrigger("EnemyDeath");
+                RuntimeManager.PlayOneShot(EnemyDefeat, transform.position);
             }
             else
             { 
                 Invoke("SpawnNewWave", 2);
                 enemyAnimator.SetTrigger("EnemyHit");
+                RuntimeManager.PlayOneShot(EnemyDefeat, transform.position);
             }
         } else {
             enemyAnimator.SetTrigger("EnemyHit");
+            RuntimeManager.PlayOneShot(EnemyHurt, transform.position);
         }
     }
 
@@ -104,6 +108,7 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
         for (int i = 0; i < 3; i++)
         {
             SpawnProjectile(playerMovement.currentLaneIndex);
+            RuntimeManager.PlayOneShot(EnemyShoot, transform.position);
             yield return new WaitForSeconds(burstRate);
         }
         currRoutine = null;
@@ -115,6 +120,7 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
         {
             int r = Random.Range(0, Stage.Lanes.GetNumLanes());
             SpawnProjectile(r);
+            RuntimeManager.PlayOneShot(EnemyShoot, transform.position);
             yield return new WaitForSeconds(sprayRate);
         }
         currRoutine = null;
@@ -127,6 +133,7 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
         {
             SpawnProjectile((r + i) % Stage.Lanes.GetNumLanes());
         }
+        RuntimeManager.PlayOneShot(EnemyShoot, transform.position);
     }
 
     void SpawnProjectile(int lane)

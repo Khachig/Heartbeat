@@ -318,6 +318,13 @@ MonoBehaviour:
       Data3: -1908675182
       Data4: -40941661
     Path: event:/EnemyEvent/EnemyShoot
+  EnemyHurt:
+    Guid:
+      Data1: -186164949
+      Data2: 1274945040
+      Data3: -1810400367
+      Data4: -1942117760
+    Path: event:/EnemyEvent/EnemyHurt
   EnemyDefeat:
     Guid:
       Data1: 1810763230

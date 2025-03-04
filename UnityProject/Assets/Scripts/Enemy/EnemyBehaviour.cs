@@ -14,6 +14,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     public float fireRate = 1f; // every x seconds
     public float lastFireTime = 0f;
     public EventReference EnemyShoot;
+    public EventReference EnemyHurt;
     public EventReference EnemyDefeat;
 
     protected float fireRateMultiplier = 1f;
@@ -173,6 +174,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
 
         } else {
             enemyAnimator.SetTrigger("EnemyHit");
+            RuntimeManager.PlayOneShot(EnemyHurt, transform.position);
         }
     }
 
