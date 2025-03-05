@@ -293,7 +293,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyManager: {fileID: 11400000, guid: 37d2a097f28654f6a8888da795536652, type: 2}
   levelManager: {fileID: 0}
+  stage: {fileID: 0}
   enemyMovement: {fileID: 0}
+  audioManager: {fileID: 0}
+  enemyRhythmManager: {fileID: 0}
 --- !u!4 &726199526
 Transform:
   m_ObjectHideFlags: 0
@@ -346,7 +349,7 @@ MonoBehaviour:
       Data2: 1098540614
       Data3: 258972071
       Data4: -698015668
-    Path: event:/Music/TestTrack
+    Path: event:/Music/Track1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 2

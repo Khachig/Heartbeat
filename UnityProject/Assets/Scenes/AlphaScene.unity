@@ -530,17 +530,6 @@ MonoBehaviour:
       m_PostInfinity: 2
       m_RotationOrder: 4
   CustomBlends: {fileID: 0}
---- !u!114 &419586457 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 484319349946170942, guid: 8595f0764810a614892c69b124c77240, type: 3}
-  m_PrefabInstance: {fileID: 791527992}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55560a394d74bf24fbd130875e137ba2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &425896405
 GameObject:
   m_ObjectHideFlags: 0
@@ -587,11 +576,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74809c8463ab09e4ebac630a35417552, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stage: {fileID: 1518974362}
+  animator: {fileID: 973693057}
   currentLaneIndex: 3
   moveDuration: 0.3
   forwardOffset: 8
-  animator: {fileID: 973693057}
+  hitThreshold: 0.1
 --- !u!114 &425896409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -608,7 +597,6 @@ MonoBehaviour:
   playerHealth: {fileID: 973693055}
   missDamage: 10
   hitThreshold: 0.15
-  audioManager: {fileID: 419586457}
 --- !u!43 &576457314
 Mesh:
   m_ObjectHideFlags: 0
@@ -805,7 +793,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyManager: {fileID: 11400000, guid: 37d2a097f28654f6a8888da795536652, type: 2}
   levelManager: {fileID: 1206805074}
+  stage: {fileID: 0}
   enemyMovement: {fileID: 1037017649}
+  audioManager: {fileID: 0}
+  enemyRhythmManager: {fileID: 0}
 --- !u!4 &726199526
 Transform:
   m_ObjectHideFlags: 0
@@ -858,7 +849,7 @@ MonoBehaviour:
       Data2: 1098540614
       Data3: 258972071
       Data4: -698015668
-    Path: event:/Music/TestTrack
+    Path: event:/Music/Track1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 2
@@ -1986,12 +1977,6 @@ MonoBehaviour:
   playerMovement: {fileID: 425896408}
   moveDuration: 0.3
   forwardOffset: 20
-  stage: {fileID: 1518974362}
-  activeEnemies:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
   moveInterval: 1
 --- !u!4 &1037017650
 Transform:
@@ -2704,8 +2689,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 973693055}
+  audioManager: {fileID: 0}
   comboHealAmt: 10
-  comboNum: 0
+  ComboHit:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
+  ComboFail:
+    Guid:
+      Data1: 0
+      Data2: 0
+      Data3: 0
+      Data4: 0
+    Path: 
 --- !u!4 &1608770181
 Transform:
   m_ObjectHideFlags: 0

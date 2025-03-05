@@ -687,11 +687,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74809c8463ab09e4ebac630a35417552, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stage: {fileID: 1518974362}
+  animator: {fileID: 0}
   currentLaneIndex: 0
   moveDuration: 0.2
   forwardOffset: 8
-  animator: {fileID: 0}
+  hitThreshold: 0.1
 --- !u!114 &425896409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -708,7 +708,6 @@ MonoBehaviour:
   playerHealth: {fileID: 1632627565}
   missDamage: 10
   hitThreshold: 0.1
-  audioManager: {fileID: 0}
 --- !u!43 &576457314
 Mesh:
   m_ObjectHideFlags: 0
@@ -995,7 +994,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyManager: {fileID: 11400000, guid: 37d2a097f28654f6a8888da795536652, type: 2}
   levelManager: {fileID: 1206805074}
+  stage: {fileID: 0}
   enemyMovement: {fileID: 0}
+  audioManager: {fileID: 0}
+  enemyRhythmManager: {fileID: 0}
 --- !u!4 &726199526
 Transform:
   m_ObjectHideFlags: 0
@@ -1048,7 +1050,7 @@ MonoBehaviour:
       Data2: 1098540614
       Data3: 258972071
       Data4: -698015668
-    Path: event:/Music/TestTrack
+    Path: event:/Music/Track1
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 2
