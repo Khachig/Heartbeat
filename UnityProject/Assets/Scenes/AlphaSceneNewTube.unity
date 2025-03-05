@@ -2778,7 +2778,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 484319349946170942, guid: 8595f0764810a614892c69b124c77240, type: 3}
       propertyPath: myEventPath
-      value: event:/Music/TestTrack
+      value: event:/Music/Track3
       objectReference: {fileID: 0}
     - target: {fileID: 484319349946170942, guid: 8595f0764810a614892c69b124c77240, type: 3}
       propertyPath: myEventListeners.Array.size

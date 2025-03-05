@@ -27,33 +27,6 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 701
---- !u!114 &-9102977139551037208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Music/TestTrack
-  m_EditorClassIdentifier: 
-  Path: event:/Music/TestTrack
-  Guid:
-    Data1: -1235174025
-    Data2: 1098540614
-    Data3: 258972071
-    Data4: -698015668
-  Banks:
-  - {fileID: -1401637302299783264}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 213333
 --- !u!114 &-7890216681967160025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,11 +69,38 @@ MonoBehaviour:
   Path: Assets/FMOD/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638766929076684674
+  lastModified: 638767182905630792
   FileSizes:
   - Name: Desktop
     Value: 95520
   Exists: 1
+--- !u!114 &-4485321239922373427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/TestTrack
+  m_EditorClassIdentifier: 
+  Path: event:/Music/TestTrack
+  Guid:
+    Data1: -1235174025
+    Data2: 1098540614
+    Data3: 258972071
+    Data4: -698015668
+  Banks:
+  - {fileID: -1401637302299783264}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 213333
 --- !u!114 &-1401637302299783264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,10 +116,10 @@ MonoBehaviour:
   Path: Assets/FMOD/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638766929076679149
+  lastModified: 638767185172605591
   FileSizes:
   - Name: Desktop
-    Value: 2811072
+    Value: 7279392
   Exists: 1
 --- !u!114 &-1308961276341546955
 MonoBehaviour:
@@ -166,20 +166,49 @@ MonoBehaviour:
   - {fileID: -1401637302299783264}
   - {fileID: -4769922658571283979}
   EditorEvents:
-  - {fileID: -9102977139551037208}
   - {fileID: -7890216681967160025}
   - {fileID: 7252204985186623387}
   - {fileID: -1308961276341546955}
   - {fileID: -9116739217070964319}
   - {fileID: 2138724895849679975}
   - {fileID: 2297352812109549679}
+  - {fileID: 2537253561862298646}
+  - {fileID: 2072186320137544863}
+  - {fileID: -4485321239922373427}
   EditorParameters: []
   MasterBanks:
   - {fileID: -1401637302299783264}
   StringsBanks:
   - {fileID: 8641842500893547333}
-  cacheTime: 638766929076684674
+  cacheTime: 638767185172625673
   cacheVersion: 131622
+--- !u!114 &2072186320137544863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/Track2
+  m_EditorClassIdentifier: 
+  Path: event:/Music/Track2
+  Guid:
+    Data1: 1882996778
+    Data2: 1084099231
+    Data3: -1856136054
+    Data4: 57062216
+  Banks:
+  - {fileID: -1401637302299783264}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 235789
 --- !u!114 &2138724895849679975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -234,6 +263,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 428
+--- !u!114 &2537253561862298646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/Track3
+  m_EditorClassIdentifier: 
+  Path: event:/Music/Track3
+  Guid:
+    Data1: -1957888271
+    Data2: 1077832326
+    Data3: 1531366538
+    Data4: 1754216977
+  Banks:
+  - {fileID: -1401637302299783264}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 88000
 --- !u!114 &3650509560712654426
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300,8 +356,8 @@ MonoBehaviour:
   Path: Assets/FMOD/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638766929076684674
+  lastModified: 638767185172625673
   FileSizes:
   - Name: Desktop
-    Value: 1160
+    Value: 1252
   Exists: 1
