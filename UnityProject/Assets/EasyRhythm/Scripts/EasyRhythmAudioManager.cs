@@ -20,13 +20,13 @@ public class EasyRhythmAudioManager : MonoBehaviour
         // Passes the EventReference so EasyEvent can create the FMOD Event instance
         // Passes an array of listeners through (IEasyListener) so the audio event knows which objects want to listen to the callbacks
         myAudioEvent = new EasyEvent(myEventPath, myEventListeners);
-        myAudioEvent.start();
+        //myAudioEvent.start();
     }
 
     public void Update()
     {
         // Press space bar to start and stop the audio event
-        if (Input.GetKeyDown(KeyCode.Space))
+        /*if (Input.GetKeyDown(KeyCode.Space))
         {
             if (!myAudioEvent.IsPlaying())
             {
@@ -37,6 +37,12 @@ public class EasyRhythmAudioManager : MonoBehaviour
             {
                 myAudioEvent.stop();
             }
+
+        }*/
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            myAudioEvent.start();
 
         }
     }
