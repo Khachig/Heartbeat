@@ -123,13 +123,6 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         {
             if (enemies.Count == 0)
                 OnComboComplete();
-            else
-            {
-                if (enemies[0].GetComponent<BossBehaviour>() == null)
-                    BreakCombo();
-                else
-                    OnComboComplete();
-            }
         }
     }
 }
