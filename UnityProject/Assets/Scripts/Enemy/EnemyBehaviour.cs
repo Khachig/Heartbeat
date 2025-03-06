@@ -154,6 +154,8 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         Animator arrowAnimator = arrow.GetComponent<Animator>();
         // Animator will call destroy on arrow
         arrowAnimator.SetTrigger("ArrowDestroy");
+        // Destroy(arrow, 0.5f);
+        ScoreManager.Instance.AddScore(55);
         if (arrows.Count == 0)
         {
             isDead = true;

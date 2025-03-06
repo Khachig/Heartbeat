@@ -47,6 +47,7 @@ public class PlayerAttack : MonoBehaviour, IEasyListener
 
     void AttackMiss()
     {
+        ScoreManager.Instance.DecreaseScore(30);
         Effects.SpecialEffects.MissEffect();
         Effects.SpecialEffects.ScreenDamageEffect(0.5f);
         playerHealth.TakeDamage(missDamage);

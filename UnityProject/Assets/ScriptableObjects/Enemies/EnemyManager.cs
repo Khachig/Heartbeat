@@ -139,6 +139,7 @@ public class EnemyManager : ScriptableObject
 
     void OnEnemyDestroy()
     {
+        ScoreManager.Instance.AddScore(250);
         onEnemyDeath.Invoke();
     }
 }

@@ -45,6 +45,7 @@ public class ProjectileMovement : MonoBehaviour
             HealthSystem playerHealth = other.GetComponent<HealthSystem>();
             playerHealth.TakeDamage(projectileDamage);
 			Effects.SpecialEffects.ScreenDamageEffect(0.5f);
+            ScoreManager.Instance.DecreaseScore(50);
             RuntimeManager.PlayOneShot(PlayerHurt, transform.position);
 
             if (parentEnemy)
