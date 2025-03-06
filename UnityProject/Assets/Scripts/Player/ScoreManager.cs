@@ -11,6 +11,7 @@ public class ScoreManager : MonoBehaviour
     public float scorePerSecond = 10f;  // Score increase per interval
     public TMP_Text scoreText;
     public TMP_Text scoreChangeText;
+    public float scoreChange;
     private Coroutine currentCoroutine;
 
     private void Awake()
@@ -41,6 +42,7 @@ public class ScoreManager : MonoBehaviour
         Score += amount;
         scoreChangeText.text = "+" + amount.ToString();
         scoreChangeText.color = Color.green;
+        scoreChange = amount;
         scoreChangeText.gameObject.SetActive(true);
         Debug.Log("New Score: " + Score);
         currentCoroutine = StartCoroutine(HideTextAfterDelay(2f));
@@ -51,6 +53,7 @@ public class ScoreManager : MonoBehaviour
         if (currentCoroutine != null)
         {
             StopCoroutine(currentCoroutine);
+            // amount += scoreChange;
         }
         Score -= amount;
         if (Score < 0){
@@ -59,6 +62,7 @@ public class ScoreManager : MonoBehaviour
         scoreChangeText.text = "-" + amount.ToString();
         scoreChangeText.color = Color.red;
         scoreChangeText.gameObject.SetActive(true);
+        scoreChange = amount;
         Debug.Log("New Score: " + Score);
         currentCoroutine = StartCoroutine(HideTextAfterDelay(1f));
     }

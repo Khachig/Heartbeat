@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     public int currentLaneIndex = 3;
     public float moveDuration = 0.3f;
     public float forwardOffset = 10f;
-    public float hitThreshold = 0.1f;
+    public float hitThreshold = 0.2f;
 
     private float timeAtLastBeat;
     private float beatLength;

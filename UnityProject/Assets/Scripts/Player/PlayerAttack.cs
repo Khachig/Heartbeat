@@ -10,7 +10,7 @@ public class PlayerAttack : MonoBehaviour, IEasyListener
 
     public EnemyManager enemyManager;
     public HealthSystem playerHealth;
-    public float missDamage = 10f;
+    public float missDamage = 5f;
     public float hitThreshold = 0.1f;
     private float timeAtLastBeat;
     private float beatLength;

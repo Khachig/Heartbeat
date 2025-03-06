@@ -26,7 +26,7 @@ public class HealthSystem : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth += damage;
-        if (currentHealth >= 100) {
+        if (currentHealth >= 1000) {
             currentHealth = 100;
             Destroy(gameObject);
             }
@@ -58,7 +58,7 @@ public class HealthSystem : MonoBehaviour
     private void UpdateHealthBar()
     {
         // Calculate the health percentage
-        float healthPercentage = currentHealth / 100;
+        float healthPercentage = currentHealth / 1000;
         // Update the health bar
         HealthBar.value = healthPercentage;
 
