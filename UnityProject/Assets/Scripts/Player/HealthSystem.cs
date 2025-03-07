@@ -16,7 +16,7 @@ public class HealthSystem : MonoBehaviour
     {
         // Set the initial health
         currentHealth = 0;
-        maxHealth
+        maxHealth = 250;
 
         // Update the health display
         UpdateHealthText();

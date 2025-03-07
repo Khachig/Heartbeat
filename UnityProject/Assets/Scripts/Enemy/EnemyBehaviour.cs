@@ -38,7 +38,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         SpawnArrows();
         SetArrowPulsable();
 
-        lastFireTime = Random.Range(0f, 4f);
+        lastFireTime = Random.Range(4f, 8f);
         if (fireRate == 0){
             fireRate = Random.Range(1f, 5f);
         }
