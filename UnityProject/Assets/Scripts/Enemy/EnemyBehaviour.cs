@@ -11,7 +11,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     public OnEnemyDestroy onEnemyDestroy;
 
     public GameObject projectilePrefab;
-    public float fireRate = 1f; // every x seconds
+    public float fireRate = 0f; // every x seconds
     public float lastFireTime = 0f;
     public EventReference EnemyShoot;
     public EventReference EnemyHurt;
@@ -38,14 +38,17 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         SpawnArrows();
         SetArrowPulsable();
 
-        lastFireTime = Random.Range(0f, 3f);
-        fireRate = Random.Range(1f, 3f);
+        lastFireTime = Random.Range(0f, 4f);
+        if (fireRate == 0){
+            fireRate = Random.Range(1f, 5f);
+        }
     }
 
-    public void Init(EasyRhythmAudioManager aManager, EnemyRhythmManager erManager)
+    public void Init(EasyRhythmAudioManager aManager, EnemyRhythmManager erManager, float fRate=0)
     {
         enemyRhythmManager = erManager;
         audioManager = aManager;
+        fireRate = fRate;
         audioManager.AddListener(this);
     }
 

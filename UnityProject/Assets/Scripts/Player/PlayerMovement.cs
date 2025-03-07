@@ -41,9 +41,15 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         Vector2 moveInput = context.ReadValue<Vector2>();
 
         if ((IsOnTopLane(currentLaneIndex) && moveInput.x > 0) ||
+            (IsOnTopLane(currentLaneIndex) && moveInput.y < 0) ||
             (IsOnBottomLane(currentLaneIndex) && moveInput.x < 0) ||
+            (IsOnBottomLane(currentLaneIndex) && moveInput.y > 0) ||
+
             (IsOnRightLane(currentLaneIndex) && moveInput.y < 0) ||
-            (IsOnLeftLane(currentLaneIndex) && moveInput.y > 0))
+            (IsOnRightLane(currentLaneIndex) && moveInput.x < 0) ||
+
+            (IsOnLeftLane(currentLaneIndex) && moveInput.y > 0) ||
+            (IsOnLeftLane(currentLaneIndex) && moveInput.x > 0))
         {
             ClockwiseLaneChange();
         }

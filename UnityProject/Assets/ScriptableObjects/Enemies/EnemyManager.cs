@@ -27,6 +27,8 @@ public class EnemyManager : ScriptableObject
         public Stage stage;
         public ArrowDirection[] arrowArrangement;
         public int enemyLane;
+        public float fireRate;
+        public float lastFireTime;
     }
 
     public void init(EnemyMovement eMovement, EasyRhythmAudioManager aManager, EnemyRhythmManager erManager)
@@ -67,7 +69,7 @@ public class EnemyManager : ScriptableObject
         enemy.transform.parent = parameters.stage.transform;
 
         InitEnemyData(enemy, parameters.arrowArrangement);
-        InitEnemyBehaviour(enemy, audioManager, enemyRhythmManager);
+        InitEnemyBehaviour(enemy, audioManager, enemyRhythmManager, parameters.fireRate);
         InitEnemyPulsable(enemy, audioManager);
 
         return enemy;
@@ -79,6 +81,16 @@ public class EnemyManager : ScriptableObject
     {
         EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
         enemyBehaviour.Init(audioManager, enemyRhythmManager);
+        enemyBehaviour.onEnemyDestroy += OnEnemyDestroy;
+    }
+
+    private void InitEnemyBehaviour(GameObject enemy,
+                                    EasyRhythmAudioManager audioManager,
+                                    EnemyRhythmManager enemyRhythmManager,
+                                    float fireRate)
+    {
+        EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+        enemyBehaviour.Init(audioManager, enemyRhythmManager, fireRate);
         enemyBehaviour.onEnemyDestroy += OnEnemyDestroy;
     }
 

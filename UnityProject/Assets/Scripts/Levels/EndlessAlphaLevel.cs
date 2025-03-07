@@ -25,9 +25,13 @@ public class EndlessAlphaLevel : Level
 
     void SpawnWave()
     {
-        if (wave <= 3)
+        if (wave <= 3){
+            SpawnTutorialWave(wave, 20/wave, 30);
+        }
+        else if (wave < 10){
             SpawnEasyWave();
-        else if (wave % 5 == 0)
+            }
+        else if (wave % 10 == 0)
             SpawnBossWave();
         else
             SpawnHardWave();
@@ -38,7 +42,13 @@ public class EndlessAlphaLevel : Level
         enemyCount--;
         if (enemyCount == 0) {
             wave++;
-            if (2 < wave && wave < 5)
+            if (wave == 3){
+                maxEnemyCount = 2;
+            }
+            if (wave == 4){
+                maxEnemyCount = 1;
+            }
+            if (5 < wave && wave < 10)
                 maxEnemyCount++;
             if (wave >= 5)
             {
@@ -49,7 +59,7 @@ public class EndlessAlphaLevel : Level
         }
     }
 
-    void SpawnEnemy(int lane, ArrowDirection[] arrowDirections)
+    void SpawnEnemy(int lane, ArrowDirection[] arrowDirections, float fireRate=0, float lastFireTime=0)
     {
         GameObject enemy = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
             position = Vector3.zero,
@@ -57,7 +67,10 @@ public class EndlessAlphaLevel : Level
             stage = stage,
             arrowArrangement = arrowDirections,
             enemyLane = lane,
+            fireRate = fireRate,
+            lastFireTime = lastFireTime
         });
+
         enemyRhythmManager.AddEnemy(enemy);
     }
 
@@ -91,6 +104,14 @@ public class EndlessAlphaLevel : Level
                 newList = new ArrowDirection[] {ArrowDirection.RANDOM, ArrowDirection.RANDOM};
         }
         return newList;
+    }
+
+    void SpawnTutorialWave(int index, float fireRate = 15, float lastFireTime = 15)
+    {
+        ArrowDirection[] arrowDirections = GetArrowList(index);
+        SpawnEnemy(index, arrowDirections, fireRate, lastFireTime);
+        
+        enemyRhythmManager.InitNewSequence();
     }
     
     void SpawnEasyWave()
