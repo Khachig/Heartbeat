@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class HealthSystem : MonoBehaviour
 {
-    //public float maxHealth = 100;
+    public float maxHealth = 300;
     public float initialHealth = 0;
     private float currentHealth;
 
@@ -16,6 +16,7 @@ public class HealthSystem : MonoBehaviour
     {
         // Set the initial health
         currentHealth = 0;
+        maxHealth
 
         // Update the health display
         UpdateHealthText();
@@ -26,8 +27,8 @@ public class HealthSystem : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth += damage;
-        if (currentHealth >= 1000) {
-            currentHealth = 100;
+        if (currentHealth >= maxHealth) {
+            currentHealth = maxHealth;
             Destroy(gameObject);
             }
 
@@ -58,7 +59,7 @@ public class HealthSystem : MonoBehaviour
     private void UpdateHealthBar()
     {
         // Calculate the health percentage
-        float healthPercentage = currentHealth / 1000;
+        float healthPercentage = currentHealth / maxHealth;
         // Update the health bar
         HealthBar.value = healthPercentage;
 
