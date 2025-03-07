@@ -8,7 +8,7 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     public int currentLaneIndex = 3;
     public float moveDuration = 0.3f;
     public float forwardOffset = 10f;
-    public float hitThreshold = 0.2f;
+    public float hitThreshold = 0.5f;
 
     private float timeAtLastBeat;
     private float beatLength;
@@ -19,22 +19,27 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     {
         timeAtLastBeat = Time.time;
         transform.localPosition = GetCurrPosition();
+        hitThreshold = 0.25f;
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
         // For input handler, only do call back on performed stage
+
+        float currtime = Time.time;
         if (!context.performed)
             return;
 
         if (isMoving)
             return;
 
-        if (Time.time - timeAtLastBeat > hitThreshold && // lateness threshold
-            timeAtLastBeat + beatLength - Time.time > hitThreshold) // earliness threshold
+        if (currtime - timeAtLastBeat > hitThreshold &&// lateness threshold
+            timeAtLastBeat + beatLength - currtime > hitThreshold) // earliness threshold
         {
             // Do any penalty for moving out of time
-            Debug.Log("Missed Movement Timing");
+            Debug.Log($"{currtime}, {timeAtLastBeat}, {timeAtLastBeat + beatLength} Missed Movement Timing");
+            Debug.Log($"{currtime - timeAtLastBeat}, {timeAtLastBeat + beatLength - currtime}");
+
             return;
         }
 

@@ -18,6 +18,7 @@ public class PlayerAttack : MonoBehaviour, IEasyListener
     void Start()
     {
         timeAtLastBeat = Time.time;
+        hitThreshold = 0.2f;
     }
 
     public void OnAttack(InputAction.CallbackContext context)
