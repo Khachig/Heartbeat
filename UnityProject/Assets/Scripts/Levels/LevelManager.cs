@@ -15,7 +15,7 @@ public class LevelManager : MonoBehaviour
         stage = stg;
         enemyManager = eManager;
         enemyRhythmManager = erManager;
-        firstLevel = gameObject.AddComponent<EndlessTestLevel>();
+        firstLevel = gameObject.AddComponent<EndlessPhasesLevel>();
         firstLevel.onLevelComplete += OnLevelComplete;
     }
 

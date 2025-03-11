@@ -26,6 +26,9 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     private List<int> rhythmSequence = null;
     private int rhythmSequenceIdx = 0;
     private int lastSequencePlayedBar = 0;
+    
+    private int numBossWaves = 6;
+    private int currBossWave = 1;
 
     private void Start()
     {
@@ -184,7 +187,10 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         if (!hasStartedRhythmSequence && audioEvent.CurrentBar >= lastSequencePlayedBar + 2) // Starting new bar, start playing rhythm sequence
         {
             hasStartedRhythmSequence = true;
-            rhythmSequence = EnemyRhythms.GenerateRandomRhythm();
+            if (isProjectilePhase && IsBossWave())
+                rhythmSequence = new List<int>() {1};
+            else
+                rhythmSequence = EnemyRhythms.GenerateRandomRhythm();
             rhythmSequenceIdx = 0;
             lastSequencePlayedBar = audioEvent.CurrentBar;
         }
@@ -208,11 +214,13 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             rhythmSequenceIdx = (rhythmSequenceIdx + 1) % rhythmSequence.Count;
         }
         else if (hasStartedRhythmSequence &&
-                 isProjectilePhase &&
+                 (isProjectilePhase ||
+                  (IsBossWave() && currBossWave < numBossWaves)) &&
                  audioEvent.CurrentBar > lastSequencePlayedBar + 2)
         { 
-            isProjectilePhase = false;
+            isProjectilePhase = !isProjectilePhase;
             hasStartedRhythmSequence = false;
+            currBossWave++;
         }
         else if (hasStartedRhythmSequence &&
                  audioEvent.CurrentBar > lastSequencePlayedBar + 3)
@@ -220,9 +228,21 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             KillAllEnemies();
             isProjectilePhase = true;
             hasStartedRhythmSequence = false;
+            currBossWave = 1;
 
             if (hasStartedCombo && !HasBrokenCombo())
                 OnComboComplete();
         }
+    }
+
+    private bool IsBossWave()
+    {
+        if (enemies.Count == 1)
+        {
+            BossBehaviour bh = enemies[0].GetComponent<BossBehaviour>();
+            if (bh)
+                return true;
+        }
+        return false;
     }
 }

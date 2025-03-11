@@ -7,14 +7,14 @@ using FMODUnity;
 public class BossBehaviour : EnemyBehaviour, IEasyListener
 {
     public int numWaves = 3;
-    public float burstRate = 0.1f;
-    public float sprayRate = 0.2f;
+    public float burstRate = 0.3f;
+    public float sprayRate = 0.3f;
 
     private PlayerMovement playerMovement; 
     private int currWave = 1;
     private Coroutine currRoutine;
 
-    void Start()
+    protected override void Start()
     {
         base.Start();
 
@@ -26,7 +26,7 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
         lastFireTime = 3f;
         fireRate = 3f;
 
-        Vector3 spawnPosition = Vector3.down * 5 + Vector3.forward * 25;
+        Vector3 spawnPosition = Vector3.down * 5 + Vector3.forward * 20;
         transform.localPosition = spawnPosition;
         transform.localRotation = Quaternion.Euler(0, 180, 0);
     }
@@ -84,22 +84,18 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
 
     public override void Attack()
     {   
-        if (Time.time >= lastFireTime + fireRate * fireRateMultiplier && !isDead && currRoutine == null){
-            int r = Random.Range(0, 3);
-            if (r == 0)
-            {
-                currRoutine = StartCoroutine("BurstFireRoutine");
-            }
-            else if (r == 1)
-            {
-                currRoutine = StartCoroutine("SprayFireRoutine");
-            }
-            else
-            {
-                NeedleFire();
-            }
-
-            lastFireTime = Time.time;
+        int r = Random.Range(0, 3);
+        if (r == 0)
+        {
+            currRoutine = StartCoroutine("BurstFireRoutine");
+        }
+        else if (r == 1)
+        {
+            currRoutine = StartCoroutine("SprayFireRoutine");
+        }
+        else
+        {
+            NeedleFire();
         }
     }
 
@@ -116,7 +112,7 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
 
     IEnumerator SprayFireRoutine()
     {
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < 5; i++)
         {
             int r = Random.Range(0, Stage.Lanes.GetNumLanes());
             SpawnProjectile(r);
@@ -128,7 +124,8 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
     
     void NeedleFire()
     {
-        int r = Random.Range(0, Stage.Lanes.GetNumLanes());
+        int r = Stage.Lanes.GetModLane(Random.Range(-1, 2) + playerMovement.currentLaneIndex); 
+
         for (int i = 0; i < 3; i++)
         {
             SpawnProjectile((r + i) % Stage.Lanes.GetNumLanes());
@@ -143,12 +140,25 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
         projectile.transform.parent = transform.parent;
         projectile.transform.localPosition = pos;
         ProjectileMovement projScript = projectile.GetComponent<ProjectileMovement>();
-        projScript.Init(this, 1f);
+        projScript.Init(this, timeToJudgementLine);
+    }
+
+    protected override void SpawnArrowProjectile()
+    {
+        Vector3 pos = GetLanePosition(playerMovement.currentLaneIndex);
+        GameObject arrowProjectilePrefab = GetArrowImageFromArrowDirection(ArrowDirection.RANDOM);
+        GameObject arrowProjectile = Instantiate(arrowProjectilePrefab, pos, Quaternion.identity);
+        arrowProjectile.transform.SetParent(transform.parent);
+        arrowProjectile.transform.localPosition = pos;
+        ArrowProjectileMovement projScript = arrowProjectile.GetComponent<ArrowProjectileMovement>();
+        projScript.Init(this, timeToJudgementLine);
+        projScript.onArrowDestroy += (() => { enemyRhythmManager.RemoveArrow(arrowProjectile); });
+        enemyRhythmManager.AddArrow(arrowProjectile);
     }
 
     Vector3 GetLanePosition(int lane)
     {
-        Vector3 newposition = Stage.Lanes.GetXYPosForLane(lane) + Vector3.forward * 25f;
+        Vector3 newposition = Stage.Lanes.GetXYPosForLane(lane) + Vector3.forward * 20f;
         return newposition;
     }
 }

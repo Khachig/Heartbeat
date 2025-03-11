@@ -28,7 +28,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
 
     private EasyRhythmAudioManager audioManager;
 
-    protected void Start()
+    protected virtual void Start()
     {
         // this data is per enemy instance
         instanceData = gameObject.GetComponent<EnemyData>();
@@ -130,7 +130,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         );
     } 
 
-    GameObject GetArrowImageFromArrowDirection(ArrowDirection direction)
+    protected GameObject GetArrowImageFromArrowDirection(ArrowDirection direction)
     {
         switch (direction)
         {
@@ -221,7 +221,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         lastFireTime = Time.time;
     }
 
-    private void SpawnProjectile()
+    protected virtual void SpawnProjectile()
     {
         GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position, Quaternion.identity);
         projectile.transform.parent = transform.parent;
@@ -229,7 +229,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         projScript.Init(this, timeToJudgementLine);
     }
 
-    private void SpawnArrowProjectile()
+    protected virtual void SpawnArrowProjectile()
     {
         GameObject arrowProjectilePrefab = GetArrowImageFromArrowDirection(ArrowDirection.RANDOM);
         GameObject arrowProjectile = Instantiate(arrowProjectilePrefab, gameObject.transform.position, Quaternion.identity);

@@ -14,10 +14,6 @@ public class EnemyRhythms : MonoBehaviour
     public static List<int> GenerateRandomRhythm()
     {
         int idx = Random.Range(0, allRhythms.Count);
-        string str = "Random rhythm: ";
-        foreach (int i in allRhythms[idx])
-            str = str + i + " ";
-        Debug.Log(str);
         return allRhythms[idx];
     }
 }

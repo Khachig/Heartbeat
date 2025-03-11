@@ -40,23 +40,6 @@ public class EnemyManager : ScriptableObject
         enemies = new List<GameObject>();
     }
 
-    public void spawnWave(Stage stage, float fireRate=0, float lastFireTime=0)
-    {
-        for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
-        {
-            GameObject enemy = spawnEnemy(new SpawnParameters {
-                position = Vector3.zero,
-                rotation = Quaternion.identity,
-                stage = stage,
-                arrowArrangement = new ArrowDirection[] { ArrowDirection.RANDOM, },
-                enemyLane = i,
-                fireRate = fireRate,
-                lastFireTime = lastFireTime
-            });
-            enemyRhythmManager.AddEnemy(enemy);
-        }
-    }
-
     public GameObject spawnEnemy(SpawnParameters parameters)
     {
         GameObject enemy = spawnEnemyHelper(parameters, enemyPrefab); 
