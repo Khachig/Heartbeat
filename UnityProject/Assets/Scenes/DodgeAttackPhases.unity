@@ -1970,6 +1970,13 @@ MonoBehaviour:
   moveDuration: 0.2
   forwardOffset: 8
   hitThreshold: 0.1
+  PlayerHurt:
+    Guid:
+      Data1: 11468303
+      Data2: 1338130652
+      Data3: 92380037
+      Data4: -2040567202
+    Path: event:/PlayerEvent/PlayerHurt
 --- !u!114 &425896409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6097,8 +6104,9 @@ MonoBehaviour:
   tunnelRadius: 3.5
   speed: 40
   rotationSpeed: 1
-  tube: {fileID: 1112287721}
   judgementLineOffset: 10
+  tube: {fileID: 1112287721}
+  offLimitLanePrefab: {fileID: 3660059805486479554, guid: bf8d1cd090a6c684d8851db142f8db96, type: 3}
 --- !u!114 &1518974363
 MonoBehaviour:
   m_ObjectHideFlags: 0

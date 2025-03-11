@@ -8,9 +8,11 @@ public class Stage : MonoBehaviour
     public float tunnelRadius = 3f;
     public float speed = 50f;
     public float rotationSpeed = 10f;
-    public GameObject tube;
     public float judgementLineOffset = 10f;
+    public GameObject tube;
+    public GameObject offLimitLanePrefab;
 
+    private GameObject[] offLimitLanes;
 	private Vector3 targetPoint;
 	private Quaternion targetRotation;
     private List<Vector3> points;
@@ -31,6 +33,7 @@ public class Stage : MonoBehaviour
 	}
 
 	void Start () {
+        offLimitLanes = new GameObject[numLanes];
         points = new List<Vector3>{};
         if (tube)
         {
@@ -82,6 +85,34 @@ public class Stage : MonoBehaviour
     private void SetTargetRotation() {
         targetRotation = Quaternion.LookRotation(points[(pointsIdx + 3) % points.Count] - transform.position);
     }
+
+    private void SpawnOffLimitLane(int lane)
+    {
+        if (offLimitLanes[lane] != null)
+            return;
+
+        Vector3 pos = GetXYPosForLane(lane) * 2f + Vector3.forward * 20f;
+        float angleStep = 360f / numLanes;
+        // -90 bc we want lane 0 to be at bottom of screen
+        float angle = (angleStep * lane - 90);
+        Quaternion rot = Quaternion.Euler(angle, 90, 0);
+        GameObject newOffLimitLane = Instantiate(offLimitLanePrefab, pos, Quaternion.identity);
+        newOffLimitLane.transform.parent = transform;
+        newOffLimitLane.transform.localPosition = pos;
+        newOffLimitLane.transform.localRotation = rot;
+        offLimitLanes[lane] = newOffLimitLane;
+    }
+
+    private void DeSpawnOffLimitLane(int lane)
+    {
+        if (offLimitLanes[lane] == null)
+            return;
+
+        Destroy(offLimitLanes[lane]);
+        offLimitLanes[lane] = null;
+    }
+
+
     
     public static class Lanes
 	{
@@ -89,5 +120,8 @@ public class Stage : MonoBehaviour
 		public static float GetJudgementLineOffset() => instance.judgementLineOffset;
 		public static int GetModLane(int lane) => instance.GetModLane(lane);
 		public static Vector3 GetXYPosForLane(int laneIdx) => instance.GetXYPosForLane(laneIdx);
+        public static void SpawnOffLimitLane(int lane) => instance.SpawnOffLimitLane(lane);
+        public static void DeSpawnOffLimitLane(int lane) => instance.DeSpawnOffLimitLane(lane);
+        public static bool IsOffLimitLaneActive(int lane) => instance.offLimitLanes[lane] != null;
 	}
 }

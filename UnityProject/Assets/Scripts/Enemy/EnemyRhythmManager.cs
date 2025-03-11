@@ -25,7 +25,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     private bool hasStartedRhythmSequence = false;
     private List<int> rhythmSequence = null;
     private int rhythmSequenceIdx = 0;
-    private int lastSequencePlayedBar = 0;
+    private int lastSequencePlayedBar = 1;
     
     private int numBossWaves = 6;
     private int currBossWave = 1;
@@ -184,6 +184,9 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
 
     private void HandleRhythmSequences(EasyEvent audioEvent)
     {
+        if (audioEvent.CurrentBar == 1)
+            lastSequencePlayedBar = 1;
+
         if (!hasStartedRhythmSequence && audioEvent.CurrentBar >= lastSequencePlayedBar + 2) // Starting new bar, start playing rhythm sequence
         {
             hasStartedRhythmSequence = true;
@@ -220,11 +223,33 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         { 
             isProjectilePhase = !isProjectilePhase;
             hasStartedRhythmSequence = false;
-            currBossWave++;
+
+            if (IsBossWave())
+            {
+                currBossWave++;
+                if (isProjectilePhase)
+                {
+                    for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
+                        Stage.Lanes.DeSpawnOffLimitLane(i);
+                }
+                else 
+                {
+                    GameObject playerObject = GameObject.FindWithTag("Player");
+                    PlayerMovement playerMovement = playerObject.GetComponent<PlayerMovement>();
+                    for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
+                    {
+                        if (playerMovement.currentLaneIndex != i)
+                            Stage.Lanes.SpawnOffLimitLane(i);
+                    }
+                }
+            }
         }
         else if (hasStartedRhythmSequence &&
                  audioEvent.CurrentBar > lastSequencePlayedBar + 3)
         {
+            for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
+                Stage.Lanes.DeSpawnOffLimitLane(i);
+
             KillAllEnemies();
             isProjectilePhase = true;
             hasStartedRhythmSequence = false;

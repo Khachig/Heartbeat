@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using TMPro;
 using UnityEngine.InputSystem;
+using FMODUnity;
 public class PlayerMovement : MonoBehaviour, IEasyListener
 {
     public Animator animator;
@@ -9,6 +10,7 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     public float moveDuration = 0.3f;
     public float forwardOffset = 10f;
     public float hitThreshold = 0.5f;
+    public EventReference PlayerHurt;
 
     private float timeAtLastBeat;
     private float beatLength;
@@ -143,5 +145,14 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         if (beatLength == 0)
             beatLength = audioEvent.BeatLength();
         timeAtLastBeat = Time.time;
+
+        if (Stage.Lanes.IsOffLimitLaneActive(currentLaneIndex))
+        {
+            HealthSystem playerHealth = transform.GetChild(0).GetComponent<HealthSystem>();
+            playerHealth.TakeDamage(5);
+			Effects.SpecialEffects.ScreenDamageEffect(0.5f);
+            ScoreManager.Instance.DecreaseScore(25);
+            RuntimeManager.PlayOneShot(PlayerHurt, transform.position);
+        }
     }
 }
