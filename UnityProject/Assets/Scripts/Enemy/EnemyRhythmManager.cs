@@ -25,7 +25,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     private bool hasStartedRhythmSequence = false;
     private List<int> rhythmSequence = null;
     private int rhythmSequenceIdx = 0;
-    private int lastSequencePlayedBar = 1;
+    private int lastSequencePlayedBar = 0;
     
     private int numBossWaves = 6;
     private int currBossWave = 1;
@@ -185,7 +185,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     private void HandleRhythmSequences(EasyEvent audioEvent)
     {
         if (audioEvent.CurrentBar == 1)
-            lastSequencePlayedBar = 1;
+            lastSequencePlayedBar = 0;
 
         if (!hasStartedRhythmSequence && audioEvent.CurrentBar >= lastSequencePlayedBar + 2) // Starting new bar, start playing rhythm sequence
         {
