@@ -82,7 +82,7 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
         return newList;
     }
 
-    protected override void Attack()
+    public override void Attack()
     {   
         if (Time.time >= lastFireTime + fireRate * fireRateMultiplier && !isDead && currRoutine == null){
             int r = Random.Range(0, 3);
@@ -143,7 +143,7 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
         projectile.transform.parent = transform.parent;
         projectile.transform.localPosition = pos;
         ProjectileMovement projScript = projectile.GetComponent<ProjectileMovement>();
-        projScript.Init(this);
+        projScript.Init(this, 1f);
     }
 
     Vector3 GetLanePosition(int lane)

@@ -24,6 +24,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     protected EnemyDamageEffect effects;
     protected List<GameObject> arrows;
     protected bool isDead = false; // To ensure no attacks during death animation;
+    protected float timeToJudgementLine = 1f; // How long projectiles should travel before hitting judgement line
 
     private EasyRhythmAudioManager audioManager;
 
@@ -35,8 +36,8 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         enemyAnimator = gameObject.transform.GetChild(0).GetComponent<Animator>();
         arrows = new List<GameObject>();
 
-        SpawnArrows();
-        SetArrowPulsable();
+        // SpawnArrows();
+        // SetArrowPulsable();
 
         lastFireTime = Random.Range(4f, 8f);
         if (fireRate == 0){
@@ -55,6 +56,11 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     public void SetFireRateMultiplier(float mult)
     {
         fireRateMultiplier = mult;
+    }
+
+    public void SetTimeToJudgementLine(float ttj)
+    {
+        timeToJudgementLine = ttj;
     }
 
     public bool IsDead() { return isDead; }
@@ -146,6 +152,21 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
             return image_list[Random.Range(1, 5) % 4];
         }
     }
+
+    public void KillEnemy()
+    {
+        isDead = true;
+        onEnemyDestroy?.Invoke();
+        // Animator will call destroy on enemy
+        enemyAnimator.SetTrigger("EnemyDeath");
+        RuntimeManager.PlayOneShot(EnemyDefeat, transform.position);
+    }
+
+    public void HitEnemy()
+    {
+        enemyAnimator.SetTrigger("EnemyHit");
+        RuntimeManager.PlayOneShot(EnemyHurt, transform.position);
+    }
  
     protected virtual void RemoveArrow()
     {
@@ -174,13 +195,30 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         }
     }
 
-    protected virtual void Attack()
+    public void StartAttackAnim()
+    {
+        enemyAnimator.SetTrigger("EnemyShoot");
+    } 
+    
+    public void StartArrowAttackAnim()
+    {
+        enemyAnimator.SetTrigger("EnemyShootArrow");
+    }
+
+    public virtual void Attack()
     {   
-        if (Time.time >= lastFireTime + fireRate * fireRateMultiplier && !isDead){
-            SpawnProjectile();
-            RuntimeManager.PlayOneShot(EnemyShoot, transform.position);
-            lastFireTime = Time.time;
-        }
+        effects.Flash();
+        SpawnProjectile();
+        RuntimeManager.PlayOneShot(EnemyShoot, transform.position);
+        lastFireTime = Time.time;
+    }
+
+    public virtual void ArrowAttack()
+    {   
+        effects.Flash();
+        SpawnArrowProjectile();
+        RuntimeManager.PlayOneShot(EnemyShoot, transform.position);
+        lastFireTime = Time.time;
     }
 
     private void SpawnProjectile()
@@ -188,7 +226,18 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         GameObject projectile = Instantiate(projectilePrefab, gameObject.transform.position, Quaternion.identity);
         projectile.transform.parent = transform.parent;
         ProjectileMovement projScript = projectile.GetComponent<ProjectileMovement>();
-        projScript.Init(this);
+        projScript.Init(this, timeToJudgementLine);
+    }
+
+    private void SpawnArrowProjectile()
+    {
+        GameObject arrowProjectilePrefab = GetArrowImageFromArrowDirection(ArrowDirection.RANDOM);
+        GameObject arrowProjectile = Instantiate(arrowProjectilePrefab, gameObject.transform.position, Quaternion.identity);
+        arrowProjectile.transform.SetParent(transform.parent);
+        ArrowProjectileMovement projScript = arrowProjectile.GetComponent<ArrowProjectileMovement>();
+        projScript.Init(this, timeToJudgementLine);
+        projScript.onArrowDestroy += (() => { enemyRhythmManager.RemoveArrow(arrowProjectile); });
+        enemyRhythmManager.AddArrow(arrowProjectile);
     }
 
     protected void SetArrowPulsable()
@@ -203,7 +252,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     
     public void OnBeat(EasyEvent audioEvent)
     {
-        Attack();
-        FlashArrow(audioEvent.CurrentBeat - 1);
+        // Attack();
+        // FlashArrow(audioEvent.CurrentBeat - 1);
     }
 }

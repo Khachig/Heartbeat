@@ -9,6 +9,7 @@ public class Stage : MonoBehaviour
     public float speed = 50f;
     public float rotationSpeed = 10f;
     public GameObject tube;
+    public float judgementLineOffset = 10f;
 
 	private Vector3 targetPoint;
 	private Quaternion targetRotation;
@@ -85,6 +86,7 @@ public class Stage : MonoBehaviour
     public static class Lanes
 	{
 		public static int GetNumLanes() => instance.numLanes;
+		public static float GetJudgementLineOffset() => instance.judgementLineOffset;
 		public static int GetModLane(int lane) => instance.GetModLane(lane);
 		public static Vector3 GetXYPosForLane(int laneIdx) => instance.GetXYPosForLane(laneIdx);
 	}

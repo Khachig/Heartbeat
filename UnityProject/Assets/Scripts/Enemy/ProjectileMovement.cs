@@ -27,8 +27,12 @@ public class ProjectileMovement : MonoBehaviour
         }
     }
 
-    public void Init(EnemyBehaviour pBehaviour)
+    public void Init(EnemyBehaviour pBehaviour, float timeToJudgementLine)
     {
+        float distanceToJudgementLine = transform.localPosition.z - Stage.Lanes.GetJudgementLineOffset();
+        float requiredSpeed = distanceToJudgementLine / timeToJudgementLine;
+        projectileSpeed = requiredSpeed;
+
         SetDestroyCallback(pBehaviour);
     }
 

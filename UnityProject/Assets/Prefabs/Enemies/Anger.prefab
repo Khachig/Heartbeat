@@ -273,10 +273,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6316e3cafcbfe4deb9e70a9efec2ba3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UpPrefab: {fileID: 2952317557082884836, guid: 9f6843d7f1d54465e84c41dcc92afe6b, type: 3}
-  DownPrefab: {fileID: 5197133300777824675, guid: aee74fdb5d56f450f83ae10a731b8844, type: 3}
-  LeftPrefab: {fileID: 3919153399642393051, guid: 2959c4ed9a9a14b539cfb290ef5600f3, type: 3}
-  RightPrefab: {fileID: 4196610935258618360, guid: 6229d257213b442bdb3faf3c3b52b7f9, type: 3}
+  UpPrefab: {fileID: 5211037245117644644, guid: 315c0a1657bf1a84f9a6d467c6cf7664, type: 3}
+  DownPrefab: {fileID: 5211037245117644644, guid: 7a92c5ac3fef2774f951aa777b3096b3, type: 3}
+  LeftPrefab: {fileID: 5211037245117644644, guid: 84c2121a596ee8848aeaab73a7a45f8e, type: 3}
+  RightPrefab: {fileID: 5211037245117644644, guid: 95c17894a8d1e7747882b4a083d85654, type: 3}
   arrowArrangement: 
   spawnOffsetAngle: 0.5235988
   spawnArcRadius: 2

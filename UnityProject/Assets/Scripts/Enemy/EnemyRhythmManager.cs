@@ -13,11 +13,19 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     public EventReference ComboFail;
 
     private List<GameObject> enemies = new List<GameObject>();
+    private List<GameObject> arrows = new List<GameObject>();
     private bool hasStartedCombo = false;
     private bool hasBrokenCombo = false;
     private int comboNum = 0;
     private int maxComboNum = 0;
     private float timeAtLastComboHit;
+    private float timeToJudgementLine = 0f; // How long projectiles should travel before hitting judgement line
+
+    private bool isProjectilePhase = true;
+    private bool hasStartedRhythmSequence = false;
+    private List<int> rhythmSequence = null;
+    private int rhythmSequenceIdx = 0;
+    private int lastSequencePlayedBar = 0;
 
     private void Start()
     {
@@ -32,9 +40,14 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         }
     }
 
-    public void AddEnemy(GameObject enemy) { enemies.Add(enemy); }
+    public void AddEnemy(GameObject enemy) {
+        enemies.Add(enemy);
+        enemy.GetComponent<EnemyBehaviour>().SetTimeToJudgementLine(timeToJudgementLine);
+    }
 
     public void RemoveEnemy(GameObject enemy) { enemies.Remove(enemy); }
+    public void AddArrow(GameObject arrow) { arrows.Add(arrow); }
+    public void RemoveArrow(GameObject arrow) { arrows.Remove(arrow); }
 
     public void InitNewSequence()
     {
@@ -64,6 +77,32 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         hasBrokenCombo = true;
         RuntimeManager.PlayOneShot(ComboFail, transform.position);
     } 
+
+    public bool HandlePlayerAttack(Vector2 input)
+    {
+        if (arrows.Count == 0)
+            return false;       
+
+        GameObject nextArrow = arrows[0];
+        ArrowProjectileMovement nextArrowMovement = nextArrow.GetComponent<ArrowProjectileMovement>();
+
+        if (!nextArrowMovement.IsInHitRange())
+            return false;
+        
+        if ((input.y > 0 && nextArrow.name.Equals("UpArrowProjectile(Clone)")) ||
+            (input.y < 0 && nextArrow.name.Equals("DownArrowProjectile(Clone)")) ||
+            (input.x > 0 && nextArrow.name.Equals("RightArrowProjectile(Clone)")) ||
+            (input.x < 0 && nextArrow.name.Equals("LeftArrowProjectile(Clone)"))
+        )
+        {
+            RemoveArrow(nextArrow);
+            nextArrowMovement.DestroyArrow();
+            nextArrowMovement.GetParentEnemyBehaviour().HitEnemy();
+            return true;
+        }
+
+        return false;
+    }
 
     private void GenerateSequenceTimings()
     {
@@ -116,12 +155,73 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         ResetCombo();
     }
 
+    private void KillAllEnemies()
+    {
+        foreach(GameObject enemy in enemies.ToList())
+        {
+            RemoveEnemy(enemy);
+            EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+            enemyBehaviour.KillEnemy();
+        }
+    }
+
     public void OnBeat(EasyEvent audioEvent)
     {
-        if (hasStartedCombo && !HasBrokenCombo() && 
-            Time.time - timeAtLastComboHit > audioEvent.BeatLength() * 1.5f)
+        if (timeToJudgementLine == 0)
         {
-            if (enemies.Count == 0)
+            // Take a full bar to reach judgement line
+            timeToJudgementLine = audioEvent.BeatLength() * audioEvent.TimeSigAsArray()[0];
+        }
+
+        if (enemies.Count == 0)
+            return;
+
+        HandleRhythmSequences(audioEvent);
+    }
+
+    private void HandleRhythmSequences(EasyEvent audioEvent)
+    {
+        if (!hasStartedRhythmSequence && audioEvent.CurrentBar >= lastSequencePlayedBar + 2) // Starting new bar, start playing rhythm sequence
+        {
+            hasStartedRhythmSequence = true;
+            rhythmSequence = EnemyRhythms.GenerateRandomRhythm();
+            rhythmSequenceIdx = 0;
+            lastSequencePlayedBar = audioEvent.CurrentBar;
+        }
+        else if (hasStartedRhythmSequence &&
+            // Ensure beat is 1 before rhythm sequence to give time for animations to play
+            ((audioEvent.CurrentBar == lastSequencePlayedBar &&
+              audioEvent.CurrentBeat == audioEvent.TimeSigAsArray()[0] &&
+              rhythmSequence[rhythmSequenceIdx] == 1) ||
+             (audioEvent.CurrentBar == lastSequencePlayedBar + 1 && // Give sequences 1 bar gap between playing
+              audioEvent.CurrentBeat == rhythmSequence[rhythmSequenceIdx] - 1))
+           )
+        {
+            GameObject enemy = enemies[rhythmSequenceIdx % enemies.Count];
+            EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+
+            if (isProjectilePhase)
+                enemyBehaviour.StartAttackAnim();
+            else
+                enemyBehaviour.StartArrowAttackAnim();
+
+            rhythmSequenceIdx = (rhythmSequenceIdx + 1) % rhythmSequence.Count;
+        }
+        else if (hasStartedRhythmSequence &&
+                 isProjectilePhase &&
+                 audioEvent.CurrentBar > lastSequencePlayedBar + 2)
+        { 
+            isProjectilePhase = false;
+            hasStartedRhythmSequence = false;
+        }
+        else if (hasStartedRhythmSequence &&
+                 audioEvent.CurrentBar > lastSequencePlayedBar + 3)
+        {
+            KillAllEnemies();
+            isProjectilePhase = true;
+            hasStartedRhythmSequence = false;
+
+            if (hasStartedCombo && !HasBrokenCombo())
                 OnComboComplete();
         }
     }

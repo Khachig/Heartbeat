@@ -9,6 +9,7 @@ public class PlayerAttack : MonoBehaviour, IEasyListener
     public static OnAttackSuccess onAttackSuccess;
 
     public EnemyManager enemyManager;
+    public EnemyRhythmManager enemyRhythmManager;
     public HealthSystem playerHealth;
     public float missDamage = 5f;
     public float hitThreshold = 0.1f;
@@ -39,7 +40,8 @@ public class PlayerAttack : MonoBehaviour, IEasyListener
             return;
         }
 
-        bool successfulHit = enemyManager.handlePlayerAttack(context.ReadValue<Vector2>());
+        // bool successfulHit = enemyManager.handlePlayerAttack(context.ReadValue<Vector2>());
+        bool successfulHit = enemyRhythmManager.HandlePlayerAttack(context.ReadValue<Vector2>());
         if (successfulHit)
             onAttackSuccess?.Invoke();
         else
