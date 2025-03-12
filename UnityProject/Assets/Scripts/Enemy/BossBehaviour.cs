@@ -13,6 +13,7 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
     private PlayerMovement playerMovement; 
     private int currWave = 1;
     private Coroutine currRoutine;
+    private float forwardOffset = 30f;
 
     protected override void Start()
     {
@@ -26,7 +27,7 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
         lastFireTime = 3f;
         fireRate = 3f;
 
-        Vector3 spawnPosition = Vector3.down * 5 + Vector3.forward * 20;
+        Vector3 spawnPosition = Vector3.down * 5 + Vector3.forward * forwardOffset;
         transform.localPosition = spawnPosition;
         transform.localRotation = Quaternion.Euler(0, 180, 0);
     }
@@ -158,7 +159,7 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
 
     Vector3 GetLanePosition(int lane)
     {
-        Vector3 newposition = Stage.Lanes.GetXYPosForLane(lane) + Vector3.forward * 20f;
+        Vector3 newposition = Stage.Lanes.GetXYPosForLane(lane) + Vector3.forward * forwardOffset;
         return newposition;
     }
 }

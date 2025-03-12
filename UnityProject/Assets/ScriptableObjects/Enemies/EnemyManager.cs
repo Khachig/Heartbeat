@@ -10,7 +10,7 @@ public class EnemyManager : ScriptableObject
     public delegate void OnEnemyDeath();
     // To be invoked whenever a single enemy is destroyed/killed
     public OnEnemyDeath onEnemyDeath;
-    public float spawnForwardOffset = 20f;
+    public float spawnForwardOffset = 30f;
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private GameObject bossPrefab;
 
