@@ -219,7 +219,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         else if (hasStartedRhythmSequence &&
                  (isProjectilePhase ||
                   (IsBossWave() && currBossWave < numBossWaves)) &&
-                 audioEvent.CurrentBar > lastSequencePlayedBar + 2)
+                 audioEvent.CurrentBar > lastSequencePlayedBar + 1)
         { 
             isProjectilePhase = !isProjectilePhase;
             hasStartedRhythmSequence = false;
@@ -245,7 +245,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             }
         }
         else if (hasStartedRhythmSequence &&
-                 audioEvent.CurrentBar > lastSequencePlayedBar + 3)
+                 audioEvent.CurrentBar > lastSequencePlayedBar + 2)
         {
             for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
                 Stage.Lanes.DeSpawnOffLimitLane(i);
