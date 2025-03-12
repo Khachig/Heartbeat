@@ -118,6 +118,12 @@
 		<property name="position">
 			<value>0</value>
 		</property>
+		<property name="tempo">
+			<value>240</value>
+		</property>
+		<property name="timeSignatureNumerator">
+			<value>8</value>
+		</property>
 		<relationship name="timeline">
 			<destination>{b7a997c1-cc09-4a97-a6c0-5ce074b19e59}</destination>
 		</relationship>

@@ -36,10 +36,12 @@ public class EndlessPhasesLevel : Level
         enemyCount--;
         if (enemyCount == 0) {
             wave++;
-            if (wave < 5)
-                maxEnemyCount = wave;
-            else
-                maxEnemyCount = 4;
+            if (wave == 4)
+                enemyRhythmManager.SetDifficulty(1); // Set to normal difficulty (harder rhythms)
+            if (wave <= 3)
+                maxEnemyCount = 1;
+            else if (maxEnemyCount < 4)
+                maxEnemyCount++;
             Invoke("SpawnWave", 3);
         }
     }

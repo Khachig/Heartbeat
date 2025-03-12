@@ -98,7 +98,7 @@ public class EnemyManager : ScriptableObject
     {
         // For enemy prefab, pulsable is in its first child: default
         Pulsable pulsable = enemy.transform.GetChild(0).GetComponent<Pulsable>();
-        float bpm = audioManager.myAudioEvent.CurrentTempo;
+        float bpm = audioManager.myAudioEvent.CurrentTempo / 2f;
         pulsable.Init(bpm, audioManager);
     }
 

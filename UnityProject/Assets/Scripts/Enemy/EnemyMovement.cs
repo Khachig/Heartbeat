@@ -104,8 +104,8 @@ public class EnemyMovement : MonoBehaviour, IEasyListener
     public void OnBeat(EasyEvent audioEvent)
     {
         if (Time.time >= lastMove+moveInterval &&
-            (audioEvent.CurrentBeat == 2 ||
-             audioEvent.CurrentBeat == 4)
+            (audioEvent.CurrentBeat == audioEvent.TimeSigAsArray()[0] / 2 - 1 ||
+             audioEvent.CurrentBeat == audioEvent.TimeSigAsArray()[0] - 1)
             )
         {
             moveEnemiesTowardPlayer();

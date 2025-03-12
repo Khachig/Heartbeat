@@ -10,7 +10,7 @@ public class PulsableManager : MonoBehaviour
     {
         if (bpm == 0)
         {
-            bpm = audioManager.myAudioEvent.CurrentTempo;
+            bpm = audioManager.myAudioEvent.CurrentTempo / 2f;
             if (bpm > 0)
             {
                 // Init all pulsables

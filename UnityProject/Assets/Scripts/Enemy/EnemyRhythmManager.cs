@@ -29,6 +29,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     
     private int numBossWaves = 6;
     private int currBossWave = 1;
+    private int difficulty = 0; // 0 = easy; 1 = normal
 
     private void Start()
     {
@@ -42,6 +43,8 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             audioManager.AddListener(this);
         }
     }
+
+    public void SetDifficulty(int diff) { difficulty = diff; }
 
     public void AddEnemy(GameObject enemy) {
         enemies.Add(enemy);
@@ -193,17 +196,26 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             if (isProjectilePhase && IsBossWave())
                 rhythmSequence = new List<int>() {1};
             else
-                rhythmSequence = EnemyRhythms.GenerateRandomRhythm();
+            {
+                if (difficulty == 0)
+                    rhythmSequence = EnemyRhythms.GenerateRandomEasyRhythm();
+                else
+                    rhythmSequence = EnemyRhythms.GenerateRandomRhythm();
+            }
             rhythmSequenceIdx = 0;
             lastSequencePlayedBar = audioEvent.CurrentBar;
         }
         else if (hasStartedRhythmSequence &&
             // Ensure beat is 1 before rhythm sequence to give time for animations to play
+            // Note: 1 "beat" in audioEvent is actually 1/2 a beat (8th note)
+            // Dev decision to handle complex rhythms
             ((audioEvent.CurrentBar == lastSequencePlayedBar &&
-              audioEvent.CurrentBeat == audioEvent.TimeSigAsArray()[0] &&
-              rhythmSequence[rhythmSequenceIdx] == 1) ||
+              ((audioEvent.CurrentBeat == audioEvent.TimeSigAsArray()[0] - 1 &&
+                rhythmSequence[rhythmSequenceIdx] == 1) ||
+               (audioEvent.CurrentBeat == audioEvent.TimeSigAsArray()[0] &&
+                rhythmSequence[rhythmSequenceIdx] == 2))) ||
              (audioEvent.CurrentBar == lastSequencePlayedBar + 1 && // Give sequences 1 bar gap between playing
-              audioEvent.CurrentBeat == rhythmSequence[rhythmSequenceIdx] - 1))
+              audioEvent.CurrentBeat == rhythmSequence[rhythmSequenceIdx] - 2))
            )
         {
             GameObject enemy = enemies[rhythmSequenceIdx % enemies.Count];

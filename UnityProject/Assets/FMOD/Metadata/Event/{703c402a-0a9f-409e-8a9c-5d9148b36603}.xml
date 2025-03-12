@@ -118,7 +118,10 @@
 			<value>0</value>
 		</property>
 		<property name="tempo">
-			<value>114</value>
+			<value>228</value>
+		</property>
+		<property name="timeSignatureNumerator">
+			<value>8</value>
 		</property>
 		<relationship name="timeline">
 			<destination>{cfd5d287-ea9f-4346-a938-76f6022aaa90}</destination>

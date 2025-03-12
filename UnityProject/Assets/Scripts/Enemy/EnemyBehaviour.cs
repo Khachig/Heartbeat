@@ -247,7 +247,7 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
 
         GameObject arrow = arrows[0];
         Pulsable arrowPulsable = arrow.GetComponent<Pulsable>();
-        arrowPulsable.Init(audioManager.myAudioEvent.CurrentTempo, audioManager);
+        arrowPulsable.Init(audioManager.myAudioEvent.CurrentTempo / 2f, audioManager);
     }
     
     public void OnBeat(EasyEvent audioEvent)
