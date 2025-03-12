@@ -48,15 +48,12 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         Vector2 moveInput = context.ReadValue<Vector2>();
 
         if ((IsOnTopLane(currentLaneIndex) && moveInput.x > 0) ||
-            (IsOnTopLane(currentLaneIndex) && moveInput.y < 0) ||
+
             (IsOnBottomLane(currentLaneIndex) && moveInput.x < 0) ||
-            (IsOnBottomLane(currentLaneIndex) && moveInput.y > 0) ||
 
             (IsOnRightLane(currentLaneIndex) && moveInput.y < 0) ||
-            (IsOnRightLane(currentLaneIndex) && moveInput.x < 0) ||
 
-            (IsOnLeftLane(currentLaneIndex) && moveInput.y > 0) ||
-            (IsOnLeftLane(currentLaneIndex) && moveInput.x > 0))
+            (IsOnLeftLane(currentLaneIndex) && moveInput.y > 0) )
         {
             ClockwiseLaneChange();
         }
@@ -67,6 +64,20 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         {
             CounterClockwiseLaneChange();
         }
+        else if ((IsOnTopLane(currentLaneIndex) && moveInput.y < 0) ||
+            (IsOnBottomLane(currentLaneIndex) && moveInput.y > 0) ||
+            (IsOnRightLane(currentLaneIndex) && moveInput.x < 0) ||
+            (IsOnLeftLane(currentLaneIndex) && moveInput.x > 0))
+        {
+            StraightLaneChange();
+        }
+    }
+
+    void StraightLaneChange() {
+        Debug.Log($"{currentLaneIndex}, {currentLaneIndex-2}");
+        currentLaneIndex = Stage.Lanes.GetModLane(currentLaneIndex - 2);
+        Debug.Log($"{currentLaneIndex}");
+        ChangeLaneStraight();
     }
 
     void ClockwiseLaneChange() {
@@ -92,6 +103,15 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         else
             targetRotation = transform.localRotation * Quaternion.AngleAxis(angleStep, Vector3.forward);
 
+        StartCoroutine(SmoothMove(newposition, targetRotation));
+    }
+
+    void ChangeLaneStraight()
+    {
+        Vector3 newposition = GetCurrPosition();
+        Quaternion targetRotation;
+
+        targetRotation = transform.localRotation * Quaternion.AngleAxis(180, Vector3.forward);
         StartCoroutine(SmoothMove(newposition, targetRotation));
     }
 
