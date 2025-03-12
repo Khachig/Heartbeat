@@ -15,6 +15,7 @@ public class Stage : MonoBehaviour
     private GameObject[] offLimitLanes;
 	private Vector3 targetPoint;
 	private Quaternion targetRotation;
+	private float zRotationAngle = 0f;
     private List<Vector3> points;
 	private int pointsIdx;
 
@@ -84,6 +85,12 @@ public class Stage : MonoBehaviour
 
     private void SetTargetRotation() {
         targetRotation = Quaternion.LookRotation(points[(pointsIdx + 3) % points.Count] - transform.position);
+        targetRotation = targetRotation * Quaternion.AngleAxis(zRotationAngle, Vector3.forward);
+        zRotationAngle += (Mathf.PerlinNoise(transform.position.x, transform.position.y) * 2 - 1);
+    }
+
+    private void ChangeRandomZRotation() {
+        transform.rotation = transform.rotation * Quaternion.AngleAxis(10f, Vector3.forward);
     }
 
     private void SpawnOffLimitLane(int lane)

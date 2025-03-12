@@ -88,9 +88,9 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         float angleStep = 360f / Stage.Lanes.GetNumLanes();
 
         if (moveLeft)
-            targetRotation = Quaternion.Euler(0, 0, transform.eulerAngles.z - angleStep);
+            targetRotation = transform.localRotation * Quaternion.AngleAxis(-angleStep, Vector3.forward);
         else
-            targetRotation = Quaternion.Euler(0, 0, transform.eulerAngles.z + angleStep);
+            targetRotation = transform.localRotation * Quaternion.AngleAxis(angleStep, Vector3.forward);
 
         StartCoroutine(SmoothMove(newposition, targetRotation));
     }
