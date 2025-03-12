@@ -101,6 +101,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             (input.x < 0 && nextArrow.name.Equals("LeftArrowProjectile(Clone)"))
         )
         {
+            ScoreManager.Instance.AddScore(50);
             RemoveArrow(nextArrow);
             nextArrowMovement.DestroyArrow();
             nextArrowMovement.GetParentEnemyBehaviour().HitEnemy();
