@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine.InputSystem;
 using FMODUnity;
+
 public class PlayerMovement : MonoBehaviour, IEasyListener
 {
     public Animator animator;
@@ -15,6 +16,8 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     private float timeAtLastBeat;
     private float beatLength;
     private bool isMoving = false;
+    private float lastMoveTime = 0f;
+    private const float inputCooldown = 0.1f; // set to 0.1 second
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -35,7 +38,10 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         if (isMoving)
             return;
 
-        if (currtime - timeAtLastBeat > hitThreshold &&// lateness threshold
+        if (currtime - lastMoveTime < inputCooldown)
+            return;
+
+        if (currtime - timeAtLastBeat > hitThreshold && // lateness threshold
             timeAtLastBeat + beatLength - currtime > hitThreshold) // earliness threshold
         {
             // Do any penalty for moving out of time
@@ -45,22 +51,28 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
             return;
         }
 
+
         Vector2 moveInput = context.ReadValue<Vector2>();
 
-        if ((IsOnTopLane(currentLaneIndex) && moveInput.x > 0) ||
+        //Debug.Log($"Move Input: {moveInput}");
 
-            (IsOnBottomLane(currentLaneIndex) && moveInput.x < 0) ||
+        //normalize the input
+        moveInput.x = Mathf.Round(moveInput.x * 2) / 2;
+        moveInput.y = Mathf.Round(moveInput.y * 2) / 2;
 
-            (IsOnRightLane(currentLaneIndex) && moveInput.y < 0) ||
+        // if the input is from joystick, we need to normalize it
 
-            (IsOnLeftLane(currentLaneIndex) && moveInput.y > 0) )
+        if ((IsOnTopLane(currentLaneIndex) && moveInput.x > 0 && (moveInput.y < 0.5 && moveInput.y > -0.5)) ||
+            (IsOnBottomLane(currentLaneIndex) && moveInput.x < 0 && (moveInput.y < 0.5 && moveInput.y > -0.5)) ||
+            (IsOnRightLane(currentLaneIndex) && moveInput.y < 0 && (moveInput.x < 0.5 && moveInput.x > -0.5)) ||
+            (IsOnLeftLane(currentLaneIndex) && moveInput.y > 0 && (moveInput.x < 0.5 && moveInput.x > -0.5)))
         {
             ClockwiseLaneChange();
         }
-        else if ((IsOnTopLane(currentLaneIndex) && moveInput.x < 0) ||
-            (IsOnBottomLane(currentLaneIndex) && moveInput.x > 0) ||
-            (IsOnRightLane(currentLaneIndex) && moveInput.y > 0) ||
-            (IsOnLeftLane(currentLaneIndex) && moveInput.y < 0))
+        else if ((IsOnTopLane(currentLaneIndex) && moveInput.x < 0 && (moveInput.y < 0.5 && moveInput.y > -0.5)) ||
+            (IsOnBottomLane(currentLaneIndex) && moveInput.x > 0 && (moveInput.y < 0.5 && moveInput.y > -0.5)) ||
+            (IsOnRightLane(currentLaneIndex) && moveInput.y > 0 && (moveInput.x < 0.5 && moveInput.x > -0.5)) ||
+            (IsOnLeftLane(currentLaneIndex) && moveInput.y < 0 && (moveInput.x < 0.5 && moveInput.x > -0.5)))
         {
             CounterClockwiseLaneChange();
         }
@@ -71,22 +83,27 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         {
             StraightLaneChange();
         }
+
+        lastMoveTime = currtime;
     }
 
-    void StraightLaneChange() {
-        Debug.Log($"{currentLaneIndex}, {currentLaneIndex-2}");
+    void StraightLaneChange()
+    {
+        Debug.Log($"{currentLaneIndex}, {currentLaneIndex - 2}");
         currentLaneIndex = Stage.Lanes.GetModLane(currentLaneIndex - 2);
         Debug.Log($"{currentLaneIndex}");
         ChangeLaneStraight();
     }
 
-    void ClockwiseLaneChange() {
+    void ClockwiseLaneChange()
+    {
         animator.SetTrigger("MoveLeft");
         currentLaneIndex = Stage.Lanes.GetModLane(currentLaneIndex - 1);
         ChangeLane(true);
     }
 
-    void CounterClockwiseLaneChange() {
+    void CounterClockwiseLaneChange()
+    {
         animator.SetTrigger("MoveRight");
         currentLaneIndex = Stage.Lanes.GetModLane(currentLaneIndex + 1);
         ChangeLane(false);
@@ -146,19 +163,19 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
 
     bool IsOnTopLane(int lane) { return lane == (Stage.Lanes.GetNumLanes() / 2); }
 
-    bool IsOnBottomLane(int lane) { return lane == 0; } 
-    
+    bool IsOnBottomLane(int lane) { return lane == 0; }
+
     bool IsOnLeftLane(int lane)
     {
         return (Stage.Lanes.GetNumLanes() / 2) < lane &&
                lane < Stage.Lanes.GetNumLanes();
-    } 
+    }
 
     bool IsOnRightLane(int lane)
     {
         return 0 < lane &&
                lane < (Stage.Lanes.GetNumLanes() / 2);
-    } 
+    }
 
     public void OnBeat(EasyEvent audioEvent)
     {
@@ -170,7 +187,7 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         {
             HealthSystem playerHealth = transform.GetChild(0).GetComponent<HealthSystem>();
             playerHealth.TakeDamage(5);
-			Effects.SpecialEffects.ScreenDamageEffect(0.5f);
+            Effects.SpecialEffects.ScreenDamageEffect(0.5f);
             ScoreManager.Instance.DecreaseScore(25);
             RuntimeManager.PlayOneShot(PlayerHurt, transform.position);
         }
