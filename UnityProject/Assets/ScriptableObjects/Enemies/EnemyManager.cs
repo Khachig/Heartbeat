@@ -10,7 +10,6 @@ public class EnemyManager : ScriptableObject
     public delegate void OnEnemyDeath();
     // To be invoked whenever a single enemy is destroyed/killed
     public OnEnemyDeath onEnemyDeath;
-    public float spawnForwardOffset = 30f;
     [SerializeField] private GameObject enemyPrefab;
     [SerializeField] private GameObject bossPrefab;
 
@@ -59,7 +58,7 @@ public class EnemyManager : ScriptableObject
     {
         GameObject enemy = Instantiate(
             prefab,
-            parameters.position + parameters.stage.transform.forward * spawnForwardOffset,
+            parameters.position,
             Quaternion.identity);
         enemy.transform.eulerAngles = new Vector3(
             parameters.rotation.x,

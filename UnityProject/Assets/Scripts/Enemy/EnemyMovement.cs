@@ -5,7 +5,7 @@ public class EnemyMovement : MonoBehaviour, IEasyListener
 {
     public PlayerMovement playerMovement; 
     public float moveDuration = 0.3f;
-    public float forwardOffset = 20f;
+    public float forwardOffset = 80f;
     public float moveInterval = 1f;
 
     private float lastMove = 0f;

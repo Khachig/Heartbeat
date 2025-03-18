@@ -44,7 +44,6 @@ public class ScoreManager : MonoBehaviour
         scoreChangeText.color = Color.green;
         scoreChange = amount;
         scoreChangeText.gameObject.SetActive(true);
-        Debug.Log("New Score: " + Score);
         currentCoroutine = StartCoroutine(HideTextAfterDelay(2f));
     }
 
@@ -63,7 +62,6 @@ public class ScoreManager : MonoBehaviour
         scoreChangeText.color = Color.red;
         scoreChangeText.gameObject.SetActive(true);
         scoreChange = amount;
-        Debug.Log("New Score: " + Score);
         currentCoroutine = StartCoroutine(HideTextAfterDelay(1f));
     }
     

@@ -4762,7 +4762,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerMovement: {fileID: 425896408}
   moveDuration: 0.2
-  forwardOffset: 25
+  forwardOffset: 80
   moveInterval: 1
 --- !u!4 &1037017650
 Transform:
