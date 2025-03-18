@@ -1,3 +1,4 @@
+using FMODUnity;
 using UnityEngine;
 
 public class TutorialPanelScript : MonoBehaviour
@@ -15,6 +16,7 @@ public class TutorialPanelScript : MonoBehaviour
 
         // Pause game while tutorial is active
         Time.timeScale = 0;
+        RuntimeManager.PauseAllEvents(true);
 
         Invoke("HidePanel", displayTime);
     }
@@ -35,5 +37,6 @@ public class TutorialPanelScript : MonoBehaviour
 
         // Unpause game
         Time.timeScale = 1;
+        RuntimeManager.PauseAllEvents(false);
     }
 }
