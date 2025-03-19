@@ -235,6 +235,10 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
                  audioEvent.CurrentBar > lastSequencePlayedBar + 1)
         { 
             isProjectilePhase = !isProjectilePhase;
+            // if (isProjectilePhase)
+            //     JudgementLine.DisableJudgementLine();
+            // else
+            //     JudgementLine.EnableJudgementLine();
             hasStartedRhythmSequence = false;
 
             if (IsBossWave())
@@ -265,6 +269,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
 
             KillAllEnemies();
             isProjectilePhase = true;
+            // JudgementLine.DisableJudgementLine();
             hasStartedRhythmSequence = false;
             currBossWave = 1;
 

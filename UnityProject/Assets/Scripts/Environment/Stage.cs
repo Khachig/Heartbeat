@@ -110,8 +110,8 @@ public class Stage : MonoBehaviour
         newOffLimitLane.transform.localRotation = rot;
         offLimitLanes[lane] = newOffLimitLane;
 
-        Pulsable lanePulsable = newOffLimitLane.GetComponent<Pulsable>();
-        lanePulsable.Init(audioManager.myAudioEvent.CurrentTempo / 2f, audioManager);
+        // Pulsable lanePulsable = newOffLimitLane.GetComponent<Pulsable>();
+        // lanePulsable.Init(audioManager.myAudioEvent.CurrentTempo / 2f, audioManager);
     }
 
     private void DeSpawnOffLimitLane(int lane)
