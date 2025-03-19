@@ -6,7 +6,7 @@ public class EndlessPhasesLevel : Level
 {
     private int enemyCount = 0;
     private int maxEnemyCount = 1;
-    private int wave = 1;
+    private int wave = -2;
 
     private Stage stage;
     private EnemyManager enemyManager;
@@ -19,13 +19,25 @@ public class EndlessPhasesLevel : Level
         enemyRhythmManager = erManager;
         enemyManager = eManager;
         enemyManager.onEnemyDeath += OnEnemyDeath;
+        wave = -2;
 
         Invoke("SpawnWave", 5f);
     }
 
     void SpawnWave()
     {
-        if (wave % 5 == 0)
+        if (wave == -2){
+            SpawnTutorialWave(2); // arrows only, 1 direction
+        }
+        else if (wave == -1){
+            SpawnTutorialWave(0); // arrows only, 2 directions
+        }
+        else if (wave == 0){
+            // enable movement
+            enemyManager.enableEnemyMovement();
+            SpawnTutorialWave(0); // projectiles only
+        }
+        else if (wave % 5 == 0)
             SpawnBossWave();
         else
             SpawnRegWave();
@@ -36,8 +48,16 @@ public class EndlessPhasesLevel : Level
         enemyCount--;
         if (enemyCount == 0) {
             wave++;
+            if (wave < 1){
+                enemyRhythmManager.SetDifficulty(-1);
+                enemyRhythmManager.SetWave(wave);
+            }
+            if (wave == 1){
+                enemyRhythmManager.SetDifficulty(0);
+            }
             if (wave == 4)
                 enemyRhythmManager.SetDifficulty(1); // Set to normal difficulty (harder rhythms)
+                
             if (wave <= 3)
                 maxEnemyCount = 1;
             else if (maxEnemyCount < 4)
@@ -91,10 +111,10 @@ public class EndlessPhasesLevel : Level
         return newList;
     }
     
-    void SpawnTutorialWave(int index, float fireRate = 15, float lastFireTime = 15)
+    void SpawnTutorialWave(int index)
     {
-        ArrowDirection[] arrowDirections = GetArrowList(index);
-        SpawnEnemy(index, arrowDirections, fireRate, lastFireTime);
+        ArrowDirection[] arrowDirections = GetArrowList();
+        SpawnEnemy(index, arrowDirections);
         enemyCount++;
         enemyRhythmManager.InitNewSequence();
     }

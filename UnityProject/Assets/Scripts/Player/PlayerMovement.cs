@@ -89,9 +89,9 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
 
     void StraightLaneChange()
     {
-        Debug.Log($"{currentLaneIndex}, {currentLaneIndex - 2}");
+        // Debug.Log($"{currentLaneIndex}, {currentLaneIndex - 2}");
         currentLaneIndex = Stage.Lanes.GetModLane(currentLaneIndex - 2);
-        Debug.Log($"{currentLaneIndex}");
+        // Debug.Log($"{currentLaneIndex}");
         ChangeLaneStraight();
     }
 

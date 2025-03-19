@@ -154,4 +154,14 @@ public class EnemyManager : ScriptableObject
         ScoreManager.Instance.AddScore(250);
         onEnemyDeath.Invoke();
     }
+
+    public void disableEnemyMovement()
+    {
+        enemyMovement.disableEnemyMovement();
+    }
+    
+    public void enableEnemyMovement()
+    {
+        enemyMovement.enableEnemyMovement();
+    }
 }

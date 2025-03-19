@@ -27,6 +27,14 @@ public class EnemyRhythms : MonoBehaviour
         new List<int>() {1, 3, 7},
     };
 
+    static private List<List<int>> tutorialRhythm = new List<List<int>>() {
+        new List<int>() {1, 5}
+    };
+
+    // static private List<List<int>> tutorialRhythm1 = new List<List<int>>() {
+    //     new List<int>() {1, 5, 7}
+    // };
+
     public static List<int> GenerateRandomRhythm()
     {
         int idx = Random.Range(0, allRhythms.Count);
@@ -42,5 +50,10 @@ public class EnemyRhythms : MonoBehaviour
     {
         int idx = Random.Range(0, easyRhythms.Count);
         return easyRhythms[idx];
+    }
+
+    public static List<int> GenerateTutorialRhythm()
+    {
+        return tutorialRhythm[0];
     }
 }

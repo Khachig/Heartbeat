@@ -10,6 +10,7 @@ public class EnemyMovement : MonoBehaviour, IEasyListener
 
     private float lastMove = 0f;
     private GameObject[] activeEnemies;
+    public bool enableMovement;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -19,6 +20,15 @@ public class EnemyMovement : MonoBehaviour, IEasyListener
             playerMovement = playerObject.GetComponent<PlayerMovement>();
         }
         activeEnemies = new GameObject[Stage.Lanes.GetNumLanes()];
+        enableMovement = false;
+    }
+
+    public void disableEnemyMovement(){
+        enableMovement = false;
+    }
+
+    public void enableEnemyMovement(){
+        enableMovement = true;
     }
 
     public bool addEnemy(int newLane, GameObject newEnemy){
@@ -103,7 +113,7 @@ public class EnemyMovement : MonoBehaviour, IEasyListener
 
     public void OnBeat(EasyEvent audioEvent)
     {
-        if (Time.time >= lastMove+moveInterval &&
+        if (enableMovement == true && Time.time >= lastMove+moveInterval &&
             (audioEvent.CurrentBeat == audioEvent.TimeSigAsArray()[0] / 2 - 1 ||
              audioEvent.CurrentBeat == audioEvent.TimeSigAsArray()[0] - 1)
             )
