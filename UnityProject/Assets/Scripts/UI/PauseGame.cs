@@ -16,13 +16,11 @@ public class PauseGame : MonoBehaviour
     public void OnPause(InputAction.CallbackContext context)
     {   
         TogglePause();
-        Debug.Log("Current input action map: " + context.action.actionMap.name);
     }
 
     public void TogglePause()
     {
         isPaused = !isPaused;
-
         if (isPaused)
         {
             RuntimeManager.PauseAllEvents(true);
