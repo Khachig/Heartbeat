@@ -33,6 +33,7 @@ public class Effects : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
+		ScreenDamageMat.SetFloat("_vignette_radius", 1f);
 		timeSinceLastPopup = Time.time; 
 	}
 
