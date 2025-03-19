@@ -22,6 +22,7 @@ public class EndlessPhasesLevel : Level
         enemyRhythmManager = erManager;
         enemyManager = eManager;
         enemyManager.onEnemyDeath += OnEnemyDeath;
+        enemyRhythmManager.SetDifficulty(-1);
         wave = -2;
         tut1Panel = tut1P;
         tut2Panel = tut2P;
@@ -70,6 +71,9 @@ public class EndlessPhasesLevel : Level
             }
             else if (wave == 1){
                 tut2Panel.SetActive(false);
+                enemyRhythmManager.SetDifficulty(-1);
+            }
+            else if (wave == 2){
                 enemyRhythmManager.SetDifficulty(0);
             }
             else if (wave == 4)
