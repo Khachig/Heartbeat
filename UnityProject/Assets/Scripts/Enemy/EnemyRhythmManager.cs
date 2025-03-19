@@ -239,7 +239,8 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
                (audioEvent.CurrentBeat == audioEvent.TimeSigAsArray()[0] &&
                 rhythmSequence[rhythmSequenceIdx] == 2))) ||
              (audioEvent.CurrentBar == lastSequencePlayedBar + 1 && // Give sequences 1 bar gap between playing
-              audioEvent.CurrentBeat == rhythmSequence[rhythmSequenceIdx] - 2))
+              audioEvent.CurrentBeat == rhythmSequence[rhythmSequenceIdx] - 2) 
+            )
            )
         {
             
@@ -260,7 +261,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         { 
             isProjectilePhase = !isProjectilePhase;
             Debug.Log("set reverse");
-            if (wave == 0 && audioEvent.CurrentBar <= 21 ){
+            if (wave == 0 && audioEvent.CurrentBar <= 19 ){
                 isProjectilePhase = true;
             }
             else if (wave == 0){
@@ -305,18 +306,17 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             //     Debug.Log($"waveLengthIdx {waveLengthIdx}");
             //     return;
             // }
-            for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
+            // if (!(wave < 0 && audioEvent.CurrentBar < lastSequencePlayedBar + 6)){
+                for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
                 Stage.Lanes.DeSpawnOffLimitLane(i);
 
-            KillAllEnemies();
-            isProjectilePhase = true;
-<<<<<<< HEAD
-            judgementLine.SetActive(false);
-=======
-            // JudgementLine.DisableJudgementLine();
->>>>>>> origin/#45-addition-to-boss-logic
-            hasStartedRhythmSequence = false;
-            currBossWave = 1;
+                KillAllEnemies();
+                isProjectilePhase = true;
+                judgementLine.SetActive(false);
+                // JudgementLine.DisableJudgementLine();
+                hasStartedRhythmSequence = false;
+                currBossWave = 1;
+            // }
 
             if (hasStartedCombo && !HasBrokenCombo())
                 OnComboComplete();

@@ -12,14 +12,19 @@ public class EndlessPhasesLevel : Level
     private EnemyManager enemyManager;
     private EnemyRhythmManager enemyRhythmManager;
     private float fireRateMult = 1f;
+    private GameObject tut1Panel;
+    private GameObject tut2Panel;
+    private float tut2time;
 
-    public override void Load(Stage stg, EnemyManager eManager, EnemyRhythmManager erManager)
+    public override void Load(Stage stg, EnemyManager eManager, EnemyRhythmManager erManager, GameObject tut1P, GameObject tut2P)
     {
         stage = stg;
         enemyRhythmManager = erManager;
         enemyManager = eManager;
         enemyManager.onEnemyDeath += OnEnemyDeath;
         wave = -2;
+        tut1Panel = tut1P;
+        tut2Panel = tut2P;
 
         Invoke("SpawnWave", 5f);
     }
@@ -28,12 +33,16 @@ public class EndlessPhasesLevel : Level
     {
         if (wave == -2){
             SpawnTutorialWave(2); // arrows only, 1 direction
+            tut1Panel.SetActive(true);
         }
         else if (wave == -1){
             SpawnTutorialWave(0); // arrows only, 2 directions
+            tut1Panel.SetActive(false);   
         }
         else if (wave == 0){
             // enable movement
+            tut2Panel.SetActive(true);
+            tut2time = Time.time;
             enemyManager.enableEnemyMovement();
             SpawnTutorialWave(0); // projectiles only
         }
@@ -42,6 +51,11 @@ public class EndlessPhasesLevel : Level
         else
             SpawnRegWave();
     } 
+    void Update(){
+        if (tut2time > 0 && Time.time - tut2time > 7.0f){
+            tut2Panel.SetActive(false);   
+        }
+    }
 
     void OnEnemyDeath()
     {
@@ -49,15 +63,19 @@ public class EndlessPhasesLevel : Level
         if (enemyCount == 0) {
             wave++;
             if (wave < 1){
+                tut1Panel.SetActive(false);
+                tut2Panel.SetActive(false);
                 enemyRhythmManager.SetDifficulty(-1);
                 enemyRhythmManager.SetWave(wave);
             }
-            if (wave == 1){
+            else if (wave == 1){
+                tut2Panel.SetActive(false);
                 enemyRhythmManager.SetDifficulty(0);
             }
-            if (wave == 4)
+            else if (wave == 4)
                 enemyRhythmManager.SetDifficulty(1); // Set to normal difficulty (harder rhythms)
-                
+
+
             if (wave <= 3)
                 maxEnemyCount = 1;
             else if (maxEnemyCount < 4)

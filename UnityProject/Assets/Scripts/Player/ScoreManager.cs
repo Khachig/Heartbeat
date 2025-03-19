@@ -44,10 +44,7 @@ public class ScoreManager : MonoBehaviour
         scoreChangeText.color = Color.green;
         scoreChange = amount;
         scoreChangeText.gameObject.SetActive(true);
-<<<<<<< HEAD
         // Debug.Log("New Score: " + Score);
-=======
->>>>>>> origin/#45-addition-to-boss-logic
         currentCoroutine = StartCoroutine(HideTextAfterDelay(2f));
     }
 
