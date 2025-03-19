@@ -19,7 +19,7 @@ public class ScoreManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject); 
         }
         else
         {
@@ -62,6 +62,7 @@ public class ScoreManager : MonoBehaviour
         scoreChangeText.color = Color.red;
         scoreChangeText.gameObject.SetActive(true);
         scoreChange = amount;
+        //Debug.Log("New Score: " + Score);
         currentCoroutine = StartCoroutine(HideTextAfterDelay(1f));
     }
     
@@ -85,5 +86,13 @@ public class ScoreManager : MonoBehaviour
     private void Update()
     {
         scoreText.text = "Score: " + ScoreManager.Instance.Score;
+    }
+
+    public void ReInitScore()
+    {
+        ResetScore();
+        scoreText.text = "Score: " + ScoreManager.Instance.Score;
+        scoreChangeText.gameObject.SetActive(false);
+        InvokeRepeating(nameof(AddTimeScore), timeInterval, timeInterval);
     }
 }

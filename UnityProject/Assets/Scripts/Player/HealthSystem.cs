@@ -4,7 +4,7 @@ using UnityEngine;
 public class HealthSystem : MonoBehaviour
 {
     public float maxHealth = 100;
-    private float currentHealth;
+    public float currentHealth;
 
     // Reference to the health bar slider component
     public UnityEngine.UI.Slider HealthBar;
@@ -26,7 +26,7 @@ public class HealthSystem : MonoBehaviour
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
 
         // Update the health display
@@ -64,4 +64,12 @@ public class HealthSystem : MonoBehaviour
             HealthBar.fillRect.GetComponent<UnityEngine.UI.Image>().color = Color.red;
         }
     }
+
+    // reset the health to full
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+        UpdateHealthBar();
+    }
+
 }

@@ -45,4 +45,10 @@ public class EasyRhythmAudioManager : MonoBehaviour
     {
         myAudioEvent.AddListener(listener);
     }
+
+    public void Reset()
+    {
+        // Reset the audio event to the beginning
+        myAudioEvent.stop();
+    }
 }
