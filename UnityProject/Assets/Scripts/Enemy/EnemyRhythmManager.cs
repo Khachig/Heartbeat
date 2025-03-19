@@ -271,6 +271,10 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
                 judgementLine.SetActive(true);
             }
             
+            // if (isProjectilePhase)
+            //     JudgementLine.DisableJudgementLine();
+            // else
+            //     JudgementLine.EnableJudgementLine();
             hasStartedRhythmSequence = false;
 
             if (IsBossWave())
@@ -306,7 +310,11 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
 
             KillAllEnemies();
             isProjectilePhase = true;
+<<<<<<< HEAD
             judgementLine.SetActive(false);
+=======
+            // JudgementLine.DisableJudgementLine();
+>>>>>>> origin/#45-addition-to-boss-logic
             hasStartedRhythmSequence = false;
             currBossWave = 1;
 

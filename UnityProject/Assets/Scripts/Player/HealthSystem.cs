@@ -4,9 +4,8 @@ using UnityEngine;
 public class HealthSystem : MonoBehaviour
 {
     public float maxHealth = 100;
-    private float currentHealth;
+    public float currentHealth;
 
-    public TextMeshProUGUI healthText;  // Reference to the TextMeshProUGUI component
     // Reference to the health bar slider component
     public UnityEngine.UI.Slider HealthBar;
 
@@ -17,7 +16,6 @@ public class HealthSystem : MonoBehaviour
         currentHealth = maxHealth;
 
         // Update the health display
-        UpdateHealthText();
         UpdateHealthBar();
     }
 
@@ -28,11 +26,10 @@ public class HealthSystem : MonoBehaviour
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            Destroy(gameObject);
+            //Destroy(gameObject);
         }
 
         // Update the health display
-        UpdateHealthText();
         UpdateHealthBar();
     }
 
@@ -43,14 +40,7 @@ public class HealthSystem : MonoBehaviour
         if (currentHealth > maxHealth) currentHealth = maxHealth;
 
         // Update the health display
-        UpdateHealthText();
         UpdateHealthBar();
-    }
-
-    // Update the health text display
-    private void UpdateHealthText()
-    {
-        healthText.text = "Health: " + currentHealth.ToString();
     }
 
     private void UpdateHealthBar()
@@ -74,4 +64,12 @@ public class HealthSystem : MonoBehaviour
             HealthBar.fillRect.GetComponent<UnityEngine.UI.Image>().color = Color.red;
         }
     }
+
+    // reset the health to full
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+        UpdateHealthBar();
+    }
+
 }

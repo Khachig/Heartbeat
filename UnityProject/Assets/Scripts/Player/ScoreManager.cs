@@ -19,7 +19,7 @@ public class ScoreManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject); 
         }
         else
         {
@@ -44,7 +44,10 @@ public class ScoreManager : MonoBehaviour
         scoreChangeText.color = Color.green;
         scoreChange = amount;
         scoreChangeText.gameObject.SetActive(true);
+<<<<<<< HEAD
         // Debug.Log("New Score: " + Score);
+=======
+>>>>>>> origin/#45-addition-to-boss-logic
         currentCoroutine = StartCoroutine(HideTextAfterDelay(2f));
     }
 
@@ -63,7 +66,7 @@ public class ScoreManager : MonoBehaviour
         scoreChangeText.color = Color.red;
         scoreChangeText.gameObject.SetActive(true);
         scoreChange = amount;
-        // Debug.Log("New Score: " + Score);
+        //Debug.Log("New Score: " + Score);
         currentCoroutine = StartCoroutine(HideTextAfterDelay(1f));
     }
     
@@ -87,5 +90,13 @@ public class ScoreManager : MonoBehaviour
     private void Update()
     {
         scoreText.text = "Score: " + ScoreManager.Instance.Score;
+    }
+
+    public void ReInitScore()
+    {
+        ResetScore();
+        scoreText.text = "Score: " + ScoreManager.Instance.Score;
+        scoreChangeText.gameObject.SetActive(false);
+        InvokeRepeating(nameof(AddTimeScore), timeInterval, timeInterval);
     }
 }

@@ -13,7 +13,7 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
     private PlayerMovement playerMovement; 
     private int currWave = 1;
     private Coroutine currRoutine;
-    private float forwardOffset = 30f;
+    private float forwardOffset = 80f;
 
     protected override void Start()
     {
