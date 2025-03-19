@@ -25,10 +25,11 @@ public class EndlessPhasesLevel : Level
 
     void SpawnWave()
     {
-        if (wave % 5 == 0)
             SpawnBossWave();
-        else
-            SpawnRegWave();
+        // if (wave % 5 == 0)
+        //     SpawnBossWave();
+        // else
+        //     SpawnRegWave();
     } 
 
     void OnEnemyDeath()

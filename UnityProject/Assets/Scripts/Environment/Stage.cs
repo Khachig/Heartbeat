@@ -11,6 +11,7 @@ public class Stage : MonoBehaviour
     public float judgementLineOffset = 10f;
     public GameObject tube;
     public GameObject offLimitLanePrefab;
+    public EasyRhythmAudioManager audioManager;
 
     private GameObject[] offLimitLanes;
 	private Vector3 targetPoint;
@@ -98,16 +99,19 @@ public class Stage : MonoBehaviour
         if (offLimitLanes[lane] != null)
             return;
 
-        Vector3 pos = GetXYPosForLane(lane) * 2f + Vector3.forward * 20f;
-        float angleStep = 360f / numLanes;
+        Vector3 pos = GetXYPosForLane(lane) * 2f + Vector3.forward * 10f;
+        float angleStep = 360f - 360f / numLanes;
         // -90 bc we want lane 0 to be at bottom of screen
         float angle = (angleStep * lane - 90);
-        Quaternion rot = Quaternion.Euler(angle, 90, 0);
+        Quaternion rot = Quaternion.Euler(angle, 90, 90);
         GameObject newOffLimitLane = Instantiate(offLimitLanePrefab, pos, Quaternion.identity);
         newOffLimitLane.transform.parent = transform;
         newOffLimitLane.transform.localPosition = pos;
         newOffLimitLane.transform.localRotation = rot;
         offLimitLanes[lane] = newOffLimitLane;
+
+        Pulsable lanePulsable = newOffLimitLane.GetComponent<Pulsable>();
+        lanePulsable.Init(audioManager.myAudioEvent.CurrentTempo / 2f, audioManager);
     }
 
     private void DeSpawnOffLimitLane(int lane)

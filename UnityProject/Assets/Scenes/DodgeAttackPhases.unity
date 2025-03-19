@@ -6118,7 +6118,8 @@ MonoBehaviour:
   rotationSpeed: 1
   judgementLineOffset: 10
   tube: {fileID: 1112287721}
-  offLimitLanePrefab: {fileID: 3660059805486479554, guid: bf8d1cd090a6c684d8851db142f8db96, type: 3}
+  offLimitLanePrefab: {fileID: 8817314484962031407, guid: 6149e2f039993c44f8dc410b8cfb2939, type: 3}
+  audioManager: {fileID: 419586457}
 --- !u!114 &1518974363
 MonoBehaviour:
   m_ObjectHideFlags: 0

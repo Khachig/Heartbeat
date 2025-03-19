@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Linq;
 using UnityEngine;
 using System;
 using FMOD;
@@ -299,7 +300,7 @@ public class EasyEvent
 
             if (listeners == null || listeners.Count <= 0) return;
 
-            foreach (IEasyListener listener in listeners)
+            foreach (IEasyListener listener in listeners.ToList())
             {
                 listener.OnBeat(this);
             }
