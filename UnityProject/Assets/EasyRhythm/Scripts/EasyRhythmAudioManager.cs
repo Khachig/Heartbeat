@@ -23,23 +23,23 @@ public class EasyRhythmAudioManager : MonoBehaviour
         myAudioEvent.start();
     }
 
-    public void Update()
-    {
-        // Press space bar to start and stop the audio event
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (!myAudioEvent.IsPlaying())
-            {
-                myAudioEvent.start();
-            }
+    //public void Update()
+    //{
+    //    // Press space bar to start and stop the audio event
+    //    if (Input.GetKeyDown(KeyCode.Space))
+    //    {
+    //        if (!myAudioEvent.IsPlaying())
+    //        {
+    //            myAudioEvent.start();
+    //        }
 
-            else
-            {
-                myAudioEvent.stop();
-            }
+    //        else
+    //        {
+    //            myAudioEvent.stop();
+    //        }
 
-        }
-    }
+    //    }
+    //}
 
     public void AddListener(IEasyListener listener)
     {

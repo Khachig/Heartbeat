@@ -5,6 +5,7 @@ public class TutorialPanelScript : MonoBehaviour
 {
     public float displayTime = 15f; // Time before auto-hide
     private CanvasGroup canvasGroup;
+    private bool gameStarted = false;
 
     void Start()
     {
@@ -23,9 +24,10 @@ public class TutorialPanelScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.JoystickButton4))
+        if (!gameStarted && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.JoystickButton4)))
         {
             HidePanel();
+            gameStarted = true;
         }
     }
 
