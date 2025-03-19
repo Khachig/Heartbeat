@@ -261,7 +261,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         { 
             isProjectilePhase = !isProjectilePhase;
             Debug.Log("set reverse");
-            if (wave == 0 && audioEvent.CurrentBar <= 19 ){
+            if (wave == 0 && audioEvent.CurrentBar <= 15 ){
                 isProjectilePhase = true;
             }
             else if (wave == 0){
