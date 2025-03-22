@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 735818086369170914}
   - component: {fileID: 7769286882152899904}
   - component: {fileID: 1329961980788437757}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: LeftArrowProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -102,6 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   projectileSpeed: 20
   projectileDamage: 10
+  forwardOffset: 80
   PlayerHurt:
     Guid:
       Data1: 11468303

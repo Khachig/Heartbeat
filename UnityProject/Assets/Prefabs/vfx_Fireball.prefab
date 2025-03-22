@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8192014605927797301}
   - component: {fileID: 7540288628694306148}
   - component: {fileID: 5698069802984070502}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Flare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4903,7 +4903,7 @@ GameObject:
   - component: {fileID: 6190830014837551214}
   - component: {fileID: 7581146155155832597}
   - component: {fileID: 3081078945604941511}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: vfx_Fireball
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5010,7 +5010,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7488923276553299068}
   - component: {fileID: 8520886563742272552}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Trail1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5149,7 +5149,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7508588763639868432}
   - component: {fileID: 3657303377216668100}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Trail2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5289,7 +5289,7 @@ GameObject:
   - component: {fileID: 6022126591461548270}
   - component: {fileID: 6215118651781124698}
   - component: {fileID: 5811358615098226100}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
