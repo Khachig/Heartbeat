@@ -11,7 +11,6 @@ public class EndlessTestLevel : Level
     private Stage stage;
     private EnemyManager enemyManager;
     private EnemyRhythmManager enemyRhythmManager;
-    private float fireRateMult = 1f;
 
     public override void Load(Stage stg, EnemyManager eManager, EnemyRhythmManager erManager, GameObject tut1P, GameObject tut2P)
     {
@@ -26,7 +25,7 @@ public class EndlessTestLevel : Level
     void SpawnWave()
     {
         if (wave <= 3){
-            SpawnTutorialWave(wave, 20/wave, 30);
+            SpawnTutorialWave(wave);
         }
         else if (wave % 10 == 0)
             SpawnBossWave();
@@ -51,64 +50,24 @@ public class EndlessTestLevel : Level
                     maxEnemyCount++;
                 }
                 
-            else if (wave >= 10)
-            {
-                fireRateMult *= 0.75f;
-                enemyManager.setFireRateMultForAllEnemies(fireRateMult);
-            }
             Invoke("SpawnWave", 3);
         }
     }
 
-    void SpawnEnemy(int lane, ArrowDirection[] arrowDirections, float fireRate=0, float lastFireTime=0)
+    void SpawnEnemy(int lane)
     {
         GameObject enemy = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
             position = Vector3.zero,
             rotation = Quaternion.identity,
             stage = stage,
-            arrowArrangement = arrowDirections,
             enemyLane = lane,
-            fireRate = fireRate,
-            lastFireTime = lastFireTime
         });
         enemyRhythmManager.AddEnemy(enemy);
     }
 
-    ArrowDirection[] GetArrowList()
+    void SpawnTutorialWave(int index)
     {
-        ArrowDirection[] newList = new ArrowDirection[maxEnemyCount];
-        for (int i = 0; i < maxEnemyCount; i++)
-        {
-            newList[i] = ArrowDirection.RANDOM;
-        }
-        return newList;
-    }
-
-    ArrowDirection[] GetArrowList(int lane)
-    {
-        ArrowDirection[] newList;
-        if (wave == 1)
-        {
-            newList = new ArrowDirection[] {ArrowDirection.RANDOM};
-        }
-        else if (wave == 2)
-        {
-            newList = new ArrowDirection[] {ArrowDirection.UP, ArrowDirection.DOWN};
-        }
-        else{
-            newList = new ArrowDirection[maxEnemyCount];
-            for (int i = 0; i < maxEnemyCount; i++)
-            {
-                newList[i] = ArrowDirection.RANDOM;
-            }
-        }
-        return newList;
-    }
-    
-    void SpawnTutorialWave(int index, float fireRate = 15, float lastFireTime = 15)
-    {
-        ArrowDirection[] arrowDirections = GetArrowList(index);
-        SpawnEnemy(index, arrowDirections, fireRate, lastFireTime);
+        SpawnEnemy(index);
         enemyCount++;
         enemyRhythmManager.InitNewSequence();
     }
@@ -117,8 +76,7 @@ public class EndlessTestLevel : Level
     {
         for (int i = 0; i < maxEnemyCount; i++)
         {
-            ArrowDirection[] arrowDirections = GetArrowList();
-            SpawnEnemy(i, arrowDirections);
+            SpawnEnemy(i);
             enemyCount++;
         }
         enemyRhythmManager.InitNewSequence();
@@ -131,10 +89,6 @@ public class EndlessTestLevel : Level
             position = Vector3.zero,
             rotation = Quaternion.identity,
             stage = stage,
-            arrowArrangement = new ArrowDirection[] {ArrowDirection.RANDOM,
-                                                     ArrowDirection.RANDOM,
-                                                     ArrowDirection.RANDOM,
-                                                     ArrowDirection.RANDOM},
             enemyLane = 1,
         });
         enemyRhythmManager.AddEnemy(enemy);

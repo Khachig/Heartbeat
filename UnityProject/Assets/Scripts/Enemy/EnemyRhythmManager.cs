@@ -17,7 +17,6 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     private bool hasStartedCombo = false;
     private bool hasBrokenCombo = false;
     private int comboNum = 0;
-    private int maxComboNum = 0;
     private float timeAtLastComboHit;
     private float timeToJudgementLine = 0f; // How long projectiles should travel before hitting judgement line
     public GameObject judgementLine;
@@ -32,8 +31,6 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     private int currBossWave = 1;
     private int difficulty = 0; // 0 = easy; 1 = normal, -1 = tutorial
     private int wave = -2;
-    private int tutorialWaveLength = 3;
-    private int waveLengthIdx;
 
     private void Start()
     {
@@ -53,8 +50,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
 
     public void SetWave(int w) { 
         wave = w; 
-        Debug.Log($"Wave= {wave}");
-        }
+    }
 
     public void AddEnemy(GameObject enemy) {
         enemies.Add(enemy);
@@ -67,7 +63,6 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
 
     public void InitNewSequence()
     {
-        GenerateSequenceTimings();
         ResetCombo();
     }
 
@@ -121,19 +116,6 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         return false;
     }
 
-    private void GenerateSequenceTimings()
-    {
-        int numArrows = 0;
-
-        for (int i = 0; i < enemies.Count; i++)
-        {
-            EnemyData data = enemies[i].GetComponent<EnemyData>();
-            numArrows += data.arrowArrangement.Length;
-        }
-
-        maxComboNum = numArrows;
-    }
-
     private int GetEnemyIndex(GameObject enemy)
     {
         int ret = -1;
@@ -148,7 +130,6 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     private void ResetCombo()
     {
         comboNum = 0;
-        maxComboNum = 0;
         hasStartedCombo = false;
         hasBrokenCombo = false;
     }
@@ -198,9 +179,6 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
 
     private void HandleRhythmSequences(EasyEvent audioEvent)
     {
-        Debug.Log($"isProjectilePhase {isProjectilePhase}");
-        Debug.Log($"audioEvent.CurrentBar {audioEvent.CurrentBar} lastSequencePlayedBar {lastSequencePlayedBar}");
-        
         if (audioEvent.CurrentBar == 1)
             lastSequencePlayedBar = 0;
 
@@ -218,7 +196,6 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             {
                 if (difficulty == -1){
                     rhythmSequence = EnemyRhythms.GenerateTutorialRhythm();
-                    Debug.Log("generate tutorial rhythm");
                 }
                 else if (difficulty == 0)
                     rhythmSequence = EnemyRhythms.GenerateRandomEasyRhythm();
@@ -253,24 +230,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             rhythmSequenceIdx = (rhythmSequenceIdx + 1) % rhythmSequence.Count;
             
             if (IsBossWave())
-            {
                 currBossWave++;
-                if (isProjectilePhase)
-                {
-                    for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
-                        Stage.Lanes.DeSpawnOffLimitLane(i);
-                }
-                else 
-                {
-                    GameObject playerObject = GameObject.FindWithTag("Player");
-                    PlayerMovement playerMovement = playerObject.GetComponent<PlayerMovement>();
-                    for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
-                    {
-                        if (playerMovement.currentLaneIndex != i)
-                            Stage.Lanes.SpawnOffLimitLane(i);
-                    }
-                }
-            }
         }
         else if (hasStartedRhythmSequence &&
                  (isProjectilePhase ||
@@ -278,7 +238,6 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
                  audioEvent.CurrentBar > lastSequencePlayedBar + 1) // finished projectile phase?
         {
             isProjectilePhase = !isProjectilePhase;
-            Debug.Log("set reverse");
             if (wave == 0 && audioEvent.CurrentBar <= 15 ){
                 isProjectilePhase = true;
             }
@@ -294,22 +253,12 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         else if (hasStartedRhythmSequence &&
                  audioEvent.CurrentBar > lastSequencePlayedBar + 2)
         {
-            // if (wave < 1 && waveLengthIdx < tutorialWaveLength){
-            //     waveLengthIdx++;
-            //     Debug.Log($"waveLengthIdx {waveLengthIdx}");
-            //     return;
-            // }
-            // if (!(wave < 0 && audioEvent.CurrentBar < lastSequencePlayedBar + 6)){
-                for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
-                Stage.Lanes.DeSpawnOffLimitLane(i);
-
-                KillAllEnemies();
-                isProjectilePhase = true;
-                judgementLine.SetActive(false);
-                // JudgementLine.DisableJudgementLine();
-                hasStartedRhythmSequence = false;
-                currBossWave = 1;
-            // }
+            KillAllEnemies();
+            isProjectilePhase = true;
+            judgementLine.SetActive(false);
+            // JudgementLine.DisableJudgementLine();
+            hasStartedRhythmSequence = false;
+            currBossWave = 1;
 
             if (hasStartedCombo && !HasBrokenCombo())
                 OnComboComplete();

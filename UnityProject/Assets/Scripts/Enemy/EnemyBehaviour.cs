@@ -11,13 +11,10 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     public OnEnemyDestroy onEnemyDestroy;
 
     public GameObject projectilePrefab;
-    public float fireRate = 0f; // every x seconds
-    public float lastFireTime = 0f;
     public EventReference EnemyShoot;
     public EventReference EnemyHurt;
     public EventReference EnemyDefeat;
 
-    protected float fireRateMultiplier = 1f;
     protected EnemyRhythmManager enemyRhythmManager;
     protected EnemyData instanceData;
     protected Animator enemyAnimator;
@@ -35,27 +32,13 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         effects = gameObject.GetComponent<EnemyDamageEffect>();
         enemyAnimator = gameObject.transform.GetChild(0).GetComponent<Animator>();
         arrows = new List<GameObject>();
-
-        // SpawnArrows();
-        // SetArrowPulsable();
-
-        lastFireTime = Random.Range(4f, 8f);
-        if (fireRate == 0){
-            fireRate = Random.Range(1f, 5f);
-        }
     }
 
     public void Init(EasyRhythmAudioManager aManager, EnemyRhythmManager erManager, float fRate=0)
     {
         enemyRhythmManager = erManager;
         audioManager = aManager;
-        fireRate = fRate;
         audioManager.AddListener(this);
-    }
-
-    public void SetFireRateMultiplier(float mult)
-    {
-        fireRateMultiplier = mult;
     }
 
     public void SetTimeToJudgementLine(float ttj)
@@ -64,27 +47,6 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     }
 
     public bool IsDead() { return isDead; }
-
-    // Returns true iff input matches the first arrow of this enemy
-    public bool HandlePlayerAttack(Vector2 input)
-    {
-        if (arrows.Count == 0)
-            return true;       
-
-        GameObject nextArrow = arrows[0];
-        if ((input.y > 0 && nextArrow.name.Equals("UpArrow(Clone)")) ||
-            (input.y < 0 && nextArrow.name.Equals("DownArrow(Clone)")) ||
-            // Switch left and right because images are placed "backwards"
-            (input.x < 0 && nextArrow.name.Equals("RightArrow(Clone)")) ||
-            (input.x > 0 && nextArrow.name.Equals("LeftArrow(Clone)"))
-        )
-        {
-            RemoveArrow();
-            return true;
-        }
-
-        return false;
-    }
 
     public void FlashArrow(int arrowIndex)
     {
@@ -95,40 +57,6 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         ArrowFlashEffect arrowEffect = arrow.GetComponent<ArrowFlashEffect>();
         arrowEffect.Flash();
     }
-
-    protected void SpawnArrows()
-    {
-        Canvas canvas = GetComponentInChildren<Canvas>();
-
-        for (int i=0; i<instanceData.arrowArrangement.Length; ++i)
-        {
-            (float X, float Y) spawnCoordinates = GetCoordinatesByIndex(i);
-            GameObject arrowPrefab = GetArrowImageFromArrowDirection(instanceData.arrowArrangement[i]);
-            GameObject arrow = Instantiate(arrowPrefab);
-            arrow.transform.SetParent(canvas.transform, false);
-
-            RectTransform rt = arrow.GetComponent<RectTransform>();
-            rt.anchoredPosition = new Vector2(spawnCoordinates.X, spawnCoordinates.Y);
-
-            arrows.Add(arrow);
-        }
-    }
-
-    (float X, float Y) GetCoordinatesByIndex(int index)
-    {
-        float spawnOffsetAngle = instanceData.spawnOffsetAngle;
-        float spawnRadius = instanceData.spawnArcRadius;
-        float spawnCount = instanceData.arrowArrangement.Length;
-
-        if (spawnCount == 1)
-            return (0, spawnRadius);
-
-        float deltaTheta = (Mathf.PI - (2 * spawnOffsetAngle)) / (spawnCount - 1);
-        return (
-            spawnRadius * Mathf.Cos(spawnOffsetAngle + (deltaTheta * index)),
-            spawnRadius * Mathf.Sin(spawnOffsetAngle + (deltaTheta * index))
-        );
-    } 
 
     protected GameObject GetArrowImageFromArrowDirection(ArrowDirection direction)
     {
@@ -168,33 +96,6 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         RuntimeManager.PlayOneShot(EnemyHurt, transform.position);
     }
  
-    protected virtual void RemoveArrow()
-    {
-        GameObject arrow = arrows[0];
-        arrows.RemoveAt(0);
-
-        SetArrowPulsable();
-        effects.Flash();
-        Animator arrowAnimator = arrow.GetComponent<Animator>();
-        // Animator will call destroy on arrow
-        arrowAnimator.SetTrigger("ArrowDestroy");
-        // Destroy(arrow, 0.5f);
-        ScoreManager.Instance.AddScore(55);
-        if (arrows.Count == 0)
-        {
-            isDead = true;
-            onEnemyDestroy?.Invoke();
-            enemyRhythmManager.RemoveEnemy(gameObject);
-            // Animator will call destroy on enemy
-            enemyAnimator.SetTrigger("EnemyDeath");
-            RuntimeManager.PlayOneShot(EnemyDefeat, transform.position);
-
-        } else {
-            enemyAnimator.SetTrigger("EnemyHit");
-            RuntimeManager.PlayOneShot(EnemyHurt, transform.position);
-        }
-    }
-
     public void StartAttackAnim()
     {
         enemyAnimator.SetTrigger("EnemyShoot");
@@ -210,7 +111,6 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         effects.Flash();
         SpawnProjectile();
         RuntimeManager.PlayOneShot(EnemyShoot, transform.position);
-        lastFireTime = Time.time;
     }
 
     public virtual void ArrowAttack()
@@ -218,7 +118,6 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         effects.Flash();
         SpawnArrowProjectile();
         RuntimeManager.PlayOneShot(EnemyShoot, transform.position);
-        lastFireTime = Time.time;
     }
 
     protected virtual void SpawnProjectile()
@@ -231,11 +130,12 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
 
     protected virtual void SpawnArrowProjectile()
     {
-        GameObject arrowProjectilePrefab = GetArrowImageFromArrowDirection(ArrowDirection.RANDOM);
+        ArrowDirection direction = ArrowDirections.GetRandomArrowDirection();
+        GameObject arrowProjectilePrefab = GetArrowImageFromArrowDirection(direction);
         GameObject arrowProjectile = Instantiate(arrowProjectilePrefab, gameObject.transform.position, Quaternion.identity);
         arrowProjectile.transform.SetParent(transform.parent);
         ArrowProjectileMovement projScript = arrowProjectile.GetComponent<ArrowProjectileMovement>();
-        projScript.Init(this, timeToJudgementLine);
+        projScript.Init(this, timeToJudgementLine, direction);
         projScript.onArrowDestroy += (() => { enemyRhythmManager.RemoveArrow(arrowProjectile); });
         enemyRhythmManager.AddArrow(arrowProjectile);
     }

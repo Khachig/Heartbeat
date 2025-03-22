@@ -10,8 +10,6 @@ public class Enemy : MonoBehaviour
 
     public GameObject projectilePrefab;
     public float[] enemyDamage = new float[4];
-    public float[] fireRate = new float[4]; // every x seconds
-    public float[] lastFireTime = new float[4];
     public float[] projectileSpeeds = new float[4];
 
     public Stage stage;
@@ -142,10 +140,7 @@ public class Enemy : MonoBehaviour
         {
             if (enemyInUsed[i])
             {
-                if (Time.time >= lastFireTime[i]+fireRate[i]){
-                    Attack(i);
-                    lastFireTime[i] = Time.time;
-                }
+                Attack(i);
             }
         }
     }

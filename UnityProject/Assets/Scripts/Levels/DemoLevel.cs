@@ -29,7 +29,6 @@ public class DemoLevel : Level
                 position = enemyPosition,
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
-                arrowArrangement = new ArrowDirection[] {ArrowDirection.UP},
                 enemyLane = 0,
             });
             enemyPosition = GetPositionForLane(1, stage.tunnelRadius, stage.numLanes, 20);
@@ -37,7 +36,6 @@ public class DemoLevel : Level
                 position = enemyPosition,
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
-                arrowArrangement = new ArrowDirection[] {ArrowDirection.DOWN},
                 enemyLane = 1,
             });
             nextWave = "SpawnWave2";
@@ -53,7 +51,6 @@ public class DemoLevel : Level
                 position = enemyPosition,
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
-                arrowArrangement = new ArrowDirection[] {ArrowDirection.UP, ArrowDirection.UP},
                 enemyLane = 0,
             });
             enemyPosition = GetPositionForLane(1, stage.tunnelRadius, stage.numLanes, 20);
@@ -61,7 +58,6 @@ public class DemoLevel : Level
                 position = enemyPosition,
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
-                arrowArrangement = new ArrowDirection[] {ArrowDirection.DOWN},
                 enemyLane = 1,
             });
             enemyPosition = GetPositionForLane(2, stage.tunnelRadius, stage.numLanes, 20);
@@ -69,7 +65,6 @@ public class DemoLevel : Level
                 position = enemyPosition,
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
-                arrowArrangement = new ArrowDirection[] {ArrowDirection.LEFT, ArrowDirection.RIGHT},
                 enemyLane = 2,
             });
             nextWave = "SpawnWave3";
@@ -87,7 +82,6 @@ public class DemoLevel : Level
                 position = enemyPosition,
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
-                arrowArrangement = new ArrowDirection[] {ArrowDirection.DOWN},
                 enemyLane = 0,
             });
             enemyPosition = GetPositionForLane(1, stage.tunnelRadius, stage.numLanes, 20);
@@ -95,7 +89,6 @@ public class DemoLevel : Level
                 position = enemyPosition,
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
-                arrowArrangement = new ArrowDirection[] {ArrowDirection.RIGHT, ArrowDirection.RIGHT},
                 enemyLane = 1,
             });
             enemyPosition = GetPositionForLane(2, stage.tunnelRadius, stage.numLanes, 20);
@@ -103,7 +96,6 @@ public class DemoLevel : Level
                 position = enemyPosition,
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
-                arrowArrangement = new ArrowDirection[] {ArrowDirection.LEFT, ArrowDirection.LEFT},
                 enemyLane = 2,
             });
             enemyPosition = GetPositionForLane(3, stage.tunnelRadius, stage.numLanes, 20);
@@ -111,7 +103,6 @@ public class DemoLevel : Level
                 position = enemyPosition,
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
-                arrowArrangement = new ArrowDirection[] {ArrowDirection.UP},
                 enemyLane = 3,
             });
             nextWave = "Done";
@@ -134,7 +125,6 @@ public class DemoLevel : Level
                 position = enemyPosition,
                 rotation = new Quaternion(0, 180, 0, 1),
                 stage = stage,
-                arrowArrangement = GetRandomArrowList(maxEnemyCount),
                 enemyLane = i,
             });
         }
@@ -153,13 +143,6 @@ public class DemoLevel : Level
         }
     }
 
-    ArrowDirection[] GetRandomArrowList(int numArrows)
-    {
-        ArrowDirection[] newList = new ArrowDirection[numArrows];
-        for (int i = 0; i < numArrows; i++)
-            newList[i] = ArrowDirection.RANDOM;
-        return newList;
-    }
     Vector3 GetPositionForLane(int laneIndex, float tunnelRadius, int numLanes, float offset)
     {
         float angleStep = 360f / numLanes;

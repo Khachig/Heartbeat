@@ -24,63 +24,17 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
             playerMovement = playerObject.GetComponent<PlayerMovement>();
         }
 
-        lastFireTime = 3f;
-        fireRate = 3f;
-
         Vector3 spawnPosition = Vector3.down * 5 + Vector3.forward * forwardOffset;
         transform.localPosition = spawnPosition;
         transform.localRotation = Quaternion.Euler(0, 180, 0);
-    }
-
-    protected override void RemoveArrow()
-    {
-        GameObject arrow = arrows[0];
-        arrows.RemoveAt(0);
-
-        SetArrowPulsable();
-        effects.Flash();
-        Animator arrowAnimator = arrow.GetComponent<Animator>();
-        // Animator will call destroy on arrow
-        arrowAnimator.SetTrigger("ArrowDestroy");
-        if (arrows.Count == 0)
-        {
-            if (currWave >= numWaves)
-            {
-                isDead = true;
-                onEnemyDestroy?.Invoke();
-                enemyRhythmManager.RemoveEnemy(gameObject);
-                // Animator will call destroy on enemy
-                enemyAnimator.SetTrigger("EnemyDeath");
-                RuntimeManager.PlayOneShot(EnemyDefeat, transform.position);
-            }
-            else
-            { 
-                Invoke("SpawnNewWave", 2);
-                enemyAnimator.SetTrigger("EnemyHit");
-                RuntimeManager.PlayOneShot(EnemyDefeat, transform.position);
-            }
-        } else {
-            enemyAnimator.SetTrigger("EnemyHit");
-            RuntimeManager.PlayOneShot(EnemyHurt, transform.position);
-        }
     }
 
     void SpawnNewWave()
     {
         // Spawn new wave of arrows;
         currWave++;
-        instanceData.arrowArrangement = GetRandomArrowArrangement(4);
-        SpawnArrows();
         SetArrowPulsable();
         enemyRhythmManager.InitNewSequence();
-    }
-
-    ArrowDirection[] GetRandomArrowArrangement(int numArrows)
-    {
-        ArrowDirection[] newList = new ArrowDirection[numArrows];
-        for (int i = 0; i < numArrows; i++)
-            newList[i] = ArrowDirection.RANDOM;
-        return newList;
     }
 
     public override void Attack()
@@ -142,19 +96,6 @@ public class BossBehaviour : EnemyBehaviour, IEasyListener
         projectile.transform.localPosition = pos;
         ProjectileMovement projScript = projectile.GetComponent<ProjectileMovement>();
         projScript.Init(this, timeToJudgementLine);
-    }
-
-    protected override void SpawnArrowProjectile()
-    {
-        Vector3 pos = GetLanePosition(playerMovement.currentLaneIndex);
-        GameObject arrowProjectilePrefab = GetArrowImageFromArrowDirection(ArrowDirection.RANDOM);
-        GameObject arrowProjectile = Instantiate(arrowProjectilePrefab, pos, Quaternion.identity);
-        arrowProjectile.transform.SetParent(transform.parent);
-        arrowProjectile.transform.localPosition = pos;
-        ArrowProjectileMovement projScript = arrowProjectile.GetComponent<ArrowProjectileMovement>();
-        projScript.Init(this, timeToJudgementLine);
-        projScript.onArrowDestroy += (() => { enemyRhythmManager.RemoveArrow(arrowProjectile); });
-        enemyRhythmManager.AddArrow(arrowProjectile);
     }
 
     Vector3 GetLanePosition(int lane)

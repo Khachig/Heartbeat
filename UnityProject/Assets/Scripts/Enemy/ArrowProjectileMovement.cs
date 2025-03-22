@@ -9,6 +9,7 @@ public class ArrowProjectileMovement : MonoBehaviour
     public OnArrowDestroy onArrowDestroy;
     public float projectileSpeed = 20f;
     public float projectileDamage = 10f;
+    public float forwardOffset = 80f;
     public EventReference PlayerHurt;
 
     private EnemyBehaviour parentEnemy;
@@ -33,9 +34,11 @@ public class ArrowProjectileMovement : MonoBehaviour
         }
     }
 
-    public void Init(EnemyBehaviour pBehaviour, float timeToJudgementLine)
+    public void Init(EnemyBehaviour pBehaviour, float timeToJudgementLine, ArrowDirection direction)
     {
+        Vector3 pos = GetPositionForArrowDirection(direction);
         transform.localRotation = Quaternion.identity;
+        transform.localPosition = pos;
 
         float distanceToJudgementLine = transform.localPosition.z - Stage.Lanes.GetJudgementLineOffset();
         float requiredSpeed = distanceToJudgementLine / timeToJudgementLine;
@@ -75,5 +78,22 @@ public class ArrowProjectileMovement : MonoBehaviour
     {
         if (gameObject)
             Destroy(gameObject);
+    } 
+
+    private Vector3 GetPositionForArrowDirection(ArrowDirection direction)
+    {
+        int lane = 0;
+        if (direction == ArrowDirection.DOWN)
+            lane = 0;
+        else if (direction == ArrowDirection.RIGHT)
+            lane = 1;
+        else if (direction == ArrowDirection.UP)
+            lane = 2;
+        else if (direction == ArrowDirection.LEFT)
+            lane = 3;
+        
+        Debug.Log("setting arrow pos to lane " + lane);
+        
+        return Stage.Lanes.GetXYPosForLane(lane) + Vector3.forward * forwardOffset;
     }
 }
