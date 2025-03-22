@@ -227,7 +227,6 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             }
             rhythmSequenceIdx = 0;
             lastSequencePlayedBar = audioEvent.CurrentBar;
-            
         }
         else if (hasStartedRhythmSequence &&
             // Ensure beat is 1 before rhythm sequence to give time for animations to play
@@ -243,7 +242,6 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             )
            )
         {
-            
             GameObject enemy = enemies[rhythmSequenceIdx % enemies.Count];
             EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
 
@@ -253,31 +251,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
                 enemyBehaviour.StartArrowAttackAnim();
 
             rhythmSequenceIdx = (rhythmSequenceIdx + 1) % rhythmSequence.Count;
-        }
-        else if (hasStartedRhythmSequence &&
-                 (isProjectilePhase ||
-                  (IsBossWave() && currBossWave < numBossWaves)) &&
-                 audioEvent.CurrentBar > lastSequencePlayedBar + 1) // finished projectile phase?
-        { 
-            isProjectilePhase = !isProjectilePhase;
-            Debug.Log("set reverse");
-            if (wave == 0 && audioEvent.CurrentBar <= 15 ){
-                isProjectilePhase = true;
-            }
-            else if (wave == 0){
-                judgementLine.SetActive(true);
-                wave = 1;
-            }
-            else{
-                judgementLine.SetActive(true);
-            }
             
-            // if (isProjectilePhase)
-            //     JudgementLine.DisableJudgementLine();
-            // else
-            //     JudgementLine.EnableJudgementLine();
-            hasStartedRhythmSequence = false;
-
             if (IsBossWave())
             {
                 currBossWave++;
@@ -297,6 +271,25 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
                     }
                 }
             }
+        }
+        else if (hasStartedRhythmSequence &&
+                 (isProjectilePhase ||
+                  (IsBossWave() && currBossWave < numBossWaves)) &&
+                 audioEvent.CurrentBar > lastSequencePlayedBar + 1) // finished projectile phase?
+        {
+            isProjectilePhase = !isProjectilePhase;
+            Debug.Log("set reverse");
+            if (wave == 0 && audioEvent.CurrentBar <= 15 ){
+                isProjectilePhase = true;
+            }
+            else if (wave == 0){
+                judgementLine.SetActive(true);
+                wave = 1;
+            }
+            else{
+                judgementLine.SetActive(true);
+            }
+            hasStartedRhythmSequence = false;
         }
         else if (hasStartedRhythmSequence &&
                  audioEvent.CurrentBar > lastSequencePlayedBar + 2)
