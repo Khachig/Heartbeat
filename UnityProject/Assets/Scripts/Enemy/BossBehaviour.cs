@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using FMODUnity;
 
-public class BossBehaviour : EnemyBehaviour, IEasyListener
+public class BossBehaviour : EnemyBehaviour
 {
     public int numWaves = 3;
     public float burstRate = 0.3f;

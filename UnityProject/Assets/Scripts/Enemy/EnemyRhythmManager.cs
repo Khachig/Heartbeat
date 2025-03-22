@@ -6,6 +6,10 @@ using FMODUnity;
 
 public class EnemyRhythmManager : MonoBehaviour, IEasyListener
 {
+    public delegate void OnEnterAttackPhase();
+    public OnEnterAttackPhase onEnterAttackPhase;
+    public delegate void OnExitAttackPhase();
+    public OnExitAttackPhase onExitAttackPhase;
     public HealthSystem playerHealth;
     public EasyRhythmAudioManager audioManager;
     public float comboHealAmt;
@@ -56,6 +60,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     }
 
     public void RemoveEnemy(GameObject enemy) { enemies.Remove(enemy); }
+
     public void AddArrow(GameObject arrow) {
         if (arrows.Count == 0)
         {
@@ -69,7 +74,9 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     public void RemoveArrow(GameObject arrow) {
         arrows.Remove(arrow);
         if (arrows.Count == 0)
+        {
             JudgementLine.DeactivateIndicators();
+        }
         else
         {
             GameObject nextArrow = arrows[0];
@@ -205,7 +212,6 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             hasStartedRhythmSequence = true;
             if (wave == -2 || wave == -1){
                 isProjectilePhase = false;
-                JudgementLine.EnableJudgementLine();
             }
 
             if (isProjectilePhase && IsBossWave())
@@ -249,6 +255,12 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             
             if (IsBossWave())
                 currBossWave++;
+
+            if (!isProjectilePhase && !JudgementLine.IsEnabled())
+            {
+                JudgementLine.EnableJudgementLine();
+                onEnterAttackPhase?.Invoke();
+            }
         }
         else if (hasStartedRhythmSequence &&
                  (isProjectilePhase ||
@@ -260,11 +272,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
                 isProjectilePhase = true;
             }
             else if (wave == 0){
-                JudgementLine.EnableJudgementLine();
                 wave = 1;
-            }
-            else{
-                JudgementLine.EnableJudgementLine();
             }
             hasStartedRhythmSequence = false;
         }
@@ -274,6 +282,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             KillAllEnemies();
             isProjectilePhase = true;
             JudgementLine.DisableJudgementLine();
+            onExitAttackPhase?.Invoke();
             hasStartedRhythmSequence = false;
             currBossWave = 1;
 

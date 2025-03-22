@@ -7,6 +7,7 @@ public class JudgementLine : MonoBehaviour
     private static SpriteRenderer rightArrowIndicator;
     private static SpriteRenderer upArrowIndicator;
     private static SpriteRenderer sr;
+    private static bool isEnabled = true;
     private static int activeLane = -1;
     private static float disabledAlpha = 0.04f;
     private static float activeAlpha = 0.5f;
@@ -20,8 +21,13 @@ public class JudgementLine : MonoBehaviour
         leftArrowIndicator = transform.GetChild(3).GetComponent<SpriteRenderer>();
     }
 
+    public static bool IsEnabled() { return isEnabled;}
     public static void EnableJudgementLine()
     {
+        if (isEnabled)
+            return;
+
+        isEnabled = true;
         Color tmp = sr.color;
         tmp.a = 1f;
         sr.color = tmp;
@@ -30,6 +36,10 @@ public class JudgementLine : MonoBehaviour
 
     public static void DisableJudgementLine()
     {
+        if (!isEnabled)
+            return;
+
+        isEnabled = false;
         Color tmp = sr.color;
         tmp.a = 0f;
         sr.color = tmp;
@@ -38,6 +48,9 @@ public class JudgementLine : MonoBehaviour
 
     public static void ActivateIndicatorAtLane(int lane)
     {
+        if (!isEnabled)
+            return;
+
         DeactivateIndicators();
         SpriteRenderer sr = GetIndicatorForLane(lane);
         Color tmp = sr.color;
@@ -49,6 +62,9 @@ public class JudgementLine : MonoBehaviour
 
     public static void DeactivateIndicators()
     {
+        if (!isEnabled)
+            return;
+
         if (activeLane < 0)
             return;
 

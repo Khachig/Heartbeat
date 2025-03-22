@@ -9,15 +9,18 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     public Animator animator;
     public int currentLaneIndex = 3;
     public float moveDuration = 0.3f;
+    public float phaseTransitionDuration = 0.3f;
     public float forwardOffset = 10f;
     public float hitThreshold = 0.5f;
     public EventReference PlayerHurt;
+    public EnemyRhythmManager enemyRhythmManager;
 
     private float timeAtLastBeat;
     private float beatLength;
     private bool isMoving = false;
     private float lastMoveTime = 0f;
     private const float inputCooldown = 0.1f; // set to 0.1 second
+    private bool canMove = true;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,10 +28,15 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         timeAtLastBeat = Time.time;
         transform.localPosition = GetCurrPosition();
         hitThreshold = 0.25f;
+        enemyRhythmManager.onEnterAttackPhase += OnEnterAttackPhase;
+        enemyRhythmManager.onExitAttackPhase += OnExitAttackPhase;
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        if (!canMove)
+            return;
+
         // For input handler, only do call back on performed stage
 
         float currtime = Time.time;
@@ -87,52 +95,53 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         lastMoveTime = currtime;
     }
 
+    void OnEnterAttackPhase()
+    {
+        canMove = false;
+        MoveToCenter(phaseTransitionDuration);
+    }
+
+    void OnExitAttackPhase()
+    {
+        canMove = true;
+        MoveToCurrLane(phaseTransitionDuration);
+    } 
+    
     void StraightLaneChange()
     {
-        // Debug.Log($"{currentLaneIndex}, {currentLaneIndex - 2}");
         currentLaneIndex = Stage.Lanes.GetModLane(currentLaneIndex - 2);
-        // Debug.Log($"{currentLaneIndex}");
-        ChangeLaneStraight();
+        MoveToCurrLane(moveDuration);
     }
 
     void ClockwiseLaneChange()
     {
         animator.SetTrigger("MoveLeft");
         currentLaneIndex = Stage.Lanes.GetModLane(currentLaneIndex - 1);
-        ChangeLane(true);
+        MoveToCurrLane(moveDuration);
     }
 
     void CounterClockwiseLaneChange()
     {
         animator.SetTrigger("MoveRight");
         currentLaneIndex = Stage.Lanes.GetModLane(currentLaneIndex + 1);
-        ChangeLane(false);
+        MoveToCurrLane(moveDuration);
     }
+    
+    void MoveToCenter(float transitionDuration)
+    {
+        Vector3 newposition = new Vector3(0, 0, forwardOffset);
+        Quaternion targetRotation = Quaternion.AngleAxis(0, Vector3.forward);
+        StartCoroutine(SmoothMove(newposition, targetRotation, transitionDuration));   
+    } 
 
-    void ChangeLane(bool moveLeft)
+    void MoveToCurrLane(float transitionDuration)
     {
         Vector3 newposition = GetCurrPosition();
-        Quaternion targetRotation;
-        float angleStep = 360f / Stage.Lanes.GetNumLanes();
-
-        if (moveLeft)
-            targetRotation = transform.localRotation * Quaternion.AngleAxis(-angleStep, Vector3.forward);
-        else
-            targetRotation = transform.localRotation * Quaternion.AngleAxis(angleStep, Vector3.forward);
-
-        StartCoroutine(SmoothMove(newposition, targetRotation));
+        Quaternion targetRotation = GetCurrRotation();
+        StartCoroutine(SmoothMove(newposition, targetRotation, transitionDuration));
     }
 
-    void ChangeLaneStraight()
-    {
-        Vector3 newposition = GetCurrPosition();
-        Quaternion targetRotation;
-
-        targetRotation = transform.localRotation * Quaternion.AngleAxis(180, Vector3.forward);
-        StartCoroutine(SmoothMove(newposition, targetRotation));
-    }
-
-    IEnumerator SmoothMove(Vector3 target, Quaternion targetRotation)
+    IEnumerator SmoothMove(Vector3 target, Quaternion targetRotation, float transitionDuration)
     {
         isMoving = true;
         Vector3 start = transform.localPosition;
@@ -140,9 +149,9 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
 
         float elapsedTime = 0;
 
-        while (elapsedTime < moveDuration)
+        while (elapsedTime < transitionDuration)
         {
-            float t = elapsedTime / moveDuration; // Normalize time
+            float t = elapsedTime / transitionDuration; // Normalize time
             transform.localPosition = Vector3.Lerp(start, target, t);
             transform.localRotation = Quaternion.Lerp(startRotation, targetRotation, t);
 
@@ -159,6 +168,13 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     {
         Vector3 newposition = Stage.Lanes.GetXYPosForLane(currentLaneIndex) + Vector3.forward * forwardOffset;
         return newposition;
+    }
+
+    Quaternion GetCurrRotation()
+    {
+        float angleStep = 360f / Stage.Lanes.GetNumLanes();
+
+        return Quaternion.AngleAxis(angleStep * currentLaneIndex, Vector3.forward);
     }
 
     bool IsOnTopLane(int lane) { return lane == (Stage.Lanes.GetNumLanes() / 2); }
