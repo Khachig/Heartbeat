@@ -2035,6 +2035,7 @@ MonoBehaviour:
   animator: {fileID: 973693057}
   currentLaneIndex: 0
   moveDuration: 0.2
+  phaseTransitionDuration: 0.3
   forwardOffset: 8
   hitThreshold: 0.1
   PlayerHurt:
@@ -2044,6 +2045,7 @@ MonoBehaviour:
       Data3: 92380037
       Data4: -2040567202
     Path: event:/PlayerEvent/PlayerHurt
+  enemyRhythmManager: {fileID: 1608770180}
 --- !u!114 &425896409
 MonoBehaviour:
   m_ObjectHideFlags: 0

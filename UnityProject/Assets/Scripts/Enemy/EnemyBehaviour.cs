@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using FMODUnity;
 
-public class EnemyBehaviour : MonoBehaviour, IEasyListener
+public class EnemyBehaviour : MonoBehaviour
 {
     public delegate void OnEnemyDestroy();
     // To be invoked whenever a single enemy is destroyed
@@ -38,7 +38,6 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
     {
         enemyRhythmManager = erManager;
         audioManager = aManager;
-        audioManager.AddListener(this);
     }
 
     public void SetTimeToJudgementLine(float ttj)
@@ -148,11 +147,5 @@ public class EnemyBehaviour : MonoBehaviour, IEasyListener
         GameObject arrow = arrows[0];
         Pulsable arrowPulsable = arrow.GetComponent<Pulsable>();
         arrowPulsable.Init(audioManager.myAudioEvent.CurrentTempo / 2f, audioManager);
-    }
-    
-    public void OnBeat(EasyEvent audioEvent)
-    {
-        // Attack();
-        // FlashArrow(audioEvent.CurrentBeat - 1);
     }
 }
