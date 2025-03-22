@@ -2,6 +2,7 @@ using TMPro;  // Required for TextMeshPro
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Unity.Cinemachine;
 
 public class Effects : MonoBehaviour
@@ -11,6 +12,7 @@ public class Effects : MonoBehaviour
 	public GameObject missTextPrefab;
 	public float popupDuration = 2f;
 	public Material ScreenDamageMat;
+	public Image ScreenDamageImage;
 	public CinemachineImpulseSource impulseSource;
     public float CameraShakeIntensity = 0.5f;
 	private Coroutine screenDamageTask;
@@ -34,6 +36,7 @@ public class Effects : MonoBehaviour
 			Destroy(gameObject);
 		}
 		ScreenDamageMat.SetFloat("_vignette_radius", 1f);
+		ScreenDamageImage.color = GetNewAlphaForColor(ScreenDamageImage.color, 0f);
 		timeSinceLastPopup = Time.time; 
 	}
 
@@ -86,16 +89,25 @@ public class Effects : MonoBehaviour
 		// Screen Effect
 		var targetRadius = Remap(intensity, 0, 1, 0.4f, -0.1f);
 		var curRadius = 1f;
+		var curImageAlpha = 0f;
 		for(float t = 0; curRadius != targetRadius; t += Time.deltaTime)
 		{
 			curRadius = Mathf.Clamp(Mathf.Lerp(1, targetRadius, t), 1, targetRadius);
 			ScreenDamageMat.SetFloat("_vignette_radius", curRadius);
+			
+			curImageAlpha = Mathf.Lerp(0f, 1f, t);
+			ScreenDamageImage.color = GetNewAlphaForColor(ScreenDamageImage.color, curImageAlpha);
+
 			yield return null;
 		}
 		for(float t = 0; curRadius < 1; t += Time.deltaTime)
 		{
 			curRadius = Mathf.Lerp(targetRadius, 1, t);
 			ScreenDamageMat.SetFloat("_vignette_radius", curRadius);
+
+			curImageAlpha = Mathf.Lerp(1f, 0f, t);
+			ScreenDamageImage.color = GetNewAlphaForColor(ScreenDamageImage.color, curImageAlpha);
+
 			yield return null;
 		}
 	}
@@ -154,6 +166,13 @@ public class Effects : MonoBehaviour
 
         popupFadeRoutine = null;
     }
+
+	private Color GetNewAlphaForColor(Color color, float newAlpha)
+	{
+		Color newColor = color;
+		newColor.a = newAlpha;
+		return newColor;           
+	}
 
 	public static class SpecialEffects
 	{
