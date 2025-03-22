@@ -35,7 +35,6 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     private void Start()
     {
         PlayerAttack.onAttackMiss += OnAttackMiss;
-        PlayerAttack.onAttackSuccess += OnAttackSuccess;
         timeAtLastComboHit = Time.time;
         judgementLine.SetActive(false);
 
@@ -92,7 +91,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     public bool HandlePlayerAttack(Vector2 input)
     {
         if (arrows.Count == 0)
-            return false;       
+            return true;       
 
         GameObject nextArrow = arrows[0];
         ArrowProjectileMovement nextArrowMovement = nextArrow.GetComponent<ArrowProjectileMovement>();
@@ -110,6 +109,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             RemoveArrow(nextArrow);
             nextArrowMovement.DestroyArrow();
             nextArrowMovement.GetParentEnemyBehaviour().HitEnemy();
+            OnAttackSuccess();
             return true;
         }
 

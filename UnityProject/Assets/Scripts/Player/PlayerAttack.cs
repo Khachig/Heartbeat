@@ -5,8 +5,6 @@ public class PlayerAttack : MonoBehaviour, IEasyListener
 {
     public delegate void OnAttackMiss();
     public static OnAttackMiss onAttackMiss;
-    public delegate void OnAttackSuccess();
-    public static OnAttackSuccess onAttackSuccess;
 
     public EnemyManager enemyManager;
     public EnemyRhythmManager enemyRhythmManager;
@@ -42,9 +40,7 @@ public class PlayerAttack : MonoBehaviour, IEasyListener
 
         // bool successfulHit = enemyManager.handlePlayerAttack(context.ReadValue<Vector2>());
         bool successfulHit = enemyRhythmManager.HandlePlayerAttack(context.ReadValue<Vector2>());
-        if (successfulHit)
-            onAttackSuccess?.Invoke();
-        else
+        if (!successfulHit)
             AttackMiss();
     }
 
