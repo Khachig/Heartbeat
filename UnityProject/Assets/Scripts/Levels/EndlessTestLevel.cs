@@ -38,7 +38,6 @@ public class EndlessTestLevel : Level
         enemyCount--;
         if (enemyCount == 0) {
             wave++;
-            Debug.Log($"wave++ {wave}");
             if (wave == 3){
                 maxEnemyCount = 2;
             }

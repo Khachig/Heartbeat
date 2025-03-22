@@ -31,18 +31,9 @@ public class EnemyRhythms : MonoBehaviour
         new List<int>() {1, 5}
     };
 
-    // static private List<List<int>> tutorialRhythm1 = new List<List<int>>() {
-    //     new List<int>() {1, 5, 7}
-    // };
-
     public static List<int> GenerateRandomRhythm()
     {
         int idx = Random.Range(0, allRhythms.Count);
-        string str = "rhythm: ";
-        foreach (int i in allRhythms[idx])
-            str += (i + " ");
-        Debug.Log(str);
-
         return allRhythms[idx];
     }
     

@@ -92,8 +92,6 @@ public class ArrowProjectileMovement : MonoBehaviour
         else if (direction == ArrowDirection.LEFT)
             lane = 3;
         
-        Debug.Log("setting arrow pos to lane " + lane);
-        
         return Stage.Lanes.GetXYPosForLane(lane) + Vector3.forward * forwardOffset;
     }
 }

@@ -19,7 +19,6 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     private int comboNum = 0;
     private float timeAtLastComboHit;
     private float timeToJudgementLine = 0f; // How long projectiles should travel before hitting judgement line
-    public GameObject judgementLine;
 
     private bool isProjectilePhase = true;
     private bool hasStartedRhythmSequence = false;
@@ -36,7 +35,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     {
         PlayerAttack.onAttackMiss += OnAttackMiss;
         timeAtLastComboHit = Time.time;
-        judgementLine.SetActive(false);
+        JudgementLine.DisableJudgementLine();
 
         if (!audioManager)
         {
@@ -57,8 +56,27 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     }
 
     public void RemoveEnemy(GameObject enemy) { enemies.Remove(enemy); }
-    public void AddArrow(GameObject arrow) { arrows.Add(arrow); }
-    public void RemoveArrow(GameObject arrow) { arrows.Remove(arrow); }
+    public void AddArrow(GameObject arrow) {
+        if (arrows.Count == 0)
+        {
+            int lane = GetLaneFromArrow(arrow);
+            JudgementLine.ActivateIndicatorAtLane(lane);
+        }
+
+        arrows.Add(arrow);
+    }
+
+    public void RemoveArrow(GameObject arrow) {
+        arrows.Remove(arrow);
+        if (arrows.Count == 0)
+            JudgementLine.DeactivateIndicators();
+        else
+        {
+            GameObject nextArrow = arrows[0];
+            int lane = GetLaneFromArrow(nextArrow);
+            JudgementLine.ActivateIndicatorAtLane(lane);
+        }
+    }
 
     public void InitNewSequence()
     {
@@ -187,7 +205,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             hasStartedRhythmSequence = true;
             if (wave == -2 || wave == -1){
                 isProjectilePhase = false;
-                judgementLine.SetActive(true);
+                JudgementLine.EnableJudgementLine();
             }
 
             if (isProjectilePhase && IsBossWave())
@@ -242,11 +260,11 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
                 isProjectilePhase = true;
             }
             else if (wave == 0){
-                judgementLine.SetActive(true);
+                JudgementLine.EnableJudgementLine();
                 wave = 1;
             }
             else{
-                judgementLine.SetActive(true);
+                JudgementLine.EnableJudgementLine();
             }
             hasStartedRhythmSequence = false;
         }
@@ -255,8 +273,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         {
             KillAllEnemies();
             isProjectilePhase = true;
-            judgementLine.SetActive(false);
-            // JudgementLine.DisableJudgementLine();
+            JudgementLine.DisableJudgementLine();
             hasStartedRhythmSequence = false;
             currBossWave = 1;
 
@@ -274,5 +291,20 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
                 return true;
         }
         return false;
+    }
+
+    private int GetLaneFromArrow(GameObject arrow)
+    {
+        if (arrow.name.Equals("DownArrowProjectile(Clone)"))
+            return 0;
+        else if (arrow.name.Equals("RightArrowProjectile(Clone)"))
+            return 1;
+        else if (arrow.name.Equals("UpArrowProjectile(Clone)"))
+            return 2;
+        else if (arrow.name.Equals("LeftArrowProjectile(Clone)"))
+            return 3;
+        else
+            // Shouldn't be here
+            return -1;
     }
 }

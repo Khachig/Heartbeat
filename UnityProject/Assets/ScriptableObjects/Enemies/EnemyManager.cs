@@ -29,7 +29,6 @@ public class EnemyManager : ScriptableObject
 
     public void init(EnemyMovement eMovement, EasyRhythmAudioManager aManager, EnemyRhythmManager erManager)
     {
-        Debug.Log("Scriptable Object Enemy Manager");
         enemyMovement = eMovement;
         audioManager = aManager;
         enemyRhythmManager = erManager;
