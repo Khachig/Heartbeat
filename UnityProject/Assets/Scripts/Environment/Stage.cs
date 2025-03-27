@@ -9,6 +9,7 @@ public class Stage : MonoBehaviour
     public float speed = 50f;
     public float rotationSpeed = 10f;
     public float judgementLineOffset = 10f;
+    public int lookAheadOffset = 3;
     public GameObject tube;
     public GameObject offLimitLanePrefab;
     public EasyRhythmAudioManager audioManager;
@@ -85,7 +86,7 @@ public class Stage : MonoBehaviour
     }
 
     private void SetTargetRotation() {
-        targetRotation = Quaternion.LookRotation(points[(pointsIdx + 3) % points.Count] - transform.position);
+        targetRotation = Quaternion.LookRotation(points[(pointsIdx + lookAheadOffset) % points.Count] - transform.position);
         targetRotation = targetRotation * Quaternion.AngleAxis(zRotationAngle, Vector3.forward);
         zRotationAngle += (Mathf.PerlinNoise(transform.position.x, transform.position.y) * 2 - 1);
     }

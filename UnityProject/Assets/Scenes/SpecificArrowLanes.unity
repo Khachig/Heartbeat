@@ -2045,7 +2045,6 @@ MonoBehaviour:
       Data3: 92380037
       Data4: -2040567202
     Path: event:/PlayerEvent/PlayerHurt
-  enemyRhythmManager: {fileID: 1608770180}
 --- !u!114 &425896409
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7019,6 +7018,7 @@ MonoBehaviour:
   speed: 60
   rotationSpeed: 1
   judgementLineOffset: 10
+  lookAheadOffset: 6
   tube: {fileID: 1014209134798584400}
   offLimitLanePrefab: {fileID: 8817314484962031407, guid: 6149e2f039993c44f8dc410b8cfb2939, type: 3}
   audioManager: {fileID: 419586457}
