@@ -14,7 +14,7 @@ public class JudgementLine : MonoBehaviour
 
     private void Start()
     {
-        sr = gameObject.GetComponent<SpriteRenderer>();
+        sr = transform.GetChild(4).GetComponent<SpriteRenderer>();
         downArrowIndicator = transform.GetChild(0).GetComponent<SpriteRenderer>();
         rightArrowIndicator = transform.GetChild(1).GetComponent<SpriteRenderer>();
         upArrowIndicator = transform.GetChild(2).GetComponent<SpriteRenderer>();
