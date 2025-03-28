@@ -18,7 +18,18 @@ public class PulsableManager : MonoBehaviour
                 {
                     pulsable.Init(bpm, audioManager);
                 }
+                // Workaround since for now easyrhythm takes a while to settle
+                // so wait first before syncing beat
+                Invoke("Reset", 1);
             }
+        }
+    }
+
+    public void Reset()
+    {
+        foreach (Pulsable pulsable in myPulsables)
+        {
+            pulsable.ResetAnim();
         }
     }
 }

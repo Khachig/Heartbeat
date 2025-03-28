@@ -3,13 +3,13 @@ using UnityEngine.SceneManagement;
 
 public class RestartGame : MonoBehaviour
 {
-    ScoreManager scoreManager;
     EasyRhythmAudioManager audioManager;
+    GameManager gameManager;
 
     public void Start()
     {
         audioManager = Object.FindAnyObjectByType<EasyRhythmAudioManager>();
-        scoreManager = Object.FindAnyObjectByType<ScoreManager>();
+        gameManager = Object.FindAnyObjectByType<GameManager>();
     }
 
     public void Restart()
@@ -20,7 +20,7 @@ public class RestartGame : MonoBehaviour
         // reload the current scene
         SceneManager.LoadScene(currentSceneIndex);
 
-        scoreManager.ReInitScore();
+        gameManager.Restart();
     }
 
 

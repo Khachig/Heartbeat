@@ -16,4 +16,10 @@ public class GameManager : MonoBehaviour
         levelManager.Init(stage, enemyManager, enemyRhythmManager);
         levelManager.StartLevel();
     }
+
+    public void Restart()
+    {
+        ScoreManager scoreManager = Object.FindAnyObjectByType<ScoreManager>();
+        scoreManager.ReInitScore();
+    }
 }

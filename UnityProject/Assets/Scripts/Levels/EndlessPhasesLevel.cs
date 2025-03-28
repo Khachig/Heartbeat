@@ -25,8 +25,12 @@ public class EndlessPhasesLevel : Level
         wave = -2;
         tut1Panel = tut1P;
         tut2Panel = tut2P;
-
         Invoke("SpawnWave", 5f);
+    }
+
+    void OnDisable()
+    {
+        enemyManager.onEnemyDeath -= OnEnemyDeath;
     }
 
     void SpawnWave()

@@ -48,6 +48,11 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         }
     }
 
+    private void OnDisable()
+    {
+        PlayerAttack.onAttackMiss -= OnAttackMiss;
+    }
+
     public void SetDifficulty(int diff) { difficulty = diff; }
 
     public void SetWave(int w) { 

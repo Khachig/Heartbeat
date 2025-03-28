@@ -21,11 +21,11 @@ public class LevelManager : MonoBehaviour
         firstLevel.onLevelComplete += OnLevelComplete;
         tut1Panel.SetActive(false);
         tut2Panel.SetActive(false);
-        // tut1Panel = GameObject.Find("Tut1Panel");
-        // tut2Panel = GameObject.Find("Tut2Panel");
-        // if (tut1Panel == null || tut2Panel == null){
-        //     Debug.Log("find panel failed.");
-        // }
+    }
+
+    private void OnDisable()
+    {
+        firstLevel.onLevelComplete -= OnLevelComplete;
     }
 
     public void StartLevel()
