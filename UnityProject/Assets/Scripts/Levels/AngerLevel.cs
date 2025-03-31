@@ -1,18 +1,23 @@
 using UnityEngine;
 using System.Linq;
 using System.Collections.Generic;
+using FMODUnity;
 
-public class EndlessPhasesLevel : Level
+public class AngerLevel : Level
 {
+    public GameObject tut1Panel;
+    public GameObject tut2Panel;
+    public GameObject levelCompleteScreen;
+    public GameObject enemyPrefab;
+    public GameObject bossPrefab;
+    [EventRef] public string levelTrack; // A reference to the FMOD event we want to use
     private int enemyCount = 0;
     private int maxEnemyCount = 1;
     private int wave = -2;
 
     private Stage stage;
     private EnemyManager enemyManager;
-    private EnemyRhythmManager enemyRhythmManager;
-    public GameObject tut1Panel;
-    public GameObject tut2Panel;
+    private EnemyRhythmManager enemyRhythmManager; 
     private float tut2time;
 
     public override void Load(Stage stg, EnemyManager eManager, EnemyRhythmManager erManager, EasyRhythmAudioManager aManager, PulsableManager pulsableManager)
@@ -21,10 +26,14 @@ public class EndlessPhasesLevel : Level
         enemyRhythmManager = erManager;
         enemyManager = eManager;
         enemyManager.onEnemyDeath += OnEnemyDeath;
+        enemyRhythmManager.Reset();
         enemyRhythmManager.SetDifficulty(-1);
         wave = -2;
         tut1Panel.SetActive(false);
         tut2Panel.SetActive(false);
+        levelCompleteScreen.SetActive(false);
+        aManager.ChangeTrack(levelTrack);
+        pulsableManager.Reset();
         Invoke("SpawnWave", 5f);
     }
 
@@ -52,6 +61,8 @@ public class EndlessPhasesLevel : Level
         }
         else if (wave % 5 == 0)
             SpawnBossWave();
+        else if (wave > 5)
+            LevelComplete();
         else
             SpawnRegWave();
     } 
@@ -94,6 +105,7 @@ public class EndlessPhasesLevel : Level
     void SpawnEnemy(int lane)
     {
         GameObject enemy = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
+            prefab = enemyPrefab,
             position = Vector3.zero,
             rotation = Quaternion.identity,
             stage = stage,
@@ -123,6 +135,7 @@ public class EndlessPhasesLevel : Level
     {
         enemyCount++;
         GameObject enemy = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
+            prefab = bossPrefab,
             position = Vector3.zero,
             rotation = Quaternion.identity,
             stage = stage,
@@ -130,5 +143,13 @@ public class EndlessPhasesLevel : Level
         });
         enemyRhythmManager.AddEnemy(enemy);
         enemyRhythmManager.InitNewSequence();
+    }
+
+    void LevelComplete()
+    {
+        enemyManager.onEnemyDeath -= OnEnemyDeath;
+        levelCompleteScreen.SetActive(true);
+        onLevelComplete?.Invoke();
+        Destroy(gameObject);
     }
 }

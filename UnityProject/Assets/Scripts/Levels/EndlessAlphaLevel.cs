@@ -12,7 +12,7 @@ public class EndlessAlphaLevel : Level
     private EnemyManager enemyManager;
     private EnemyRhythmManager enemyRhythmManager;
 
-    public override void Load(Stage stg, EnemyManager eManager, EnemyRhythmManager erManager, GameObject tut1P, GameObject tut2P)
+    public override void Load(Stage stg, EnemyManager eManager, EnemyRhythmManager erManager, EasyRhythmAudioManager aManager, PulsableManager pulsableManager)
     {
         stage = stg;
         enemyRhythmManager = erManager;
@@ -95,7 +95,7 @@ public class EndlessAlphaLevel : Level
     void SpawnBossWave()
     {
         enemyCount++;
-        GameObject enemy = enemyManager.spawnBoss(new EnemyManager.SpawnParameters {
+        GameObject enemy = enemyManager.spawnEnemy(new EnemyManager.SpawnParameters {
             position = Vector3.zero,
             rotation = Quaternion.identity,
             stage = stage,

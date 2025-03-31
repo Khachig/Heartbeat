@@ -17,8 +17,13 @@ public class Pulsable : MonoBehaviour, IEasyListener
         needsResetAnim = true;
     }
 
-    public void ResetAnim()
+    public void ResetAnim(float newBpm = 0f)
     {
+        if (newBpm == 0)
+            newBpm = bpm;
+        else
+            bpm = newBpm;
+        anim.SetFloat("PulseSpeed", bpm / 60f);
         needsResetAnim = true;
     }
 

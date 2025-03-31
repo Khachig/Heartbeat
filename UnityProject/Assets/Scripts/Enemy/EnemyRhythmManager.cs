@@ -53,6 +53,21 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         PlayerAttack.onAttackMiss -= OnAttackMiss;
     }
 
+    public void Reset()
+    {
+        lastSequencePlayedBar = 0;
+        currBossWave = 1;
+        rhythmSequenceIdx = 0;
+        rhythmSequence = null;
+        hasStartedCombo = false;
+        hasBrokenCombo = false;
+        comboNum = 0;
+        timeAtLastComboHit = Time.time;
+        timeToJudgementLine = 0f;
+        isProjectilePhase = true;
+        hasStartedRhythmSequence = false;
+    }
+
     public void SetDifficulty(int diff) { difficulty = diff; }
 
     public void SetWave(int w) { 
@@ -183,7 +198,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         ResetCombo();
     }
 
-    private void KillAllEnemies()
+    public void KillAllEnemies()
     {
         foreach(GameObject enemy in enemies.ToList())
         {
@@ -210,7 +225,9 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     private void HandleRhythmSequences(EasyEvent audioEvent)
     {
         if (audioEvent.CurrentBar == 1)
+        {
             lastSequencePlayedBar = 0;
+        }
 
         if (!hasStartedRhythmSequence && audioEvent.CurrentBar >= lastSequencePlayedBar + 2) // Starting new bar, start playing rhythm sequence
         {

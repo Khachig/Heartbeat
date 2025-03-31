@@ -10,8 +10,6 @@ public class EnemyManager : ScriptableObject
     public delegate void OnEnemyDeath();
     // To be invoked whenever a single enemy is destroyed/killed
     public OnEnemyDeath onEnemyDeath;
-    [SerializeField] private GameObject enemyPrefab;
-    [SerializeField] private GameObject bossPrefab;
 
     private List<GameObject> enemies;
 
@@ -21,6 +19,7 @@ public class EnemyManager : ScriptableObject
 
     public struct SpawnParameters
     {
+        public GameObject prefab;
         public Vector3 position;
         public Quaternion rotation;
         public Stage stage;
@@ -37,19 +36,12 @@ public class EnemyManager : ScriptableObject
 
     public GameObject spawnEnemy(SpawnParameters parameters)
     {
-        GameObject enemy = spawnEnemyHelper(parameters, enemyPrefab); 
+        GameObject enemy = spawnEnemyHelper(parameters, parameters.prefab); 
         enemies.Add(enemy);
         enemyMovement.addEnemy(parameters.enemyLane, enemy);
         return enemy;
     }
     
-    public GameObject spawnBoss(SpawnParameters parameters)
-    {
-        GameObject enemy = spawnEnemyHelper(parameters, bossPrefab);
-        enemies.Add(enemy);
-        return enemy;
-    }
-
     private GameObject spawnEnemyHelper(SpawnParameters parameters, GameObject prefab)
     {
         GameObject enemy = Instantiate(

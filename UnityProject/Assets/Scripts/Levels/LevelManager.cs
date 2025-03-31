@@ -2,40 +2,60 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+    public GameObject[] levels;
     private Stage stage;
+    private EasyRhythmAudioManager audioManager;
     private EnemyManager enemyManager;
     private EnemyRhythmManager enemyRhythmManager;
-    private Level firstLevel;
-
+    private PulsableManager pulsabeManager;
+    private Level currLevel;
+    private int currLevelIdx = 0;
     private bool paused = false;
     private CanvasGroup canvasGroup;
-    public GameObject tut1Panel;
-    public GameObject tut2Panel;
 
-    public void Init(Stage stg, EnemyManager eManager, EnemyRhythmManager erManager)
+    public void Init(Stage stg, EnemyManager eManager, EnemyRhythmManager erManager, EasyRhythmAudioManager aManager, PulsableManager pManager)
     {
         stage = stg;
         enemyManager = eManager;
         enemyRhythmManager = erManager;
-        firstLevel = gameObject.AddComponent<EndlessPhasesLevel>();
-        firstLevel.onLevelComplete += OnLevelComplete;
-        tut1Panel.SetActive(false);
-        tut2Panel.SetActive(false);
+        audioManager = aManager;
+        pulsabeManager = pManager;
+        currLevelIdx = 0;
     }
 
     private void OnDisable()
     {
-        firstLevel.onLevelComplete -= OnLevelComplete;
+        currLevel.onLevelComplete -= OnLevelComplete;
     }
 
-    public void StartLevel()
+    public void StartNextLevel()
     {
-        firstLevel.Load(stage, enemyManager, enemyRhythmManager, tut1Panel, tut2Panel);
+        if (currLevelIdx >= levels.Length)
+        {
+            Debug.Log("Max level reached");
+            return;
+        }
+
+        if (currLevel != null)
+        {
+            currLevel.onLevelComplete -= OnLevelComplete;
+        }
+
+        currLevel = levels[currLevelIdx].GetComponent<Level>();
+        currLevel.onLevelComplete += OnLevelComplete;
+        currLevel.Load(stage, enemyManager, enemyRhythmManager, audioManager, pulsabeManager);
+        currLevelIdx++;
     }
 
     void OnLevelComplete()
     {
         Debug.Log("Level Complete");
+        EndCurLevel();
+    }
+
+    void EndCurLevel()
+    {
+        enemyRhythmManager.KillAllEnemies();
     }
 
     void Update()

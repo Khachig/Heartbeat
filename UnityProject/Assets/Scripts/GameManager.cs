@@ -9,12 +9,13 @@ public class GameManager : MonoBehaviour
     public EnemyMovement enemyMovement;
     public EasyRhythmAudioManager audioManager;
     public EnemyRhythmManager enemyRhythmManager;
+    public PulsableManager pulsableManager;
 
     void Start()
     {
         enemyManager.init(enemyMovement, audioManager, enemyRhythmManager);
-        levelManager.Init(stage, enemyManager, enemyRhythmManager);
-        levelManager.StartLevel();
+        levelManager.Init(stage, enemyManager, enemyRhythmManager, audioManager, pulsableManager);
+        levelManager.StartNextLevel();
     }
 
     public void Restart()

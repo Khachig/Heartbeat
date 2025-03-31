@@ -6,5 +6,5 @@ public abstract class Level : MonoBehaviour
     public OnLevelComplete onLevelComplete;
 
     // Call to load the level
-    public abstract void Load(Stage stage, EnemyManager enemyManager, EnemyRhythmManager enemyRhythmManager, GameObject tut1P, GameObject tut2P);
+    public abstract void Load(Stage stage, EnemyManager enemyManager, EnemyRhythmManager enemyRhythmManager, EasyRhythmAudioManager audioManager, PulsableManager pulsableManager);
 }
