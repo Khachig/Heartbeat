@@ -54,7 +54,7 @@ public class StartMenu : MonoBehaviour
 
     public void OnPlayButton()
     {
-        SceneManager.LoadScene("DodgeAttackPhases");
+        SceneManager.LoadScene("SpecificArrowLanes");
     }
 
     public void OnQuitButton()

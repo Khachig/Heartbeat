@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/DodgeAttackPhases.unity
     guid: d2ffcf0894b9c824293c69bad154ac90
+  - enabled: 1
+    path: Assets/Scenes/SpecificArrowLanes.unity
+    guid: 3ca10135f6fdb9e4fb14c5599eee6f07
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0

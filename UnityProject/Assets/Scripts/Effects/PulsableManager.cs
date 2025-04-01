@@ -40,5 +40,7 @@ public class PulsableManager : MonoBehaviour
     {
         bpm = 0;
         needReset = true;
+        // Reset every so often to keep things in sync
+        Invoke("Reset", 3);
     }
 }
