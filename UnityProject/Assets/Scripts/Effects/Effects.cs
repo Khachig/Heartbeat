@@ -80,6 +80,11 @@ public class Effects : MonoBehaviour
 		screenDamageTask = StartCoroutine(screenDamage(intensity));
 	}
 
+	private void ResetScreenDamageEffect()
+	{
+		ScreenDamageMat.SetFloat("_vignette_radius", 1f);
+	}
+
 	private IEnumerator screenDamage(float intensity)
 	{
 		// Cinemachine Camera shake
@@ -174,8 +179,14 @@ public class Effects : MonoBehaviour
 		return newColor;           
 	}
 
+	private void OnDisable()
+	{
+		ResetScreenDamageEffect();
+	}
+
 	public static class SpecialEffects
 	{
+		public static void ResetScreenDamageEffect() => instance.ResetScreenDamageEffect();
 		public static void ScreenDamageEffect(float intensity) => instance.ScreenDamageEffect(intensity);
 		public static void PlayerHealEffect() => instance.PlayerHealEffect();
 		public static void ComboContinueEffect(int comboNum) => instance.ComboContinueEffect(comboNum);

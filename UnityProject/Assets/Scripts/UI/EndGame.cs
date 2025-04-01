@@ -1,6 +1,7 @@
 using UnityEngine;
 using FMODUnity;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class EndGame : MonoBehaviour
 {
@@ -35,12 +36,13 @@ public class EndGame : MonoBehaviour
 
         if (isGameOver)
         {
-            RuntimeManager.PauseAllEvents(true);
-            Time.timeScale = 0f;
-            // display end game menu
-            EndGameMenu.gameObject.SetActive(true);
-            //focus on the end game menu
-            EndGameMenu.GetComponentInChildren<UnityEngine.UI.Button>().Select();
+            Effects.SpecialEffects.ResetScreenDamageEffect();
+            EasyRhythmAudioManager audioManager = Object.FindAnyObjectByType<EasyRhythmAudioManager>();
+            GameManager gameManager = Object.FindAnyObjectByType<GameManager>();
+            gameManager.Restart();
+            audioManager.Reset();
+
+            SceneManager.LoadScene("GameOver");
         }
     }
 }
