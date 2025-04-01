@@ -49,8 +49,9 @@ public class AngerLevel : Level
             tut1Panel.SetActive(true);
         }
         else if (wave == -1){
-            SpawnTutorialWave(0); // arrows only, 2 directions
-            tut1Panel.SetActive(false);   
+            // SpawnTutorialWave(0); // arrows only, 2 directions
+            // tut1Panel.SetActive(false);   
+            LevelComplete();
         }
         else if (wave == 0){
             // enable movement

@@ -20,7 +20,7 @@ public class JudgementLine : MonoBehaviour
         upArrowIndicator = transform.GetChild(2).GetComponent<SpriteRenderer>();
         leftArrowIndicator = transform.GetChild(3).GetComponent<SpriteRenderer>();
     }
-
+    
     public static bool IsEnabled() { return isEnabled;}
     public static void EnableJudgementLine()
     {

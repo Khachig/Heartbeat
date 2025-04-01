@@ -7,15 +7,16 @@ public class ArrowProjectileMovement : MonoBehaviour
     public delegate void OnArrowDestroy();
     // To be invoked whenever an arrow is destroyed
     public OnArrowDestroy onArrowDestroy;
+    public ArrowDirection direction;
     public float projectileSpeed = 20f;
     public float projectileDamage = 10f;
     public float forwardOffset = 80f;
     public EventReference PlayerHurt;
 
-    private EnemyBehaviour parentEnemy;
-    private float hitDistanceThreshold = 0f;
+    protected EnemyBehaviour parentEnemy;
+    protected float hitDistanceThreshold = 0f;
 
-    void Update()
+    protected virtual void Update()
     {
         transform.localPosition = Vector3.MoveTowards(
             transform.localPosition,
@@ -34,7 +35,12 @@ public class ArrowProjectileMovement : MonoBehaviour
         }
     }
 
-    public void Init(EnemyBehaviour pBehaviour, float timeToJudgementLine, ArrowDirection direction)
+    public ArrowDirection GetArrowDirection()
+    {
+        return direction;
+    }
+
+    public virtual void Init(EnemyBehaviour pBehaviour, float timeToJudgementLine, ArrowDirection direction)
     {
         Vector3 pos = GetPositionForArrowDirection(direction);
         transform.localRotation = Quaternion.identity;
@@ -74,13 +80,13 @@ public class ArrowProjectileMovement : MonoBehaviour
         return parentEnemy;
     } 
 
-    private void OnEnemyDestroy()
+    protected void OnEnemyDestroy()
     {
         if (gameObject)
             Destroy(gameObject);
     } 
 
-    private Vector3 GetPositionForArrowDirection(ArrowDirection direction)
+    protected Vector3 GetPositionForArrowDirection(ArrowDirection direction)
     {
         int lane = 0;
         if (direction == ArrowDirection.DOWN)

@@ -100,6 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bd2980098b6dd74185252909152d07b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  direction: 1
   projectileSpeed: 20
   projectileDamage: 10
   forwardOffset: 80

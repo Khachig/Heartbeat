@@ -144,10 +144,10 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         if (!nextArrowMovement.IsInHitRange())
             return false;
         
-        if ((input.y > 0 && nextArrow.name.Equals("UpArrowProjectile(Clone)")) ||
-            (input.y < 0 && nextArrow.name.Equals("DownArrowProjectile(Clone)")) ||
-            (input.x > 0 && nextArrow.name.Equals("RightArrowProjectile(Clone)")) ||
-            (input.x < 0 && nextArrow.name.Equals("LeftArrowProjectile(Clone)"))
+        if ((input.y > 0 && nextArrowMovement.GetArrowDirection() == ArrowDirection.UP) ||
+            (input.y < 0 && nextArrowMovement.GetArrowDirection() == ArrowDirection.DOWN) ||
+            (input.x > 0 && nextArrowMovement.GetArrowDirection() == ArrowDirection.RIGHT) ||
+            (input.x < 0 && nextArrowMovement.GetArrowDirection() == ArrowDirection.LEFT)
         )
         {
             ScoreManager.Instance.AddScore(50);
@@ -326,13 +326,14 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
 
     private int GetLaneFromArrow(GameObject arrow)
     {
-        if (arrow.name.Equals("DownArrowProjectile(Clone)"))
+        ArrowProjectileMovement arrowMovement = arrow.GetComponent<ArrowProjectileMovement>();
+        if (arrowMovement.GetArrowDirection() == ArrowDirection.DOWN)
             return 0;
-        else if (arrow.name.Equals("RightArrowProjectile(Clone)"))
+        else if (arrowMovement.GetArrowDirection() == ArrowDirection.RIGHT)
             return 1;
-        else if (arrow.name.Equals("UpArrowProjectile(Clone)"))
+        else if (arrowMovement.GetArrowDirection() == ArrowDirection.UP)
             return 2;
-        else if (arrow.name.Equals("LeftArrowProjectile(Clone)"))
+        else if (arrowMovement.GetArrowDirection() == ArrowDirection.LEFT)
             return 3;
         else
             // Shouldn't be here

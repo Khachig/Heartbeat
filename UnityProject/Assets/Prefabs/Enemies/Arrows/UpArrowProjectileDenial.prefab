@@ -10,9 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 735818086369170914}
   - component: {fileID: 7769286882152899904}
-  - component: {fileID: 1329961980788437757}
+  - component: {fileID: 540193990507627921}
   m_Layer: 7
-  m_Name: DownArrowProjectile
+  m_Name: UpArrowProjectileDenial
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: a53fee3ce8032fb49add8b17c0ddf06a, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 34afc2f2ec9e04241bb95b8bb28d25a6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -88,7 +88,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &1329961980788437757
+--- !u!114 &540193990507627921
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -97,10 +97,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5211037245117644644}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bd2980098b6dd74185252909152d07b, type: 3}
+  m_Script: {fileID: 11500000, guid: 1db6cfae3da329e46a8a4b0bbf0dd6f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  direction: 16
+  direction: 1
   projectileSpeed: 20
   projectileDamage: 10
   forwardOffset: 80
