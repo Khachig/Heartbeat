@@ -24,6 +24,7 @@ public class EnemyBehaviour : MonoBehaviour
     protected float timeToJudgementLine = 1f; // How long projectiles should travel before hitting judgement line
 
     private EasyRhythmAudioManager audioManager;
+    private bool isBoss = false;
 
     protected virtual void Start()
     {
@@ -34,10 +35,11 @@ public class EnemyBehaviour : MonoBehaviour
         arrows = new List<GameObject>();
     }
 
-    public void Init(EasyRhythmAudioManager aManager, EnemyRhythmManager erManager, float fRate=0)
+    public void Init(EasyRhythmAudioManager aManager, EnemyRhythmManager erManager, float fRate=0, bool isB = false)
     {
         enemyRhythmManager = erManager;
         audioManager = aManager;
+        isBoss = isB;
     }
 
     public void SetTimeToJudgementLine(float ttj)
@@ -84,6 +86,12 @@ public class EnemyBehaviour : MonoBehaviour
     {
         isDead = true;
         onEnemyDestroy?.Invoke();
+        if (isBoss){
+            ScoreManager.Instance.AddScore(1200);
+        }
+        else{
+            ScoreManager.Instance.AddScore(400);
+        }
         // Animator will call destroy on enemy
         enemyAnimator.SetTrigger("EnemyDeath");
         RuntimeManager.PlayOneShot(EnemyDefeat, transform.position);

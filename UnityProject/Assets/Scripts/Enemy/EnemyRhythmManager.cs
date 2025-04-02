@@ -150,7 +150,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             (input.x < 0 && nextArrowMovement.GetArrowDirection() == ArrowDirection.LEFT)
         )
         {
-            ScoreManager.Instance.AddScore(50);
+            ScoreManager.Instance.AddScore(212);
             RemoveArrow(nextArrow);
             nextArrowMovement.DestroyArrow();
             nextArrowMovement.GetParentEnemyBehaviour().HitEnemy();
@@ -224,18 +224,23 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
 
     private void HandleRhythmSequences(EasyEvent audioEvent)
     {
+        // Reset bar tracking if a new loop starts
         if (audioEvent.CurrentBar == 1)
         {
             lastSequencePlayedBar = 0;
         }
 
+        // Check if enough time has passed to start a new rhythm sequence
         if (!hasStartedRhythmSequence && audioEvent.CurrentBar >= lastSequencePlayedBar + 2) // Starting new bar, start playing rhythm sequence
         {
-            hasStartedRhythmSequence = true;
+            hasStartedRhythmSequence = true; // Mark sequence as started
+
+            // Disable projectile for first 2 tutorials
             if (wave == -2 || wave == -1){
                 isProjectilePhase = false;
             }
 
+            // Generate a rhythm pattern based on difficulty level or boss wave
             if (isProjectilePhase && IsBossWave())
                 rhythmSequence = new List<int>() {1};
             else
@@ -243,10 +248,11 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
                 if (difficulty == -1){
                     rhythmSequence = EnemyRhythms.GenerateTutorialRhythm();
                 }
-                else if (difficulty == 0)
-                    rhythmSequence = EnemyRhythms.GenerateRandomEasyRhythm();
-                else
-                    rhythmSequence = EnemyRhythms.GenerateRandomRhythm();
+                else{
+                    rhythmSequence = EnemyRhythms.GenerateDifficultyMatchedRhythm(difficulty);
+                }
+                // else
+                //     rhythmSequence = EnemyRhythms.GenerateRandomRhythm();
             }
             rhythmSequenceIdx = 0;
             lastSequencePlayedBar = audioEvent.CurrentBar;

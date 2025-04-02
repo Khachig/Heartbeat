@@ -24,6 +24,7 @@ public class EnemyManager : ScriptableObject
         public Quaternion rotation;
         public Stage stage;
         public int enemyLane;
+        public bool isBoss;
     }
 
     public void init(EnemyMovement eMovement, EasyRhythmAudioManager aManager, EnemyRhythmManager erManager)
@@ -56,7 +57,7 @@ public class EnemyManager : ScriptableObject
         enemy.transform.parent = parameters.stage.transform;
 
         InitEnemyData(enemy);
-        InitEnemyBehaviour(enemy, audioManager, enemyRhythmManager);
+        InitEnemyBehaviour(enemy, audioManager, enemyRhythmManager, parameters.isBoss);
         InitEnemyPulsable(enemy, audioManager);
 
         return enemy;
@@ -64,10 +65,11 @@ public class EnemyManager : ScriptableObject
 
     private void InitEnemyBehaviour(GameObject enemy,
                                     EasyRhythmAudioManager audioManager,
-                                    EnemyRhythmManager enemyRhythmManager)
+                                    EnemyRhythmManager enemyRhythmManager,
+                                    bool isBoss)
     {
         EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
-        enemyBehaviour.Init(audioManager, enemyRhythmManager);
+        enemyBehaviour.Init(audioManager, enemyRhythmManager, 0, isBoss);
         enemyBehaviour.onEnemyDestroy += OnEnemyDestroy;
     }
 
@@ -86,8 +88,7 @@ public class EnemyManager : ScriptableObject
     }
 
     void OnEnemyDestroy()
-    {
-        ScoreManager.Instance.AddScore(250);
+    {   
         onEnemyDeath?.Invoke();
     }
 

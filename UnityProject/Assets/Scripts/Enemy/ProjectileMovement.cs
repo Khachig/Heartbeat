@@ -5,7 +5,7 @@ using FMODUnity;
 public class ProjectileMovement : MonoBehaviour
 {
     public float projectileSpeed = 20f;
-    public float projectileDamage = 10f;
+    public float projectileDamage = 20f;
     public EventReference PlayerHurt;
 
     private EnemyBehaviour parentEnemy;
@@ -49,7 +49,7 @@ public class ProjectileMovement : MonoBehaviour
             HealthSystem playerHealth = other.GetComponent<HealthSystem>();
             playerHealth.TakeDamage(projectileDamage);
 			Effects.SpecialEffects.ScreenDamageEffect(0.5f);
-            ScoreManager.Instance.DecreaseScore(50);
+            ScoreManager.Instance.DecreaseScore(100);
             RuntimeManager.PlayOneShot(PlayerHurt, transform.position);
 
             if (parentEnemy)

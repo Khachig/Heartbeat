@@ -49,9 +49,9 @@ public class AngerLevel : Level
             tut1Panel.SetActive(true);
         }
         else if (wave == -1){
-            // SpawnTutorialWave(0); // arrows only, 2 directions
-            // tut1Panel.SetActive(false);   
-            LevelComplete();
+            SpawnTutorialWave(0); // arrows only, 2 directions
+            tut1Panel.SetActive(false);   
+            // LevelComplete();
         }
         else if (wave == 0){
             // enable movement
@@ -89,11 +89,12 @@ public class AngerLevel : Level
                 enemyRhythmManager.SetDifficulty(-1);
             }
             else if (wave == 2){
-                enemyRhythmManager.SetDifficulty(0);
+                enemyRhythmManager.SetDifficulty(3);
             }
             else if (wave == 4)
-                enemyRhythmManager.SetDifficulty(1); // Set to normal difficulty (harder rhythms)
-
+                enemyRhythmManager.SetDifficulty(4); // Set to normal difficulty (harder rhythms)
+            // else if (wave >= 6)
+            //     enemyRhythmManager.SetDifficulty(4); // Set to normal difficulty (harder rhythms)
 
             if (wave <= 3)
                 maxEnemyCount = 1;
@@ -111,6 +112,7 @@ public class AngerLevel : Level
             rotation = Quaternion.identity,
             stage = stage,
             enemyLane = lane,
+            isBoss = false
         });
         enemyRhythmManager.AddEnemy(enemy);
     }
@@ -141,6 +143,7 @@ public class AngerLevel : Level
             rotation = Quaternion.identity,
             stage = stage,
             enemyLane = 1,
+            isBoss = true
         });
         enemyRhythmManager.AddEnemy(enemy);
         enemyRhythmManager.InitNewSequence();

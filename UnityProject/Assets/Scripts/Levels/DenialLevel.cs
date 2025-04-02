@@ -35,6 +35,7 @@ public class DenialLevel : Level
 
     void OnDisable()
     {
+        Debug.Log(enemyManager.onEnemyDeath);
         enemyManager.onEnemyDeath -= OnEnemyDeath;
     }
 
@@ -68,6 +69,7 @@ public class DenialLevel : Level
             rotation = Quaternion.identity,
             stage = stage,
             enemyLane = lane,
+            isBoss = false
         });
         enemyRhythmManager.AddEnemy(enemy);
     }
@@ -91,6 +93,7 @@ public class DenialLevel : Level
             rotation = Quaternion.identity,
             stage = stage,
             enemyLane = 1,
+            isBoss = true
         });
         enemyRhythmManager.AddEnemy(enemy);
         enemyRhythmManager.InitNewSequence();

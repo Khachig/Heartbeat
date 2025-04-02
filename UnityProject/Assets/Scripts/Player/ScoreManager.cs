@@ -30,7 +30,7 @@ public class ScoreManager : MonoBehaviour
     private void Start()
     {
         scoreChangeText.gameObject.SetActive(false);
-        InvokeRepeating(nameof(AddTimeScore), timeInterval, timeInterval);
+        // InvokeRepeating(nameof(AddTimeScore), timeInterval, timeInterval);
     }
 
     public void AddScore(int amount)
