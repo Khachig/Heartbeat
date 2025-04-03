@@ -21,24 +21,25 @@ public class StartMenu : MonoBehaviour
     {
         bool enterPressed = Keyboard.current.enterKey.wasPressedThisFrame;
         bool submitted = enterPressed;
-        if (Gamepad.current != null)
+        var gamepad = Gamepad.current;
+        if (gamepad != null)
         {
-            bool buttonPressed = Gamepad.current.aButton.wasPressedThisFrame;
+            bool buttonPressed = gamepad.aButton.wasPressedThisFrame;
             submitted = submitted || buttonPressed;
         }
-        if (enterPressed) {
+        if (submitted) {
             if (selected == 0) OnPlayButton();
             else OnQuitButton();
         }
 
-        bool upPressed = Keyboard.current.upArrowKey.wasPressedThisFrame;
-        bool downPressed = Keyboard.current.downArrowKey.wasPressedThisFrame;
+        bool upPressed = Keyboard.current.upArrowKey.wasPressedThisFrame || gamepad.leftStick.ReadValue().y < 0;
+        bool downPressed = Keyboard.current.downArrowKey.wasPressedThisFrame || gamepad.leftStick.ReadValue().y > 0;
 
         if (upPressed) {
-            selected = selected == 1 ? 0 : 1;
+            selected = 1;
         }
         if (downPressed) {
-            selected = selected == 0 ? 1 : 0;
+            selected = 0;
         }
 
         if (selected == 0) {

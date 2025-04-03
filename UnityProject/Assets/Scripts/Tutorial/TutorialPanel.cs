@@ -1,5 +1,6 @@
 using FMODUnity;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class TutorialPanelScript : MonoBehaviour
 {
@@ -24,7 +25,15 @@ public class TutorialPanelScript : MonoBehaviour
 
     void Update()
     {
-        if (!gameStarted && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.JoystickButton4)))
+        /* if (!gameStarted && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.JoystickButton4))) */
+        var gamepad = Gamepad.current;
+        bool aPressed = false;
+        if (gamepad != null)
+        {
+            aPressed = gamepad.aButton.wasPressedThisFrame;
+        }
+
+        if (!gameStarted && (Input.GetKeyDown(KeyCode.Return) || aPressed))
         {
             HidePanel();
             gameStarted = true;
