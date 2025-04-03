@@ -54,7 +54,7 @@ public class StartMenu : MonoBehaviour
 
     public void OnPlayButton()
     {
-        SceneManager.LoadScene("SpecificArrowLanes");
+        SceneManager.LoadScene("OpeningCutScene");
     }
 
     public void OnQuitButton()

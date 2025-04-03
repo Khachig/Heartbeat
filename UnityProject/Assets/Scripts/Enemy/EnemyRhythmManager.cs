@@ -301,13 +301,33 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             }
 
             if (IsBossWave())
+            {
                 currBossWave++;
+                if (isProjectilePhase)
+                {
+                    for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
+                        Stage.Lanes.DeSpawnOffLimitLane(i);
+                }
+                else 
+                {
+                    GameObject playerObject = GameObject.FindWithTag("Player");
+                    PlayerMovement playerMovement = playerObject.GetComponent<PlayerMovement>();
+                    for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
+                    {
+                        if (playerMovement.currentLaneIndex != i)
+                            Stage.Lanes.SpawnOffLimitLane(i);
+                    }
+                }
+            }
 
             hasStartedRhythmSequence = false;
         }
         else if (hasStartedRhythmSequence &&
                  audioEvent.CurrentBar > lastSequencePlayedBar + 2)
         {
+            for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
+                 Stage.Lanes.DeSpawnOffLimitLane(i);
+
             KillAllEnemies();
             isProjectilePhase = true;
             JudgementLine.DisableJudgementLine();
