@@ -65,7 +65,7 @@ public class ScoreManager : MonoBehaviour
 
         if (currentLevel == 1)
         {
-            AddScore(366);
+            AddScore(273);
         }
         
     }
