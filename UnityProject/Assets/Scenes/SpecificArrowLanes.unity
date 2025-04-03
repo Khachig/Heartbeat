@@ -4469,6 +4469,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 250
   currentHealth: 0
+  EnemyRhythmManager: {fileID: 1608770180}
   HealthBar: {fileID: 2052153659}
 --- !u!136 &973693056
 CapsuleCollider:
@@ -8257,6 +8258,7 @@ MonoBehaviour:
       Data3: 1759718323
       Data4: -1649356717
     Path: event:/ComboEvent/ComboFail
+  comboNum: 0
 --- !u!4 &1608770181
 Transform:
   m_ObjectHideFlags: 0

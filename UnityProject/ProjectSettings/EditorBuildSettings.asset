@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/AlphaSceneNewTube.unity
     guid: 00ea0af6a8c7b2e44b8068ba0cb21e5b
   - enabled: 1
+    path: Assets/Scenes/StartMenu.unity
+    guid: 1cf0736545f96473bbd5eab5b517c1c8
+  - enabled: 1
     path: Assets/Scenes/DodgeAttackPhases.unity
     guid: d2ffcf0894b9c824293c69bad154ac90
   - enabled: 1
