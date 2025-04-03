@@ -153,7 +153,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             (input.x < 0 && nextArrowMovement.GetArrowDirection() == ArrowDirection.LEFT)
         )
         {
-            ScoreManager.Instance.AddScore(212);
+            ScoreManager.Instance.AddRhythmScore();
             RemoveArrow(nextArrow);
             nextArrowMovement.DestroyArrow();
             nextArrowMovement.GetParentEnemyBehaviour().HitEnemy();
@@ -306,6 +306,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
 
             if (IsBossWave())
             {
+                Debug.Log($"total boss waves: {numBossWaves}");
                 currBossWave++;
                 if (isProjectilePhase)
                 {

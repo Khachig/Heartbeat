@@ -87,10 +87,10 @@ public class EnemyBehaviour : MonoBehaviour
         isDead = true;
         onEnemyDestroy?.Invoke();
         if (isBoss){
-            ScoreManager.Instance.AddScore(1200);
+            ScoreManager.Instance.AddBossScore();
         }
         else{
-            ScoreManager.Instance.AddScore(400);
+            ScoreManager.Instance.AddKillScore();
         }
         // Animator will call destroy on enemy
         enemyAnimator.SetTrigger("EnemyDeath");
