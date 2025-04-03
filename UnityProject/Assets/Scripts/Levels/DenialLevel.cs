@@ -45,12 +45,16 @@ public class DenialLevel : Level
     {
         if (wave == 1){
             tut3Panel.SetActive(true);
+            ScoreManager.Instance.SetScoreLevel(1);
+            // enemyRhythmManager.SetDifficulty(6);
+            // SpawnBossWave();
             enemyRhythmManager.SetDifficulty(-1);
         }
         if (wave > 10)
             LevelComplete();
-        else if (wave % 10 == 0)
-            SpawnBossWave();
+        else if (wave == 10){
+            enemyRhythmManager.SetDifficulty(6);
+            SpawnBossWave();}
         else
             SpawnRegWave();
     } 
@@ -62,8 +66,11 @@ public class DenialLevel : Level
             
             wave++;
             if (wave == 2){
+                // LevelComplete();
+                //////
                 tut3Panel.SetActive(false);
                 enemyRhythmManager.SetDifficulty(2);
+
             }
             
             if (wave == 3){
@@ -71,21 +78,22 @@ public class DenialLevel : Level
                 enemyRhythmManager.SetDifficulty(3);
             }
             
-            Invoke("SpawnWave", 3);
-            if (wave == 4){
+            
+            if (wave == 5){
                 maxEnemyCount = 3;
                 enemyRhythmManager.SetDifficulty(4);
             }
-            if (wave == 6){
+            if (wave == 8){
                 // 4 enemies
                 maxEnemyCount = 4;
                 enemyRhythmManager.SetDifficulty(5);
             }
-            if (wave == 10){
-                enemyRhythmManager.SetDifficulty(6);
-            }
+            if (wave == 10)
+                {enemyRhythmManager.SetDifficulty(6);}
             if (maxEnemyCount > 4)
-                maxEnemyCount = 4;
+                {maxEnemyCount = 4;}
+            Invoke("SpawnWave", 3);
+            
         }
     }
 
