@@ -8,6 +8,7 @@ public class DenialLevel : Level
     public GameObject levelCompleteScreen;
     public GameObject enemyPrefab;
     public GameObject bossPrefab;
+    public GameObject tut3Panel;
     [EventRef] public string levelTrack; // A reference to the FMOD event we want to use
     private int enemyCount = 0;
     private int maxEnemyCount = 1;
@@ -42,6 +43,10 @@ public class DenialLevel : Level
 
     void SpawnWave()
     {
+        if (wave == 1){
+            tut3Panel.SetActive(true);
+            enemyRhythmManager.SetDifficulty(-1);
+        }
         if (wave > 10)
             LevelComplete();
         else if (wave % 10 == 0)
@@ -54,7 +59,13 @@ public class DenialLevel : Level
     {
         enemyCount--;
         if (enemyCount == 0) {
+            
             wave++;
+            if (wave == 2){
+                tut3Panel.SetActive(false);
+                enemyRhythmManager.SetDifficulty(2);
+            }
+            
             if (wave == 3){
                 maxEnemyCount = 2;
                 enemyRhythmManager.SetDifficulty(3);

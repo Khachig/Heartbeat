@@ -51,19 +51,21 @@ public class AngerLevel : Level
             tut1Panel.SetActive(true);
         }
         else if (wave == -1){
-            LevelComplete();
-            // SpawnTutorialWave(0); // arrows only, 2 directions
-            // tut1Panel.SetActive(false);   
+            
+            SpawnTutorialWave(0); // arrows only, 2 directions
+            tut1Panel.SetActive(false);   
+            // LevelComplete();
             
         }
         else if (wave == 0){
-            enemyRhythmManager.SetDifficulty(5);
-            SpawnBossWave();
+            // enemyRhythmManager.SetDifficulty(5);
+            // SpawnBossWave();
             // // enable movement
-            // tut2Panel.SetActive(true);
-            // tut2time = Time.time;
+            tut2Panel.SetActive(true);
+            tut2time = Time.time;
             enemyManager.enableEnemyMovement();
-            // SpawnTutorialWave(0); // projectiles only
+            enemyRhythmManager.SetDifficulty(2);
+            SpawnTutorialWave(0); // projectiles only
         }
         else if (wave % 5 == 0)
             SpawnBossWave();

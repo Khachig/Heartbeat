@@ -68,7 +68,10 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         hasStartedRhythmSequence = false;
     }
 
-    public void SetDifficulty(int diff) { difficulty = diff; }
+    public void SetDifficulty(int diff) { 
+        difficulty = diff; 
+        Debug.Log(difficulty);
+        }
 
     public void SetWave(int w) { 
         wave = w; 
@@ -236,7 +239,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             hasStartedRhythmSequence = true; // Mark sequence as started
 
             // Disable projectile for first 2 tutorials
-            if (wave == -2 || wave == -1){
+            if (difficulty == -1){
                 isProjectilePhase = false;
             }
 
