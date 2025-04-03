@@ -13,6 +13,13 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        if (audioManager == null)
+        {
+            Debug.Log("audio manager is null");
+            audioManager = GameObject.FindAnyObjectByType<EasyRhythmAudioManager>();
+        } else {
+            Debug.Log("audio manager is not null");
+        }
         enemyManager.init(enemyMovement, audioManager, enemyRhythmManager);
         levelManager.Init(stage, enemyManager, enemyRhythmManager, audioManager, pulsableManager);
         levelManager.StartNextLevel();

@@ -33,7 +33,7 @@ public class AngerLevel : Level
         tut1Panel.SetActive(false);
         tut2Panel.SetActive(false);
         levelCompleteScreen.SetActive(false);
-        aManager.ChangeTrack(levelTrack);
+        // aManager.ChangeTrack(levelTrack);
         pulsableManager.Reset();
         Invoke("SpawnWave", 5f);
     }

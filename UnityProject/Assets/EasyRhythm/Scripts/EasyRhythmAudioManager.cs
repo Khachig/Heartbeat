@@ -25,9 +25,16 @@ public class EasyRhythmAudioManager : MonoBehaviour
 
     public void ChangeTrack(string newEventPath)
     {
-        myAudioEvent.stop();
+        if (myAudioEvent != null)
+        {
+            Debug.Log("audioEvenet isnt null");
+            myAudioEvent.stop();
+        } else {
+            Debug.Log("audioEvent is null");
+        }
         myAudioEvent = new EasyEvent(newEventPath, myEventListeners);
         myAudioEvent.start();
+        // GameObject.FindAnyObjectByType<PulsableManager>().Init();
     }
 
     public void AddListener(IEasyListener listener)

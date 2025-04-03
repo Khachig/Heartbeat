@@ -30,7 +30,7 @@ public class DenialLevel : Level
         enemyRhythmManager.SetWave(wave);
         enemyManager.enableEnemyMovement();
         levelCompleteScreen.SetActive(false);
-        aManager.ChangeTrack(levelTrack);
+        // aManager.ChangeTrack(levelTrack);
         pulsableManager.Reset();
         Invoke("SpawnWave", 5f);
     }
