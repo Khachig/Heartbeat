@@ -10,6 +10,7 @@ public class ScoreManager : MonoBehaviour
     public float timeInterval = 0.1f; // Time interval for score increase
     public float scorePerSecond = 10f;  // Score increase per interval
     public TMP_Text scoreText;
+    public TMP_Text finalScoreText;
     public TMP_Text scoreChangeText;
     public float scoreChange;
     private Coroutine currentCoroutine;
@@ -87,6 +88,7 @@ public class ScoreManager : MonoBehaviour
     private void Update()
     {
         scoreText.text = "Score: " + ScoreManager.Instance.Score;
+        finalScoreText.text = scoreText.text;
     }
 
     public void ReInitScore()
