@@ -20,7 +20,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     private List<GameObject> arrows = new List<GameObject>();
     private bool hasStartedCombo = false;
     private bool hasBrokenCombo = false;
-    private int comboNum = 0;
+    public int comboNum = 0;
     private float timeAtLastComboHit;
     private float timeToJudgementLine = 0f; // How long projectiles should travel before hitting judgement line
 
@@ -112,7 +112,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
 
     public void InitNewSequence()
     {
-        ResetCombo();
+        //ResetCombo();
     }
 
     public bool HasBrokenCombo () { return hasBrokenCombo; }
@@ -136,6 +136,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         Effects.SpecialEffects.ComboBreakEffect();
         hasBrokenCombo = true;
         RuntimeManager.PlayOneShot(ComboFail, transform.position);
+        comboNum = 0;
     } 
 
     public bool HandlePlayerAttack(Vector2 input)
@@ -177,7 +178,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         return ret;
     }
 
-    private void ResetCombo()
+    public void ResetCombo()
     {
         comboNum = 0;
         hasStartedCombo = false;
@@ -203,7 +204,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     {
         Effects.SpecialEffects.PlayerHealEffect();
         playerHealth.Heal(comboHealAmt);
-        ResetCombo();
+        //ResetCombo();
     }
 
     public void KillAllEnemies()
