@@ -29,6 +29,7 @@ public class AngerLevel : Level
         enemyRhythmManager.Reset();
         enemyRhythmManager.SetDifficulty(-1);
         wave = -2;
+        enemyRhythmManager.SetWave(wave);
         tut1Panel.SetActive(false);
         tut2Panel.SetActive(false);
         levelCompleteScreen.SetActive(false);
@@ -39,7 +40,8 @@ public class AngerLevel : Level
 
     void OnDisable()
     {
-        enemyManager.onEnemyDeath -= OnEnemyDeath;
+        if (enemyManager != null)
+            enemyManager.onEnemyDeath -= OnEnemyDeath;
     }
 
     void SpawnWave()

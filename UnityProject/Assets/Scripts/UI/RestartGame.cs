@@ -5,8 +5,6 @@ public class RestartGame : MonoBehaviour
 {
     public GameObject RetryButton;
     public GameObject GameOverText;
-    EasyRhythmAudioManager audioManager;
-    GameManager gameManager;
 
     private void Start()
     {
@@ -30,9 +28,6 @@ public class RestartGame : MonoBehaviour
 
     public void Restart()
     {
-        // get the current scene index
-        int currentSceneIndex = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
-        // reload the current scene
         SceneManager.LoadScene("SpecificArrowLanes");
     }
 }

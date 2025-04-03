@@ -280,9 +280,6 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
                 enemyBehaviour.StartArrowAttackAnim();
 
             rhythmSequenceIdx = (rhythmSequenceIdx + 1) % rhythmSequence.Count;
-            
-            if (IsBossWave())
-                currBossWave++;
 
             if (!isProjectilePhase && !JudgementLine.IsEnabled())
             {
@@ -302,11 +299,35 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             else if (wave == 0){
                 wave = 1;
             }
+
+            if (IsBossWave())
+            {
+                currBossWave++;
+                if (isProjectilePhase)
+                {
+                    for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
+                        Stage.Lanes.DeSpawnOffLimitLane(i);
+                }
+                else 
+                {
+                    GameObject playerObject = GameObject.FindWithTag("Player");
+                    PlayerMovement playerMovement = playerObject.GetComponent<PlayerMovement>();
+                    for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
+                    {
+                        if (playerMovement.currentLaneIndex != i)
+                            Stage.Lanes.SpawnOffLimitLane(i);
+                    }
+                }
+            }
+
             hasStartedRhythmSequence = false;
         }
         else if (hasStartedRhythmSequence &&
                  audioEvent.CurrentBar > lastSequencePlayedBar + 2)
         {
+            for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
+                 Stage.Lanes.DeSpawnOffLimitLane(i);
+
             KillAllEnemies();
             isProjectilePhase = true;
             JudgementLine.DisableJudgementLine();

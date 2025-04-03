@@ -35,8 +35,8 @@ public class DenialLevel : Level
 
     void OnDisable()
     {
-        Debug.Log(enemyManager.onEnemyDeath);
-        enemyManager.onEnemyDeath -= OnEnemyDeath;
+        if (enemyManager != null)
+            enemyManager.onEnemyDeath -= OnEnemyDeath;
     }
 
     void SpawnWave()

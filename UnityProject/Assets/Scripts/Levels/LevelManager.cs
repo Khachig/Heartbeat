@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -32,7 +33,9 @@ public class LevelManager : MonoBehaviour
     {
         if (currLevelIdx >= levels.Length)
         {
+            audioManager.Reset();
             Debug.Log("Max level reached");
+            SceneManager.LoadScene("Win");
             return;
         }
 
