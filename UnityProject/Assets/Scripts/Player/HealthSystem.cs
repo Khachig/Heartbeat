@@ -53,7 +53,9 @@ public class HealthSystem : MonoBehaviour
         // change the color of the health bar based on the health percentage
         if (healthPercentage > 0.5f)
         {
-            HealthBar.fillRect.GetComponent<UnityEngine.UI.Image>().color = Color.green;
+            Color newColor;
+            ColorUtility.TryParseHtmlString("#FF00FF", out newColor);
+            HealthBar.fillRect.GetComponent<UnityEngine.UI.Image>().color = newColor;
         }
         else if (healthPercentage > 0.25f)
         {
