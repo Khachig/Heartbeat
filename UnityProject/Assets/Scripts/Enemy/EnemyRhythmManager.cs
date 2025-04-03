@@ -280,9 +280,6 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
                 enemyBehaviour.StartArrowAttackAnim();
 
             rhythmSequenceIdx = (rhythmSequenceIdx + 1) % rhythmSequence.Count;
-            
-            if (IsBossWave())
-                currBossWave++;
 
             if (!isProjectilePhase && !JudgementLine.IsEnabled())
             {
@@ -302,6 +299,10 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             else if (wave == 0){
                 wave = 1;
             }
+
+            if (IsBossWave())
+                currBossWave++;
+
             hasStartedRhythmSequence = false;
         }
         else if (hasStartedRhythmSequence &&

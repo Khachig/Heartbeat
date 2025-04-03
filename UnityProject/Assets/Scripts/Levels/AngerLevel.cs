@@ -39,7 +39,8 @@ public class AngerLevel : Level
 
     void OnDisable()
     {
-        enemyManager.onEnemyDeath -= OnEnemyDeath;
+        if (enemyManager != null)
+            enemyManager.onEnemyDeath -= OnEnemyDeath;
     }
 
     void SpawnWave()
