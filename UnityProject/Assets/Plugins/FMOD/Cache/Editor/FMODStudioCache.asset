@@ -27,6 +27,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 701
+--- !u!114 &-7976376157488091962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UIEvent/UIScroll
+  m_EditorClassIdentifier: 
+  Path: event:/UIEvent/UIScroll
+  Guid:
+    Data1: -1564263256
+    Data2: 1278009285
+    Data3: -310487369
+    Data4: -519052724
+  Banks:
+  - {fileID: -4769922658571283979}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 500
 --- !u!114 &-7890216681967160025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,6 +108,33 @@ MonoBehaviour:
   MinDistance: 1
   MaxDistance: 20
   Length: 213333
+--- !u!114 &-5348687963443522258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UIEvent/UIBack
+  m_EditorClassIdentifier: 
+  Path: event:/UIEvent/UIBack
+  Guid:
+    Data1: 583429784
+    Data2: 1252873230
+    Data3: -2008548423
+    Data4: -1451738602
+  Banks:
+  - {fileID: -4769922658571283979}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 500
 --- !u!114 &-4769922658571283979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,10 +150,10 @@ MonoBehaviour:
   Path: Assets/FMOD/Build/Desktop/SFX.bank
   Name: SFX
   StudioPath: bank:/SFX
-  lastModified: 638766249250770296
+  lastModified: 638792548755329321
   FileSizes:
   - Name: Desktop
-    Value: 95520
+    Value: 361472
   Exists: 1
 --- !u!114 &-1401637302299783264
 MonoBehaviour:
@@ -116,10 +170,10 @@ MonoBehaviour:
   Path: Assets/FMOD/Build/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638778214531117202
+  lastModified: 638792548752029209
   FileSizes:
   - Name: Desktop
-    Value: 7279520
+    Value: 8983360
   Exists: 1
 --- !u!114 &-1308961276341546955
 MonoBehaviour:
@@ -175,13 +229,45 @@ MonoBehaviour:
   - {fileID: 2537253561862298646}
   - {fileID: 2072186320137544863}
   - {fileID: -7103695908893433447}
+  - {fileID: 1406726733872355906}
+  - {fileID: -5348687963443522258}
+  - {fileID: 6779787433100153624}
+  - {fileID: -7976376157488091962}
+  - {fileID: 9176931245546675878}
   EditorParameters: []
   MasterBanks:
   - {fileID: -1401637302299783264}
   StringsBanks:
   - {fileID: 8641842500893547333}
-  cacheTime: 638778214531117202
+  cacheTime: 638792548755329321
   cacheVersion: 131622
+--- !u!114 &1406726733872355906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/MainMenu
+  m_EditorClassIdentifier: 
+  Path: event:/Music/MainMenu
+  Guid:
+    Data1: -1030246636
+    Data2: 1237463580
+    Data3: 806708141
+    Data4: -1432042668
+  Banks:
+  - {fileID: -1401637302299783264}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 140333
 --- !u!114 &2072186320137544863
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,7 +290,7 @@ MonoBehaviour:
   - {fileID: -1401637302299783264}
   IsStream: 1
   Is3D: 0
-  IsOneShot: 1
+  IsOneShot: 0
   Parameters: []
   MinDistance: 1
   MaxDistance: 20
@@ -314,6 +400,33 @@ MonoBehaviour:
   IsGlobal: 0
   Labels: []
   Exists: 1
+--- !u!114 &6779787433100153624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UIEvent/UISelect
+  m_EditorClassIdentifier: 
+  Path: event:/UIEvent/UISelect
+  Guid:
+    Data1: 1733610908
+    Data2: 1332215757
+    Data3: 17413248
+    Data4: -2132372096
+  Banks:
+  - {fileID: -4769922658571283979}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 500
 --- !u!114 &7252204985186623387
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -356,8 +469,35 @@ MonoBehaviour:
   Path: Assets/FMOD/Build/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638772947681793682
+  lastModified: 638792548752049481
   FileSizes:
   - Name: Desktop
-    Value: 1234
+    Value: 1468
   Exists: 1
+--- !u!114 &9176931245546675878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/EnemyEvent/EnemyBossFlames
+  m_EditorClassIdentifier: 
+  Path: event:/EnemyEvent/EnemyBossFlames
+  Guid:
+    Data1: -1067592272
+    Data2: 1190920999
+    Data3: 1791733410
+    Data4: 116160473
+  Banks:
+  - {fileID: -4769922658571283979}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 15678
