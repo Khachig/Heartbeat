@@ -37,6 +37,8 @@ public class EnemyRhythms : MonoBehaviour
     public static List<int> GenerateDifficultyMatchedRhythm(int difficulty){
         switch (difficulty)
         {
+            case 2:
+                return tutorialRhythm[0];
             case 3:
                 return GenerateThreeRhythm();
             case 4:
@@ -58,8 +60,8 @@ public class EnemyRhythms : MonoBehaviour
 
     public static List<int> GenerateFiveRhythm()
     {
-        int idx = Random.Range(0, fourRhythms.Count);
-        return fourRhythms[idx];
+        int idx = Random.Range(0, fiveRhythms.Count);
+        return fiveRhythms[idx];
     }
     public static List<int> GenerateFourRhythm()
     {

@@ -250,6 +250,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
                 }
                 else{
                     rhythmSequence = EnemyRhythms.GenerateDifficultyMatchedRhythm(difficulty);
+                    // Debug.Log(rhythmSequence);
                 }
                 // else
                 //     rhythmSequence = EnemyRhythms.GenerateRandomRhythm();
@@ -312,11 +313,24 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
                 {
                     GameObject playerObject = GameObject.FindWithTag("Player");
                     PlayerMovement playerMovement = playerObject.GetComponent<PlayerMovement>();
-                    for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
-                    {
-                        if (playerMovement.currentLaneIndex != i)
-                            Stage.Lanes.SpawnOffLimitLane(i);
-                    }
+                    List<int> laneNumbers = new List<int> { 0, 1, 2, 3 };
+                    laneNumbers.Remove(playerMovement.currentLaneIndex);
+        
+                    int index1 = Random.Range(0, laneNumbers.Count);
+                    int randomlane1 = laneNumbers[index1];
+                    Stage.Lanes.SpawnOffLimitLane(randomlane1);
+                    laneNumbers.Remove(randomlane1);
+
+                    int index2 = Random.Range(0, laneNumbers.Count);
+                    int randomlane2 = laneNumbers[index2];
+                    Stage.Lanes.SpawnOffLimitLane(randomlane2);
+
+
+                    // for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
+                    // {
+                    //     if (playerMovement.currentLaneIndex != i)
+                    //         Stage.Lanes.SpawnOffLimitLane(i);
+                    // }
                 }
             }
 

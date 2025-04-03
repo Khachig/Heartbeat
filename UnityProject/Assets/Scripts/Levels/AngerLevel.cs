@@ -51,16 +51,19 @@ public class AngerLevel : Level
             tut1Panel.SetActive(true);
         }
         else if (wave == -1){
-            SpawnTutorialWave(0); // arrows only, 2 directions
-            tut1Panel.SetActive(false);   
-            // LevelComplete();
+            LevelComplete();
+            // SpawnTutorialWave(0); // arrows only, 2 directions
+            // tut1Panel.SetActive(false);   
+            
         }
         else if (wave == 0){
-            // enable movement
-            tut2Panel.SetActive(true);
-            tut2time = Time.time;
+            enemyRhythmManager.SetDifficulty(5);
+            SpawnBossWave();
+            // // enable movement
+            // tut2Panel.SetActive(true);
+            // tut2time = Time.time;
             enemyManager.enableEnemyMovement();
-            SpawnTutorialWave(0); // projectiles only
+            // SpawnTutorialWave(0); // projectiles only
         }
         else if (wave % 5 == 0)
             SpawnBossWave();
@@ -97,7 +100,8 @@ public class AngerLevel : Level
                 enemyRhythmManager.SetDifficulty(4); // Set to normal difficulty (harder rhythms)
             // else if (wave >= 6)
             //     enemyRhythmManager.SetDifficulty(4); // Set to normal difficulty (harder rhythms)
-
+            else if (wave == 5)
+                enemyRhythmManager.SetDifficulty(5); // Set to difficulty 5 for boss
             if (wave <= 3)
                 maxEnemyCount = 1;
             else if (maxEnemyCount < 4)

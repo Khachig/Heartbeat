@@ -25,8 +25,9 @@ public class DenialLevel : Level
         enemyManager.onEnemyDeath += OnEnemyDeath;
         wave = 1;
         enemyRhythmManager.Reset();
-        enemyRhythmManager.SetDifficulty(1);
+        enemyRhythmManager.SetDifficulty(2);
         enemyRhythmManager.SetWave(wave);
+        enemyManager.enableEnemyMovement();
         levelCompleteScreen.SetActive(false);
         aManager.ChangeTrack(levelTrack);
         pulsableManager.Reset();
@@ -41,9 +42,9 @@ public class DenialLevel : Level
 
     void SpawnWave()
     {
-        if (wave > 5)
+        if (wave > 10)
             LevelComplete();
-        else if (wave % 5 == 0)
+        else if (wave % 10 == 0)
             SpawnBossWave();
         else
             SpawnRegWave();
@@ -54,10 +55,26 @@ public class DenialLevel : Level
         enemyCount--;
         if (enemyCount == 0) {
             wave++;
-            maxEnemyCount++;
+            if (wave == 3){
+                maxEnemyCount = 2;
+                enemyRhythmManager.SetDifficulty(3);
+            }
+            
+            Invoke("SpawnWave", 3);
+            if (wave == 4){
+                maxEnemyCount = 3;
+                enemyRhythmManager.SetDifficulty(4);
+            }
+            if (wave == 6){
+                // 4 enemies
+                maxEnemyCount = 4;
+                enemyRhythmManager.SetDifficulty(5);
+            }
+            if (wave == 10){
+                enemyRhythmManager.SetDifficulty(6);
+            }
             if (maxEnemyCount > 4)
                 maxEnemyCount = 4;
-            Invoke("SpawnWave", 3);
         }
     }
 
