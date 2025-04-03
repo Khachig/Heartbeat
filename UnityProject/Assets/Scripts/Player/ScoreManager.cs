@@ -10,10 +10,11 @@ public class ScoreManager : MonoBehaviour
     public float timeInterval = 0.1f; // Time interval for score increase
     public float scorePerSecond = 10f;  // Score increase per interval
     public TMP_Text scoreText;
-    // public TMP_Text finalScoreText;
+    public TMP_Text finalScoreText;
     public TMP_Text scoreChangeText;
     public float scoreChange;
     private Coroutine currentCoroutine;
+    private int currentLevel = 0;
 
     private void Awake()
     {
@@ -34,6 +35,12 @@ public class ScoreManager : MonoBehaviour
         // InvokeRepeating(nameof(AddTimeScore), timeInterval, timeInterval);
     }
 
+    public void SetScoreLevel(int lvl)
+    {
+        currentLevel = lvl;
+        }
+
+
     public void AddScore(int amount)
     {
         if (currentCoroutine != null)
@@ -48,6 +55,49 @@ public class ScoreManager : MonoBehaviour
         // Debug.Log("New Score: " + Score);
         currentCoroutine = StartCoroutine(HideTextAfterDelay(2f));
     }
+
+    public void AddRhythmScore()
+    {
+        if (currentLevel == 0)
+        {
+            AddScore(165);
+        }
+
+        if (currentLevel == 1)
+        {
+            AddScore(366);
+        }
+        
+    }
+
+    public void AddKillScore()
+    {
+        if (currentLevel == 0)
+        {
+            AddScore(400);
+        }
+
+        if (currentLevel == 1)
+        {
+            AddScore(435);
+        }
+        
+    }
+
+    public void AddBossScore()
+    {
+        if (currentLevel == 0)
+        {
+            AddScore(1200);
+        }
+
+        if (currentLevel == 1)
+        {
+            AddScore(5000);
+        }
+        
+    }
+
 
     public void DecreaseScore(int amount)
     {
@@ -88,7 +138,7 @@ public class ScoreManager : MonoBehaviour
     private void Update()
     {
         scoreText.text = "Score: " + ScoreManager.Instance.Score;
-        // finalScoreText.text = scoreText.text;
+        finalScoreText.text = scoreText.text + "\n/40000";
     }
 
     public void ReInitScore()
