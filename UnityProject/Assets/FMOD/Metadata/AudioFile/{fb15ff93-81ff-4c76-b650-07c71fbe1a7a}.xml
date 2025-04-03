@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{fb15ff93-81ff-4c76-b650-07c71fbe1a7a}">
+		<property name="assetPath">
+			<value>Sound Effects/Enemy/FireFlames.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>15.678208333333334</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{b482341e-5f92-49d4-8c8c-f3800acacb4f}</destination>
+		</relationship>
+	</object>
+</objects>

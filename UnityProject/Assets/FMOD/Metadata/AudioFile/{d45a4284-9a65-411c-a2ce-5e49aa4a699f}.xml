@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{d45a4284-9a65-411c-a2ce-5e49aa4a699f}">
+		<property name="assetPath">
+			<value>Sound Effects/UI/sfx_ui_select_nl.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.5</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{b482341e-5f92-49d4-8c8c-f3800acacb4f}</destination>
+		</relationship>
+	</object>
+</objects>
