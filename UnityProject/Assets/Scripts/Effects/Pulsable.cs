@@ -28,7 +28,6 @@ public class Pulsable : MonoBehaviour, IEasyListener
     {
         if (audioEvent.CurrentBeat % 2 != 0)
         {
-            Debug.Log($"Puslable({bpm}:{bpm/60f}:{gameObject.name}): at {Time.time}");
             anim.SetTrigger("Reset");
         }
     }

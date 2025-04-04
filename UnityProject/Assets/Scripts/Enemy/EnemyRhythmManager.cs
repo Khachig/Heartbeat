@@ -254,10 +254,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
                 }
                 else{
                     rhythmSequence = EnemyRhythms.GenerateDifficultyMatchedRhythm(difficulty);
-                    // Debug.Log(rhythmSequence);
                 }
-                // else
-                //     rhythmSequence = EnemyRhythms.GenerateRandomRhythm();
             }
             rhythmSequenceIdx = 0;
             lastSequencePlayedBar = audioEvent.CurrentBar;
@@ -284,13 +281,36 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             else
                 enemyBehaviour.StartArrowAttackAnim();
 
-            rhythmSequenceIdx = (rhythmSequenceIdx + 1) % rhythmSequence.Count;
+            // rhythmSequenceIdx = (rhythmSequenceIdx + 1) % rhythmSequence.Count;
 
             if (!isProjectilePhase && !JudgementLine.IsEnabled())
             {
                 JudgementLine.EnableJudgementLine();
                 onEnterAttackPhase?.Invoke();
             }
+        }
+        else if (hasStartedRhythmSequence &&
+        // Dev decision to handle complex rhythms
+        ((audioEvent.CurrentBar == lastSequencePlayedBar + 1 && // Give sequences 1 bar gap between playing
+          audioEvent.CurrentBeat == rhythmSequence[rhythmSequenceIdx]) 
+        )
+        )
+        {
+            GameObject enemy = enemies[rhythmSequenceIdx % enemies.Count];
+            EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+
+            if (isProjectilePhase)
+                enemyBehaviour.Attack();
+            else
+                enemyBehaviour.ArrowAttack();
+
+            rhythmSequenceIdx = (rhythmSequenceIdx + 1) % rhythmSequence.Count;
+
+            // if (!isProjectilePhase && !JudgementLine.IsEnabled())
+            // {
+            //     JudgementLine.EnableJudgementLine();
+            //     onEnterAttackPhase?.Invoke();
+            // }
         }
         else if (hasStartedRhythmSequence &&
                  (isProjectilePhase ||
