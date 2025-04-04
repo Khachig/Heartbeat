@@ -1,6 +1,7 @@
 using UnityEngine;
 using FMODUnity;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PauseGame : MonoBehaviour
 {
@@ -40,4 +41,8 @@ public class PauseGame : MonoBehaviour
         }
     }
 
+    public void RestartGame()
+    {
+        SceneManager.LoadScene("SpecificArrowLanes");
+    }
 }
