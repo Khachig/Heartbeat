@@ -5,6 +5,7 @@ public class HealthSystem : MonoBehaviour
 {
     public float maxHealth = 100;
     public float currentHealth;
+    public EnemyRhythmManager EnemyRhythmManager;
 
     // Reference to the health bar slider component
     public UnityEngine.UI.Slider HealthBar;
@@ -23,6 +24,11 @@ public class HealthSystem : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+
+        //reset combo
+        EnemyRhythmManager.BreakCombo();
+        EnemyRhythmManager.ResetCombo();
+
         if (currentHealth <= 0)
         {
             currentHealth = 0;
