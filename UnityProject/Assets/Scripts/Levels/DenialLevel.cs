@@ -86,10 +86,10 @@ public class DenialLevel : Level
             if (wave == 8){
                 // 4 enemies
                 maxEnemyCount = 4;
-                enemyRhythmManager.SetDifficulty(5);
+                enemyRhythmManager.SetDifficulty(4);
             }
             if (wave == 10)
-                {enemyRhythmManager.SetDifficulty(6);}
+                {enemyRhythmManager.SetDifficulty(4);}
             if (maxEnemyCount > 4)
                 {maxEnemyCount = 4;}
             Invoke("SpawnWave", 3);
