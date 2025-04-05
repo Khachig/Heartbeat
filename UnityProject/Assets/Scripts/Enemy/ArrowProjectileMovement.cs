@@ -64,7 +64,34 @@ public class ArrowProjectileMovement : MonoBehaviour
 
     public bool IsInHitRange()
     {
-        return Mathf.Abs(Stage.Lanes.GetJudgementLineOffset() - transform.localPosition.z) < hitDistanceThreshold;
+        return SameLaneAsPlayer() && Mathf.Abs(Stage.Lanes.GetJudgementLineOffset() - transform.localPosition.z) < hitDistanceThreshold;
+    }
+
+    public bool IsInContactOfPlayer()
+    {
+        Vector3 distance = GameObject.FindWithTag("Player").transform.position - transform.position;
+        float playerHitDistanceThreshold = 3.0f;
+        bool withinZ = Mathf.Abs(distance.z) <= hitDistanceThreshold;
+        bool withinX = Mathf.Abs(distance.x) <= 5.5f;
+        bool withinY = Mathf.Abs(distance.y) <= 2f;
+
+        if (withinZ && withinX && withinY)
+        {
+            Debug.Log($"Player in offset distance {distance}.");
+            return true;
+        }
+        Debug.Log($"not offset distance {playerHitDistanceThreshold} {distance}.");
+        return false;
+    }
+
+    public bool SameLaneAsPlayer()
+    {
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        PlayerMovement playerMovement = playerObject.GetComponent<PlayerMovement>();
+        if (playerMovement.currentLaneIndex == GetLaneForArrowDirection(direction)){
+            return true;
+        } 
+        return false;
     }
 
     public void DestroyArrow()
@@ -99,5 +126,20 @@ public class ArrowProjectileMovement : MonoBehaviour
             lane = 3;
         
         return Stage.Lanes.GetXYPosForLane(lane) + Vector3.forward * forwardOffset;
+    }
+
+    protected int GetLaneForArrowDirection(ArrowDirection direction)
+    {
+        int lane = 0;
+        if (direction == ArrowDirection.DOWN)
+            lane = 0;
+        else if (direction == ArrowDirection.RIGHT)
+            lane = 1;
+        else if (direction == ArrowDirection.UP)
+            lane = 2;
+        else if (direction == ArrowDirection.LEFT)
+            lane = 3;
+        
+        return lane;
     }
 }
