@@ -34,6 +34,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     private int currBossWave = 1;
     private int difficulty = 0; // 0 = easy; 1 = normal, -1 = tutorial
     private int wave = -2;
+    private int rhythmSequencesPlayed = 0;
 
     private void Start()
     {
@@ -190,6 +191,9 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
 
     private void OnAttackSuccess()
     {
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        PlayerMovement playerMovement = playerObject.GetComponent<PlayerMovement>();
+        playerMovement.IncrementMultiplier(1);
         if (!HasBrokenCombo())
             ContinueCombo();
     }
@@ -225,136 +229,221 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         HandleRhythmSequences(audioEvent);
     }
 
+    
+
     private void HandleRhythmSequences(EasyEvent audioEvent)
     {
-        // Reset bar tracking if a new loop starts
-        if (audioEvent.CurrentBar == 1)
-        {
-            lastSequencePlayedBar = 0;
-        }
-
-        // Check if enough time has passed to start a new rhythm sequence
-        if (!hasStartedRhythmSequence && audioEvent.CurrentBar >= lastSequencePlayedBar + 2) // Starting new bar, start playing rhythm sequence
-        {
-            hasStartedRhythmSequence = true; // Mark sequence as started
-
-            // Disable projectile for first 2 tutorials
-            if (difficulty == -1){
-                isProjectilePhase = false;
-            }
-
-            // Generate a rhythm pattern based on difficulty level or boss wave
-            if (isProjectilePhase && IsBossWave())
-                rhythmSequence = new List<int>() {1};
-            else
-            {
-                if (difficulty == -1){
-                    rhythmSequence = EnemyRhythms.GenerateTutorialRhythm();
-                }
-                else{
-                    rhythmSequence = EnemyRhythms.GenerateDifficultyMatchedRhythm(difficulty);
-                    // Debug.Log(rhythmSequence);
-                }
-                // else
-                //     rhythmSequence = EnemyRhythms.GenerateRandomRhythm();
-            }
-            rhythmSequenceIdx = 0;
-            lastSequencePlayedBar = audioEvent.CurrentBar;
-        }
-        else if (hasStartedRhythmSequence &&
-            // Ensure beat is 1 before rhythm sequence to give time for animations to play
-            // Note: 1 "beat" in audioEvent is actually 1/2 a beat (8th note)
-            // Dev decision to handle complex rhythms
-            ((audioEvent.CurrentBar == lastSequencePlayedBar &&
-              ((audioEvent.CurrentBeat == audioEvent.TimeSigAsArray()[0] - 1 &&
-                rhythmSequence[rhythmSequenceIdx] == 1) ||
-               (audioEvent.CurrentBeat == audioEvent.TimeSigAsArray()[0] &&
-                rhythmSequence[rhythmSequenceIdx] == 2))) ||
-             (audioEvent.CurrentBar == lastSequencePlayedBar + 1 && // Give sequences 1 bar gap between playing
-              audioEvent.CurrentBeat == rhythmSequence[rhythmSequenceIdx] - 2) 
-            )
-           )
-        {
-            GameObject enemy = enemies[rhythmSequenceIdx % enemies.Count];
-            EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
-
-            if (isProjectilePhase)
-                enemyBehaviour.StartAttackAnim();
-            else
-                enemyBehaviour.StartArrowAttackAnim();
-
-            rhythmSequenceIdx = (rhythmSequenceIdx + 1) % rhythmSequence.Count;
-
-            if (!isProjectilePhase && !JudgementLine.IsEnabled())
-            {
-                JudgementLine.EnableJudgementLine();
-                onEnterAttackPhase?.Invoke();
-            }
-        }
-        else if (hasStartedRhythmSequence &&
-                 (isProjectilePhase ||
-                  (IsBossWave() && currBossWave < numBossWaves)) &&
-                 audioEvent.CurrentBar > lastSequencePlayedBar + 1) // finished projectile phase?
-        {
-            isProjectilePhase = !isProjectilePhase;
-            if (wave == 0 && audioEvent.CurrentBar <= 15 ){
-                isProjectilePhase = true;
-            }
-            else if (wave == 0){
-                wave = 1;
-            }
-
-            if (IsBossWave())
-            {
-                Debug.Log($"total boss waves: {numBossWaves}");
-                currBossWave++;
-                if (isProjectilePhase)
-                {
-                    for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
-                        Stage.Lanes.DeSpawnOffLimitLane(i);
-                }
-                else 
-                {
-                    GameObject playerObject = GameObject.FindWithTag("Player");
-                    PlayerMovement playerMovement = playerObject.GetComponent<PlayerMovement>();
-                    List<int> laneNumbers = new List<int> { 0, 1, 2, 3 };
-                    laneNumbers.Remove(playerMovement.currentLaneIndex);
+        int beatsPerBar = audioEvent.TimeSigAsArray()[0]; // == 8 rn
         
-                    int index1 = Random.Range(0, laneNumbers.Count);
-                    int randomlane1 = laneNumbers[index1];
-                    Stage.Lanes.SpawnOffLimitLane(randomlane1);
-                    laneNumbers.Remove(randomlane1);
+        int currentBar = audioEvent.CurrentBar; // number of bars into the current track
+        int currentBeat = audioEvent.CurrentBeat; // 1-8 and repeat
+        // Debug.Log($"currentBar {currentBar}, lastSequencePlayedBar {lastSequencePlayedBar}");
+        int nextAttackBeat = rhythmSequence != null && rhythmSequenceIdx < rhythmSequence.Count
+            ? rhythmSequence[rhythmSequenceIdx]
+            : -1;
 
-                    int index2 = Random.Range(0, laneNumbers.Count);
-                    int randomlane2 = laneNumbers[index2];
-                    Stage.Lanes.SpawnOffLimitLane(randomlane2);
+        // Reset if a new loop starts
+        ResetSequenceIfBarOne(currentBar);
 
-
-                    // for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
-                    // {
-                    //     if (playerMovement.currentLaneIndex != i)
-                    //         Stage.Lanes.SpawnOffLimitLane(i);
-                    // }
-                }
-            }
-
-            hasStartedRhythmSequence = false;
-        }
-        else if (hasStartedRhythmSequence &&
-                 audioEvent.CurrentBar > lastSequencePlayedBar + 2)
+        // Check if it's time to start a new rhythm sequence
+        if (ShouldStartNewSequence(currentBar))
         {
-            for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
-                 Stage.Lanes.DeSpawnOffLimitLane(i);
+            StartNewRhythmSequence(currentBar);
+        }
+        // Check if it's time to trigger an attack (next attack in 2 beats)
+        else if (ShouldTriggerRhythmAttack(currentBar, currentBeat, beatsPerBar, nextAttackBeat))
+        {
+            TriggerEnemyAttack();
+        }
+        // Check if the phase should transition between melee and projectile
+        else if (ShouldSwitchAttackPhase(currentBar))
+        {
+            SwitchAttackPhase(currentBar);
+        }
+        // Check if the enemy sequences have passed after playing enough sequences
+        else if (ShouldEndAttackPhase(currentBar))
+        {
+            // kill enemies and reset
+            EndAttackPhase();
+        }
+    }
 
+    // --- Condition Functions ---
+
+    private bool ShouldStartNewSequence(int currentBar)
+    {
+        return !hasStartedRhythmSequence && currentBar >= lastSequencePlayedBar + 1; // TODO change 1 to barsInEnemySequence
+    }
+
+    private bool ShouldTriggerRhythmAttack(int currentBar, int currentBeat, int beatsPerBar, int attackBeat)
+    {
+        return hasStartedRhythmSequence &&
+            IsTwoBeatsBeforeNextRhythmHit(currentBar, currentBeat, beatsPerBar, attackBeat);
+    }
+
+    private bool IsTwoBeatsBeforeNextRhythmHit(int currentBar, int currentBeat, int beatsPerBar, int attackBeat)
+    {
+        if (attackBeat == -1) return false; // invalid state
+
+        int nextAttackBar = lastSequencePlayedBar + 1;
+
+        // If the attack is very early in the bar, trigger must happen in previous bar
+        // if (attackBeat <= 2)
+        //     attackBar += 1;
+
+        int totalBeatsNow = currentBar * beatsPerBar + currentBeat;
+        int totalBeatsToHit = nextAttackBar * beatsPerBar + attackBeat;
+
+        return totalBeatsNow == totalBeatsToHit - 2;
+    }
+
+    private bool ShouldSwitchAttackPhase(int currentBar)
+    {
+        return hasStartedRhythmSequence &&
+            (isProjectilePhase || (IsBossWave() && currBossWave < numBossWaves)) &&
+            currentBar > lastSequencePlayedBar + 1;
+    }
+
+    private bool ShouldEndAttackPhase(int currentBar)
+    {
+        return hasStartedRhythmSequence && currentBar > lastSequencePlayedBar + 2;
+    }
+
+    // --- Action Functions ---
+
+    private void ResetSequenceIfBarOne(int currentBar)
+    {
+        if (currentBar == 1)
+            lastSequencePlayedBar = 0;
+    }
+    // --
+
+
+    private void StartNewRhythmSequence(int currentBar)
+    {
+        hasStartedRhythmSequence = true;
+
+        if (wave == -2 || wave == -1)
+            isProjectilePhase = false;
+
+        rhythmSequence = GenerateRhythmBasedOnDifficulty();
+        rhythmSequenceIdx = 0;
+        lastSequencePlayedBar = currentBar;
+    }
+
+    private List<int> GenerateRhythmBasedOnDifficulty()
+    {
+        if (isProjectilePhase && IsBossWave())
+            return new List<int>() { 1 };
+
+        if (difficulty == -1){
+            return EnemyRhythms.GenerateTutorialRhythm();
+        }
+        else{
+            return EnemyRhythms.GenerateDifficultyMatchedRhythm(difficulty);
+            // Debug.Log(rhythmSequence);
+        }
+    }
+
+    private void TriggerEnemyAttack()
+    {
+        GameObject enemy = enemies[rhythmSequenceIdx % enemies.Count];
+        EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+
+        if (isProjectilePhase)
+            enemyBehaviour.StartAttackAnim();
+        else
+            enemyBehaviour.StartArrowAttackAnim();
+
+        rhythmSequenceIdx = (rhythmSequenceIdx + 1) % rhythmSequence.Count;
+
+        // if (IsBossWave())
+        //     currBossWave++;
+
+        if (!isProjectilePhase && !JudgementLine.IsEnabled())
+        {
+            JudgementLine.EnableJudgementLine();
+            onEnterAttackPhase?.Invoke();
+        }
+    }
+
+    private void SwitchAttackPhase(int currentBar)
+    {
+        isProjectilePhase = !isProjectilePhase;
+
+        if (isProjectileTutorial(currentBar)) // projectile tutorial
+        {
+            isProjectilePhase = true;
+        }
+        else if (wave == 0)
+        {
+            wave = 1;
+        }
+
+        if (IsBossWave())
+        {
+
+            Debug.Log($"total boss waves: {numBossWaves}");
+            currBossWave++;
+            if (isProjectilePhase)
+            {
+                Debug.Log("isProjectilePhase");
+                for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
+                    Stage.Lanes.DeSpawnOffLimitLane(i);
+            }
+            else {
+                Debug.Log("not isProjectilePhase");
+                SpawnRandomOffLimitLanes(2);
+            }
+        }
+
+        hasStartedRhythmSequence = false;
+    }
+
+    private bool isProjectileTutorial(int currentBar){
+        int tutorialEndBar = 15;
+        int projTutorialWave = 0;
+        return wave == projTutorialWave && currentBar <= tutorialEndBar;
+    }
+
+    private void SpawnRandomOffLimitLanes(int numSpawnLanes){
+        List<int> laneNumbers = Enumerable.Range(0, Stage.Lanes.GetNumLanes()).ToList();
+
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        PlayerMovement playerMovement = playerObject.GetComponent<PlayerMovement>();
+        laneNumbers.Remove(playerMovement.currentLaneIndex); // don't spawn on player
+
+        for (int i = 0; i < numSpawnLanes; i++){
+            int randomIndex = Random.Range(0, laneNumbers.Count);
+            int randomlane = laneNumbers[randomIndex];
+            Stage.Lanes.SpawnOffLimitLane(randomlane);
+            laneNumbers.Remove(randomlane);
+        }
+    }
+
+    private void EndAttackPhase()
+    {
+        int totalRhythmSeqPerEnemy = 1;
+        rhythmSequencesPlayed++; // Increment sequence counter
+
+        if (rhythmSequencesPlayed >= 1) // End phase only after 2 sequences
+        {
             KillAllEnemies();
             isProjectilePhase = true;
             JudgementLine.DisableJudgementLine();
             onExitAttackPhase?.Invoke();
             hasStartedRhythmSequence = false;
             currBossWave = 1;
+            rhythmSequencesPlayed = 0;
+            for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
+                    Stage.Lanes.DeSpawnOffLimitLane(i);
 
             if (hasStartedCombo && !HasBrokenCombo())
                 OnComboComplete();
+        }
+        else
+        {
+            hasStartedRhythmSequence = false; // Prepare for another sequence
         }
     }
 
@@ -385,3 +474,137 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             return -1;
     }
 }
+
+
+// private void HandleRhythmSequences(EasyEvent audioEvent)
+//     {
+//         // Reset bar tracking if a new loop starts
+//         if (audioEvent.CurrentBar == 1)
+//         {
+//             lastSequencePlayedBar = 0;
+//         }
+
+//         // Check if enough time has passed to start a new rhythm sequence
+//         if (!hasStartedRhythmSequence && audioEvent.CurrentBar >= lastSequencePlayedBar + 2) // Starting new bar, start playing rhythm sequence
+//         {
+//             hasStartedRhythmSequence = true; // Mark sequence as started
+
+//             // Disable projectile for first 2 tutorials
+//             if (difficulty == -1){
+//                 isProjectilePhase = false;
+//             }
+
+//             // Generate a rhythm pattern based on difficulty level or boss wave
+//             if (isProjectilePhase && IsBossWave())
+//                 rhythmSequence = new List<int>() {1};
+//             else
+//             {
+//                 if (difficulty == -1){
+//                     rhythmSequence = EnemyRhythms.GenerateTutorialRhythm();
+//                 }
+//                 else{
+//                     rhythmSequence = EnemyRhythms.GenerateDifficultyMatchedRhythm(difficulty);
+//                     // Debug.Log(rhythmSequence);
+//                 }
+//                 // else
+//                 //     rhythmSequence = EnemyRhythms.GenerateRandomRhythm();
+//             }
+//             rhythmSequenceIdx = 0;
+//             lastSequencePlayedBar = audioEvent.CurrentBar;
+//         }
+//         else if (hasStartedRhythmSequence &&
+//             // Ensure beat is 1 before rhythm sequence to give time for animations to play
+//             // Note: 1 "beat" in audioEvent is actually 1/2 a beat (8th note)
+//             // Dev decision to handle complex rhythms
+//             ((audioEvent.CurrentBar == lastSequencePlayedBar &&
+//               ((audioEvent.CurrentBeat == audioEvent.TimeSigAsArray()[0] - 1 &&
+//                 rhythmSequence[rhythmSequenceIdx] == 1) ||
+//                (audioEvent.CurrentBeat == audioEvent.TimeSigAsArray()[0] &&
+//                 rhythmSequence[rhythmSequenceIdx] == 2))) ||
+//              (audioEvent.CurrentBar == lastSequencePlayedBar + 1 && // Give sequences 1 bar gap between playing
+//               audioEvent.CurrentBeat == rhythmSequence[rhythmSequenceIdx] - 2) 
+//             )
+//            )
+//         {
+//             GameObject enemy = enemies[rhythmSequenceIdx % enemies.Count];
+//             EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
+
+//             if (isProjectilePhase)
+//                 enemyBehaviour.StartAttackAnim();
+//             else
+//                 enemyBehaviour.StartArrowAttackAnim();
+
+//             rhythmSequenceIdx = (rhythmSequenceIdx + 1) % rhythmSequence.Count;
+
+//             if (!isProjectilePhase && !JudgementLine.IsEnabled())
+//             {
+//                 JudgementLine.EnableJudgementLine();
+//                 onEnterAttackPhase?.Invoke();
+//             }
+//         }
+//         else if (hasStartedRhythmSequence &&
+//                  (isProjectilePhase ||
+//                   (IsBossWave() && currBossWave < numBossWaves)) &&
+//                  audioEvent.CurrentBar > lastSequencePlayedBar + 1) // finished projectile phase?
+//         {
+//             isProjectilePhase = !isProjectilePhase;
+//             if (wave == 0 && audioEvent.CurrentBar <= 15 ){
+//                 isProjectilePhase = true;
+//             }
+//             else if (wave == 0){
+//                 wave = 1;
+//             }
+
+//             if (IsBossWave())
+//             {
+//                 Debug.Log($"total boss waves: {numBossWaves}");
+//                 currBossWave++;
+//                 if (isProjectilePhase)
+//                 {
+//                     for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
+//                         Stage.Lanes.DeSpawnOffLimitLane(i);
+//                 }
+//                 else 
+//                 {
+//                     GameObject playerObject = GameObject.FindWithTag("Player");
+//                     PlayerMovement playerMovement = playerObject.GetComponent<PlayerMovement>();
+//                     List<int> laneNumbers = new List<int> { 0, 1, 2, 3 };
+//                     laneNumbers.Remove(playerMovement.currentLaneIndex);
+        
+//                     int index1 = Random.Range(0, laneNumbers.Count);
+//                     int randomlane1 = laneNumbers[index1];
+//                     Stage.Lanes.SpawnOffLimitLane(randomlane1);
+//                     laneNumbers.Remove(randomlane1);
+
+//                     int index2 = Random.Range(0, laneNumbers.Count);
+//                     int randomlane2 = laneNumbers[index2];
+//                     Stage.Lanes.SpawnOffLimitLane(randomlane2);
+
+
+//                     // for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
+//                     // {
+//                     //     if (playerMovement.currentLaneIndex != i)
+//                     //         Stage.Lanes.SpawnOffLimitLane(i);
+//                     // }
+//                 }
+//             }
+
+//             hasStartedRhythmSequence = false;
+//         }
+//         else if (hasStartedRhythmSequence &&
+//                  audioEvent.CurrentBar > lastSequencePlayedBar + 2)
+//         {
+//             for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
+//                  Stage.Lanes.DeSpawnOffLimitLane(i);
+
+//             KillAllEnemies();
+//             isProjectilePhase = true;
+//             JudgementLine.DisableJudgementLine();
+//             onExitAttackPhase?.Invoke();
+//             hasStartedRhythmSequence = false;
+//             currBossWave = 1;
+
+//             if (hasStartedCombo && !HasBrokenCombo())
+//                 OnComboComplete();
+//         }
+//     }

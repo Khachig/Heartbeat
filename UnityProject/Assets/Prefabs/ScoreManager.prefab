@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6466574328734440450}
   - component: {fileID: 714925134524889213}
+  - component: {fileID: 8147271029769924921}
   m_Layer: 0
   m_Name: ScoreManager
   m_TagString: Untagged
@@ -47,3 +48,19 @@ MonoBehaviour:
   timeInterval: 0.1
   scorePerSecond: 10
   scoreText: {fileID: 0}
+  finalScoreText: {fileID: 0}
+  scoreChangeText: {fileID: 0}
+  scoreChange: 0
+--- !u!114 &8147271029769924921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5304718801429377438}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78a89546b9da24b598ae6c4914cdb50e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioManager: {fileID: 0}
