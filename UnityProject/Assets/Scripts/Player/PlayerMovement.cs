@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     public float moveDuration = 0.3f;
     public float phaseTransitionDuration = 0.3f;
     public float forwardOffset = 10f;
-    public float hitThreshold = 0.5f;
+    private float hitThreshold = 0.20f;
     public EventReference PlayerHurt;
 
     private float timeAtLastBeat;
@@ -21,12 +21,16 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     private const float inputCooldown = 0.1f; // set to 0.1 second
     private bool canMove = true;
 
+    private int beatMultiplier = 1;
+    private int beatMultiplierIfHit = 2;
+    private float timeAtLastOffBeat;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         timeAtLastBeat = Time.time;
         transform.localPosition = GetCurrPosition();
-        hitThreshold = 0.25f;
+        hitThreshold = 0.2f;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -116,6 +120,7 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     {
         Vector3 newposition = GetCurrPosition();
         Quaternion targetRotation = GetCurrRotation();
+        IncrementMultiplier(1);
         StartCoroutine(SmoothMove(newposition, targetRotation, transitionDuration));
     }
 
@@ -176,6 +181,19 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         if (beatLength == 0)
             beatLength = audioEvent.BeatLength();
         timeAtLastBeat = Time.time;
+        if (timeAtLastOffBeat == 0){
+            timeAtLastOffBeat = timeAtLastBeat;
+        }
+
+        // beatMultiplierIfHit++;
+        if (timeAtLastBeat >= timeAtLastOffBeat + beatLength + 0.2){
+            beatMultiplierIfHit++;
+            timeAtLastOffBeat = timeAtLastBeat;
+        }
+        
+        Debug.Log($"beatMIfHit {beatMultiplierIfHit} {timeAtLastOffBeat} {timeAtLastBeat}");
+        // Start coroutine to check for missed hit 0.21s later
+        StartCoroutine(CheckMultiplierMissAfterDelay(0.21f));
 
         if (Stage.Lanes.IsOffLimitLaneActive(currentLaneIndex))
         {
@@ -185,5 +203,33 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
             ScoreManager.Instance.DecreaseScore(25);
             RuntimeManager.PlayOneShot(PlayerHurt, transform.position);
         }
+    }
+
+    private IEnumerator CheckMultiplierMissAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        if (beatMultiplierIfHit > beatMultiplier)
+        {
+            BreakMultiplier();
+            beatMultiplierIfHit = beatMultiplier;
+        }
+    
+    }
+    public void IncrementMultiplier(int amount)
+    {
+        beatMultiplier += amount;
+        // if (beatMultiplier > beatMultiplierIfHit + 1){
+        //     beatMultiplierIfHit = beatMultiplier;
+        // }
+        ScoreManager.Instance.SetMultiplier(beatMultiplier);
+        Debug.Log($"✅ Combo hit! Multiplier: {beatMultiplier}");
+        Effects.SpecialEffects.MultiplierEffect(beatMultiplier);
+    }
+    private void BreakMultiplier()
+    {
+        beatMultiplier = Mathf.Max(1, beatMultiplier - 3);
+        ScoreManager.Instance.SetMultiplier(beatMultiplier);
+        Debug.Log($"❌ Combo broken! Multiplier now: {beatMultiplier}");
     }
 }

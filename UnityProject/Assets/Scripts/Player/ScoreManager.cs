@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using FMODUnity;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -12,9 +13,11 @@ public class ScoreManager : MonoBehaviour
     public TMP_Text scoreText;
     public TMP_Text finalScoreText;
     public TMP_Text scoreChangeText;
+    public TMP_Text scoreMultiplierText;
     public float scoreChange;
     private Coroutine currentCoroutine;
     private int currentLevel = 0;
+    private int beatMultiplier = 1;
 
     private void Awake()
     {
@@ -47,10 +50,12 @@ public class ScoreManager : MonoBehaviour
         {
             StopCoroutine(currentCoroutine);
         }
-        Score += amount;
-        scoreChangeText.text = "+" + amount.ToString();
+        int changeAmount = amount * (1+beatMultiplier/100);
+        Debug.Log($"beatMultiplier/100 {beatMultiplier/100}");
+        Score += changeAmount;
+        scoreChangeText.text = "+" + changeAmount.ToString();
         scoreChangeText.color = Color.green;
-        scoreChange = amount;
+        scoreChange = changeAmount;
         scoreChangeText.gameObject.SetActive(true);
         // Debug.Log("New Score: " + Score);
         currentCoroutine = StartCoroutine(HideTextAfterDelay(2f));
@@ -139,6 +144,7 @@ public class ScoreManager : MonoBehaviour
     {
         scoreText.text = "Score: " + ScoreManager.Instance.Score;
         finalScoreText.text = scoreText.text + "\n/40000";
+        scoreMultiplierText.text = "X"+ ScoreManager.Instance.beatMultiplier;
     }
 
     public void ReInitScore()
@@ -148,4 +154,11 @@ public class ScoreManager : MonoBehaviour
         scoreChangeText.gameObject.SetActive(false);
         InvokeRepeating(nameof(AddTimeScore), timeInterval, timeInterval);
     }
+
+    public void SetMultiplier(int amount)
+    {
+        beatMultiplier = amount;
+        scoreMultiplierText.text = "X"+beatMultiplier;
+    }
+
 }

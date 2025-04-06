@@ -72,6 +72,12 @@ public class Effects : MonoBehaviour
 		timeSinceLastMissPopup = Time.time;
 	}
 
+	private void MultiplierEffect(int multiplierNum) 
+	{
+		SpawnPopup("X" + multiplierNum, missTextPrefab, ref missTextPopup);
+		timeSinceLastMissPopup = Time.time;
+	}
+
 	private void ScreenDamageEffect(float intensity) 
 	{
 		if(screenDamageTask != null)
@@ -192,5 +198,6 @@ public class Effects : MonoBehaviour
 		public static void ComboContinueEffect(int comboNum) => instance.ComboContinueEffect(comboNum);
 		public static void ComboBreakEffect() => instance.ComboBreakEffect();
 		public static void MissEffect() => instance.MissEffect();
+		public static void MultiplierEffect(int multiplierNum) => instance.MultiplierEffect(multiplierNum);
 	}
 }
