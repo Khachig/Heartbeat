@@ -103,7 +103,7 @@ public class AngerLevel : Level
             // else if (wave >= 6)
             //     enemyRhythmManager.SetDifficulty(4); // Set to normal difficulty (harder rhythms)
             else if (wave == 5)
-                enemyRhythmManager.SetDifficulty(4); // Set to difficulty 5 for boss
+                enemyRhythmManager.SetDifficulty(5); // Set to difficulty 5 for boss
             if (wave <= 3)
                 maxEnemyCount = 1;
             else if (maxEnemyCount < 4)

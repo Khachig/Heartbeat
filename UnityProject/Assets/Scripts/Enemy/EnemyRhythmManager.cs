@@ -369,9 +369,21 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
 
         if (isProjectilePhase)
+        {
             enemyBehaviour.StartAttackAnim();
+            if (rhythmSequenceIdx == 0 && IsBossWave()){
+                SpawnRandomOffLimitLanes(2);
+            }
+        }
         else
-            enemyBehaviour.StartArrowAttackAnim();
+        {
+            if (rhythmSequenceIdx == 0){
+                despawnAllOffLimitLanes();
+            }
+            enemyBehaviour.StartArrowAttackAnim(); // despawn all lanes when first arrow starts
+            // TODO issue is lanes spawn too early...
+            // fix is to spawn only after all
+        }
 
         if (!isProjectilePhase && !JudgementLine.IsEnabled())
         {
@@ -413,20 +425,18 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         {
             Debug.Log($"total boss waves: {numBossWaves}");
             currBossWave++;
-            if (isProjectilePhase)
+            if (!isProjectilePhase)
             {
-                Debug.Log("isProjectilePhase");
-                for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
-                    Stage.Lanes.DeSpawnOffLimitLane(i);
-            }
-            else
-            {
-                Debug.Log("not isProjectilePhase");
-                SpawnRandomOffLimitLanes(2);
+                despawnAllOffLimitLanes();
             }
         }
 
         hasStartedRhythmSequence = false;
+    }
+
+    private void despawnAllOffLimitLanes(){
+        for (int i = 0; i < Stage.Lanes.GetNumLanes(); i++)
+            Stage.Lanes.DeSpawnOffLimitLane(i);
     }
 
     private bool isProjectileTutorial(int currentBar){
@@ -455,7 +465,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         int totalRhythmSeqPerEnemy = 1;
         rhythmSequencesPlayed++; // Increment sequence counter
 
-        if (rhythmSequencesPlayed >= 1) // End phase only after 2 sequences
+        if (rhythmSequencesPlayed >= totalRhythmSeqPerEnemy) // End phase only after 2 sequences
         {
             KillAllEnemies();
             isProjectilePhase = true;
