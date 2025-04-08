@@ -24,6 +24,7 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     private int beatMultiplier = 1;
     private int beatMultiplierIfHit = 2;
     private float timeAtLastOffBeat;
+    private int globalBeatOffLimitLaneSpawn = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -31,6 +32,9 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         timeAtLastBeat = Time.time;
         transform.localPosition = GetCurrPosition();
         hitThreshold = 0.2f;
+    }
+    public void SetBeatOffLimitLaneSpawn(int beat){
+        globalBeatOffLimitLaneSpawn = beat;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -191,11 +195,11 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
             timeAtLastOffBeat = timeAtLastBeat;
         }
         
-        Debug.Log($"beatMIfHit {beatMultiplierIfHit} {timeAtLastOffBeat} {timeAtLastBeat}");
+        // Debug.Log($"beatMIfHit {beatMultiplierIfHit} {timeAtLastOffBeat} {timeAtLastBeat}");
         // Start coroutine to check for missed hit 0.21s later
         StartCoroutine(CheckMultiplierMissAfterDelay(0.21f));
 
-        if (Stage.Lanes.IsOffLimitLaneActive(currentLaneIndex))
+        if (Stage.Lanes.IsOffLimitLaneActive(currentLaneIndex) && audioEvent.CurrentBar*8 + audioEvent.CurrentBeat > globalBeatOffLimitLaneSpawn + 4)
         {
             HealthSystem playerHealth = transform.GetChild(0).GetComponent<HealthSystem>();
             playerHealth.TakeDamage(5);
@@ -223,13 +227,12 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         //     beatMultiplierIfHit = beatMultiplier;
         // }
         ScoreManager.Instance.SetMultiplier(beatMultiplier);
-        Debug.Log($"✅ Combo hit! Multiplier: {beatMultiplier}");
+        // Debug.Log($"✅ Combo hit! Multiplier: {beatMultiplier}");
         Effects.SpecialEffects.MultiplierEffect(beatMultiplier);
     }
     private void BreakMultiplier()
     {
         beatMultiplier = Mathf.Max(1, beatMultiplier - 3);
         ScoreManager.Instance.SetMultiplier(beatMultiplier);
-        Debug.Log($"❌ Combo broken! Multiplier now: {beatMultiplier}");
     }
 }

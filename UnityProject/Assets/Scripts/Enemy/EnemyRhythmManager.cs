@@ -35,6 +35,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     private int difficulty = 0; // 0 = easy; 1 = normal, -1 = tutorial
     private int wave = -2;
     private int rhythmSequencesPlayed = 0;
+    private int waveStartBar = 0;
 
     private void Start()
     {
@@ -250,7 +251,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         // Check if it's time to trigger an attack animation (next attack in 2 beats)
         else if (ShouldTriggerRhythmAttack(currentBar, currentBeat, beatsPerBar, nextAttackBeat))
         {
-            TriggerEnemyAttack();
+            TriggerEnemyAttack(currentBar, currentBeat, beatsPerBar);
         }
         // Check if it's time to trigger an attack shot (shoot projectile now)
         else if (ShouldTriggerRhythmAttackShoot(currentBar, currentBeat, beatsPerBar, nextAttackBeat))
@@ -320,7 +321,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     {
         return hasStartedRhythmSequence &&
             (isProjectilePhase || (IsBossWave() && currBossWave < numBossWaves)) &&
-            currentBar > lastSequencePlayedBar + 1;
+            currentBar > lastSequencePlayedBar + 1; //&& !isProjectileTutorial(currentBar)
     }
 
     private bool ShouldEndAttackPhase(int currentBar)
@@ -342,12 +343,15 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     {
         hasStartedRhythmSequence = true;
 
-        if (wave == -2 || wave == -1)
+        if (IsArrowTutorial())
             isProjectilePhase = false;
 
         rhythmSequence = GenerateRhythmBasedOnDifficulty();
         rhythmSequenceIdx = 0;
         lastSequencePlayedBar = currentBar;
+    }
+    private bool IsArrowTutorial(){
+        return wave == -1 || wave == 0;
     }
 
     private List<int> GenerateRhythmBasedOnDifficulty()
@@ -363,7 +367,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         }
     }
 
-    private void TriggerEnemyAttack()
+    private void TriggerEnemyAttack(int currentBar, int currentBeat, int beatsPerBar)
     {
         GameObject enemy = enemies[rhythmSequenceIdx % enemies.Count];
         EnemyBehaviour enemyBehaviour = enemy.GetComponent<EnemyBehaviour>();
@@ -372,6 +376,9 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         {
             enemyBehaviour.StartAttackAnim();
             if (rhythmSequenceIdx == 0 && IsBossWave()){
+                GameObject playerObject = GameObject.FindWithTag("Player");
+                PlayerMovement playerMovement = playerObject.GetComponent<PlayerMovement>();
+                playerMovement.SetBeatOffLimitLaneSpawn(currentBar*beatsPerBar + currentBeat);
                 SpawnRandomOffLimitLanes(2);
             }
         }
@@ -416,10 +423,10 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         {
             isProjectilePhase = true;
         }
-        else if (wave == 0)
-        {
-            wave = 1;
-        }
+        // else if (wave == 0)
+        // {
+        //     wave = 1;
+        // }
 
         if (IsBossWave())
         {
@@ -440,17 +447,23 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     }
 
     private bool isProjectileTutorial(int currentBar){
-        int tutorialEndBar = 15;
-        int projTutorialWave = 0;
+        
+        int projTutorialWave = -2;
+
+        if (waveStartBar == 0){
+            waveStartBar = currentBar;
+        }
+        int tutorialEndBar = waveStartBar+4;
+        Debug.Log($"currentbar {currentBar} tutorialEndBar {tutorialEndBar}");
         return wave == projTutorialWave && currentBar <= tutorialEndBar;
     }
 
     private void SpawnRandomOffLimitLanes(int numSpawnLanes){
         List<int> laneNumbers = Enumerable.Range(0, Stage.Lanes.GetNumLanes()).ToList();
 
-        GameObject playerObject = GameObject.FindWithTag("Player");
-        PlayerMovement playerMovement = playerObject.GetComponent<PlayerMovement>();
-        laneNumbers.Remove(playerMovement.currentLaneIndex); // don't spawn on player
+        // GameObject playerObject = GameObject.FindWithTag("Player");
+        // PlayerMovement playerMovement = playerObject.GetComponent<PlayerMovement>();
+        // laneNumbers.Remove(playerMovement.currentLaneIndex); // don't spawn on player
 
         for (int i = 0; i < numSpawnLanes; i++){
             int randomIndex = Random.Range(0, laneNumbers.Count);
