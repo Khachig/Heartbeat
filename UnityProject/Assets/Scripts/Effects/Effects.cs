@@ -50,7 +50,7 @@ public class Effects : MonoBehaviour
 
 	private void PlayerHealEffect() 
 	{
-		SpawnPopup("HEAL!", effectTextPrefab, ref effectTextPopup);
+		SpawnPopup("PERFECT WAVE!\nHEAL!", effectTextPrefab, ref effectTextPopup);
 		timeSinceLastPopup = Time.time;
 	}
 
