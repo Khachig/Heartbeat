@@ -7,6 +7,7 @@ public class AngerLevel : Level
 {
     public GameObject tut1Panel;
     public GameObject tut2Panel;
+    public GameObject tutBossPanel;
     public GameObject levelCompleteScreen;
     public GameObject enemyPrefab;
     public GameObject bossPrefab;
@@ -32,6 +33,7 @@ public class AngerLevel : Level
         enemyRhythmManager.SetWave(wave);
         tut1Panel.SetActive(false);
         tut2Panel.SetActive(false);
+        tutBossPanel.SetActive(false);
         levelCompleteScreen.SetActive(false);
         // aManager.ChangeTrack(levelTrack);
         pulsableManager.Reset();
@@ -46,14 +48,20 @@ public class AngerLevel : Level
 
     void SpawnWave()
     {
+        enemyRhythmManager.SetWave(wave);
         if (wave == -2){
+            // SpawnBossWave();
+            enemyManager.enableEnemyMovement();
+            tut2Panel.SetActive(true);
             SpawnTutorialWave(2); // arrows only, 1 direction
-            tut1Panel.SetActive(true);
+            
         }
         else if (wave == -1){
-            
+            tut1Panel.SetActive(true);
+            tut2Panel.SetActive(false);   
+            enemyManager.disableEnemyMovement();
             SpawnTutorialWave(0); // arrows only, 2 directions
-            tut1Panel.SetActive(false);   
+            
             // LevelComplete();
             
         }
@@ -61,14 +69,18 @@ public class AngerLevel : Level
             // enemyRhythmManager.SetDifficulty(5);
             // SpawnBossWave();
             // // enable movement
-            tut2Panel.SetActive(true);
+            
             tut2time = Time.time;
-            enemyManager.enableEnemyMovement();
+            
             enemyRhythmManager.SetDifficulty(2);
             SpawnTutorialWave(0); // projectiles only
         }
         else if (wave % 5 == 0)
+        {
+            tutBossPanel.SetActive(true);
             SpawnBossWave();
+            Invoke(nameof(DeactivateBossTutorialPanel), 5f);
+        }
         else if (wave > 5)
             LevelComplete();
         else
@@ -85,14 +97,17 @@ public class AngerLevel : Level
         enemyCount--;
         if (enemyCount == 0) {
             wave++;
+
             if (wave < 1){
-                tut1Panel.SetActive(false);
-                tut2Panel.SetActive(false);
                 enemyRhythmManager.SetDifficulty(-1);
-                enemyRhythmManager.SetWave(wave);
+                
+            }
+            if (wave == 0){
+                tut1Panel.SetActive(false);
             }
             else if (wave == 1){
-                tut2Panel.SetActive(false);
+                
+                enemyManager.enableEnemyMovement();
                 enemyRhythmManager.SetDifficulty(-1);
             }
             else if (wave == 2){
@@ -163,5 +178,10 @@ public class AngerLevel : Level
         levelCompleteScreen.SetActive(true);
         onLevelComplete?.Invoke();
         Destroy(gameObject);
+    }
+
+    private void DeactivateBossTutorialPanel()
+    {
+        tutBossPanel.SetActive(false);
     }
 }
