@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System;
 using System.Collections;
 using FMODUnity;
 
@@ -50,8 +51,8 @@ public class ScoreManager : MonoBehaviour
         {
             StopCoroutine(currentCoroutine);
         }
-        int changeAmount = amount * (1+beatMultiplier/100);
-        Debug.Log($"beatMultiplier/100 {beatMultiplier/100}");
+        int changeAmount = (int)Math.Round((float)amount * (1.0f+ (float)(beatMultiplier/100)));
+        Debug.Log($"beatMultiplier/100 {(float)beatMultiplier/100} {(1.0f + (float)(beatMultiplier/100))} {(float)amount * (1.0f+ (float)(beatMultiplier/100))}");
         Score += changeAmount;
         scoreChangeText.text = "+" + changeAmount.ToString();
         scoreChangeText.color = Color.green;
