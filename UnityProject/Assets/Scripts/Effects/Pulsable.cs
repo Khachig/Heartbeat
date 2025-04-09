@@ -26,6 +26,9 @@ public class Pulsable : MonoBehaviour, IEasyListener
 
     public void OnBeat(EasyEvent audioEvent)
     {
+        if (anim == null)
+            return;
+
         if (audioEvent.CurrentBeat % 2 != 0)
         {
             anim.SetTrigger("Reset");

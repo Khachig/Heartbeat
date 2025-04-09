@@ -25,6 +25,7 @@ public class EnemyBehaviour : MonoBehaviour
 
     private EasyRhythmAudioManager audioManager;
     private bool isBoss = false;
+    private ArrowDirection lastShotArrowDirection = ArrowDirection.DOWN;
 
     protected virtual void Start()
     {
@@ -120,10 +121,10 @@ public class EnemyBehaviour : MonoBehaviour
         RuntimeManager.PlayOneShot(EnemyShoot, transform.position);
     }
 
-    public virtual void ArrowAttack()
+    public virtual void ArrowAttack(bool useLastShotArrow)
     {   
         effects.Flash();
-        SpawnArrowProjectile();
+        SpawnArrowProjectile(useLastShotArrow);
         RuntimeManager.PlayOneShot(EnemyShoot, transform.position);
     }
 
@@ -135,9 +136,15 @@ public class EnemyBehaviour : MonoBehaviour
         projScript.Init(this, timeToJudgementLine);
     }
 
-    protected virtual void SpawnArrowProjectile()
+    protected virtual void SpawnArrowProjectile(bool useLastShotArrow)
     {
-        ArrowDirection direction = ArrowDirections.GetRandomArrowDirection();
+        ArrowDirection direction = lastShotArrowDirection;
+        if (!useLastShotArrow)
+        {
+            direction = ArrowDirections.GetRandomArrowDirection();
+            lastShotArrowDirection = direction;
+        }
+
         GameObject arrowProjectilePrefab = GetArrowImageFromArrowDirection(direction);
         GameObject arrowProjectile = Instantiate(arrowProjectilePrefab, gameObject.transform.position, Quaternion.identity);
         arrowProjectile.transform.SetParent(transform.parent);

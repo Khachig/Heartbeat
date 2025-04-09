@@ -301,8 +301,12 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
 
             if (isProjectilePhase)
                 enemyBehaviour.Attack();
+            else if (rhythmSequenceIdx > 0 &&
+                     rhythmSequence[rhythmSequenceIdx] - rhythmSequence[rhythmSequenceIdx - 1] == 1)
+                // If notes are back to back, keep arrow direction the same for ease of hitting
+                enemyBehaviour.ArrowAttack(true);
             else
-                enemyBehaviour.ArrowAttack();
+                enemyBehaviour.ArrowAttack(false);
 
             rhythmSequenceIdx = (rhythmSequenceIdx + 1) % rhythmSequence.Count;
 
