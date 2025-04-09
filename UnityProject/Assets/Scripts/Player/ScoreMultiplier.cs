@@ -30,7 +30,6 @@ public class ScoreMultiplier : MonoBehaviour, IEasyListener
         {
             audioManager = GameObject.Find("EasyRhythmAudioManager").GetComponent<EasyRhythmAudioManager>();
             
-            
         }
         Debug.Log(audioManager);
         audioManager.AddListener(this);

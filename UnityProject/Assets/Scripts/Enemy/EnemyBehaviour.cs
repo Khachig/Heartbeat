@@ -23,6 +23,9 @@ public class EnemyBehaviour : MonoBehaviour
     protected bool isDead = false; // To ensure no attacks during death animation;
     protected float timeToJudgementLine = 1f; // How long projectiles should travel before hitting judgement line
 
+    protected bool randomArrow = true;
+    protected ArrowDirection nextArrowDirection = ArrowDirection.RIGHT;
+
     private EasyRhythmAudioManager audioManager;
     private bool isBoss = false;
 
@@ -124,6 +127,12 @@ public class EnemyBehaviour : MonoBehaviour
     {   
         effects.Flash();
         SpawnArrowProjectile();
+        // if (randomArrow){
+        //     SpawnArrowProjectile();
+        // }
+        // else{
+        //     SpawnArrowProjectileWithDirection();
+        // }
         RuntimeManager.PlayOneShot(EnemyShoot, transform.position);
     }
 

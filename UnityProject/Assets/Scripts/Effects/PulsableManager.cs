@@ -43,7 +43,6 @@ public class PulsableManager : MonoBehaviour
         // Reset every so often to keep things in sync
         Invoke("Reset", 3);
     }
-
     public void Init()
     {
         initialized = false;
