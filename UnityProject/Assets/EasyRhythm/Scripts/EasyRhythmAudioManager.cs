@@ -9,6 +9,7 @@ public class EasyRhythmAudioManager : MonoBehaviour
 
     [EventRef] public string myEventPath; // A reference to the FMOD event we want to use
     public EasyEvent myAudioEvent; // EasyEvent is the object that will play the FMOD audio event, and provide our callbacks and other related info
+    public PulsableManager pulsableManager;
 
     // You can pass an array of IEasyListeners through to the FMOD event, but we have to serialize them as objects.
     // You have to drag the COMPONENT that implements the IEasyListener into the object, or it won't work properly
@@ -19,22 +20,20 @@ public class EasyRhythmAudioManager : MonoBehaviour
     {
         // Passes the EventReference so EasyEvent can create the FMOD Event instance
         // Passes an array of listeners through (IEasyListener) so the audio event knows which objects want to listen to the callbacks
-        myAudioEvent = new EasyEvent(myEventPath, myEventListeners);
-        myAudioEvent.start();
+        // myAudioEvent = new EasyEvent(myEventPath, myEventListeners);
+        // myAudioEvent.start();
     }
 
     public void ChangeTrack(string newEventPath)
     {
         if (myAudioEvent != null)
         {
-            Debug.Log("audioEvenet isnt null");
             myAudioEvent.stop();
-        } else {
-            Debug.Log("audioEvent is null");
+            myAudioEvent.RemoveAllListeners();
         }
         myAudioEvent = new EasyEvent(newEventPath, myEventListeners);
         myAudioEvent.start();
-        // GameObject.FindAnyObjectByType<PulsableManager>().Init();
+        pulsableManager.Init();
     }
 
     public void AddListener(IEasyListener listener)

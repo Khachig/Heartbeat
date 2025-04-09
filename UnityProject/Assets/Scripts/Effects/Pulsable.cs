@@ -6,7 +6,6 @@ public class Pulsable : MonoBehaviour, IEasyListener
 {
     
     public Animator anim;
-    private bool needsResetAnim = true;
     private float bpm;
 
     public void Init(float newBpm, EasyRhythmAudioManager audioManager)
@@ -14,7 +13,6 @@ public class Pulsable : MonoBehaviour, IEasyListener
         audioManager.AddListener(this);
         bpm = newBpm;
         anim.SetFloat("PulseSpeed", bpm / 60f);
-        needsResetAnim = true;
     }
 
     public void ResetAnim(float newBpm = 0f)
@@ -24,15 +22,13 @@ public class Pulsable : MonoBehaviour, IEasyListener
         else
             bpm = newBpm;
         anim.SetFloat("PulseSpeed", bpm / 60f);
-        needsResetAnim = true;
     }
 
     public void OnBeat(EasyEvent audioEvent)
     {
-        if (needsResetAnim)
+        if (audioEvent.CurrentBeat % 2 != 0)
         {
             anim.SetTrigger("Reset");
-            needsResetAnim = false;
         }
     }
 }

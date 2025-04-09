@@ -8,7 +8,6 @@ using UnityEngine.InputSystem;
 public class StartMenu : MonoBehaviour
 {
     public Button playButton, quitButton;
-
     private int selected = 0;
 
     void Start()

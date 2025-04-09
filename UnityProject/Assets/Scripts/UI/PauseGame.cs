@@ -1,6 +1,7 @@
 using UnityEngine;
 using FMODUnity;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class PauseGame : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class PauseGame : MonoBehaviour
 
     // get pause menu Canvas
     public GameObject PauseMenu;
+    public EasyRhythmAudioManager audioManager;
 
     public void OnPause(InputAction.CallbackContext context)
     {   
@@ -40,4 +42,17 @@ public class PauseGame : MonoBehaviour
         }
     }
 
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        audioManager.Reset();
+        SceneManager.LoadScene("SpecificArrowLanes");
+    }
+
+    public void MainMenu()
+    {
+        Time.timeScale = 1f;
+        audioManager.Reset();
+        SceneManager.LoadScene("StartMenu");
+    }
 }
