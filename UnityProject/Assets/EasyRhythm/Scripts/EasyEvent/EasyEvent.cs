@@ -299,6 +299,8 @@ public class EasyEvent
             currentMusicBeat_Temp = CurrentBeat;
 
             if (listeners == null || listeners.Count <= 0) return;
+            UnityEngine.Debug.Log($"Beat at {Time.time}");
+            UnityEngine.Debug.Log($"listeners: {listeners.Count}");
 
             foreach (IEasyListener listener in listeners.ToList())
             {
