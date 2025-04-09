@@ -30,8 +30,6 @@ public class EasyRhythmAudioManager : MonoBehaviour
         {
             myAudioEvent.stop();
             myAudioEvent.RemoveAllListeners();
-        } else {
-            Debug.Log("audioEvent is null");
         }
         myAudioEvent = new EasyEvent(newEventPath, myEventListeners);
         myAudioEvent.start();
