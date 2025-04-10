@@ -33,6 +33,9 @@ public class DenialLevel : Level
         aManager.ChangeTrack(levelTrack);
         pulsableManager.Reset();
         Invoke("SpawnWave", 5f);
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        PlayerMovement playerMovement = playerObject.GetComponent<PlayerMovement>();
+        playerMovement.SetInLevelEndScreen(false);
     }
 
     void OnDisable()
@@ -139,6 +142,9 @@ public class DenialLevel : Level
     {
         enemyManager.onEnemyDeath -= OnEnemyDeath;
         levelCompleteScreen.SetActive(true);
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        PlayerMovement playerMovement = playerObject.GetComponent<PlayerMovement>();
+        playerMovement.SetInLevelEndScreen(true);
         onLevelComplete?.Invoke();
         Destroy(gameObject);
     }

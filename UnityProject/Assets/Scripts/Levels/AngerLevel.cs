@@ -50,29 +50,28 @@ public class AngerLevel : Level
     {
         enemyRhythmManager.SetWave(wave);
         if (wave == -2){
-            // SpawnBossWave();
             enemyManager.enableEnemyMovement();
             tut2Panel.SetActive(true);
             SpawnTutorialWave(2); // arrows only, 1 direction
             
         }
         else if (wave == -1){
+
             tut1Panel.SetActive(true); 
             enemyManager.disableEnemyMovement();
             SpawnTutorialWave(0); // arrows only, 2 directions
             
             // LevelComplete();
-            
         }
         else if (wave == 0){
-            // enemyRhythmManager.SetDifficulty(5);
-            // SpawnBossWave();
-            // // enable movement
-            
             tut2time = Time.time;
             
             enemyRhythmManager.SetDifficulty(2);
             SpawnTutorialWave(0); // projectiles only
+        }
+        else if (wave == 1){
+            enemyRhythmManager.SetDifficulty(5);
+            SpawnBossWave();
         }
         else if (wave % 5 == 0)
         {
@@ -173,6 +172,9 @@ public class AngerLevel : Level
     {
         enemyManager.onEnemyDeath -= OnEnemyDeath;
         levelCompleteScreen.SetActive(true);
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        PlayerMovement playerMovement = playerObject.GetComponent<PlayerMovement>();
+        playerMovement.SetInLevelEndScreen(true);
         onLevelComplete?.Invoke();
         Destroy(gameObject);
     }

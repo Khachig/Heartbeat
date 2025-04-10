@@ -25,6 +25,7 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     private int beatMultiplierIfHit = 2;
     private float timeAtLastOffBeat;
     private int globalBeatOffLimitLaneSpawn = 0;
+    private bool inLevelEndScreen = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -124,7 +125,9 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     {
         Vector3 newposition = GetCurrPosition();
         Quaternion targetRotation = GetCurrRotation();
-        IncrementMultiplier(1);
+        if (!inLevelEndScreen){
+            IncrementMultiplier(1);
+        }
         StartCoroutine(SmoothMove(newposition, targetRotation, transitionDuration));
     }
 
@@ -209,11 +212,17 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         }
     }
 
+    public void SetInLevelEndScreen(bool inScreen){
+        inLevelEndScreen = inScreen;
+    }
+
     private IEnumerator CheckMultiplierMissAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay);
-
-        if (beatMultiplierIfHit > beatMultiplier)
+        if (inLevelEndScreen){
+            beatMultiplierIfHit = beatMultiplier;
+        }
+        else if (beatMultiplierIfHit > beatMultiplier)
         {
             BreakMultiplier();
             beatMultiplierIfHit = beatMultiplier;
