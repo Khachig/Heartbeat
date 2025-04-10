@@ -141,7 +141,7 @@ public class EnemyBehaviour : MonoBehaviour
         ArrowDirection direction = lastShotArrowDirection;
         if (!useLastShotArrow)
         {
-            direction = ArrowDirections.GetRandomArrowDirection();
+            direction = ArrowDirections.GetDifferentRandomArrowDirection(lastShotArrowDirection);
             lastShotArrowDirection = direction;
         }
 

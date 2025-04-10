@@ -56,7 +56,8 @@ public class AngerLevel : Level
             
         }
         else if (wave == -1){
-
+            // enemyRhythmManager.SetDifficulty(5);
+            // SpawnBossWave();
             tut1Panel.SetActive(true); 
             enemyManager.disableEnemyMovement();
             SpawnTutorialWave(0); // arrows only, 2 directions
@@ -69,10 +70,10 @@ public class AngerLevel : Level
             enemyRhythmManager.SetDifficulty(2);
             SpawnTutorialWave(0); // projectiles only
         }
-        else if (wave == 1){
-            enemyRhythmManager.SetDifficulty(5);
-            SpawnBossWave();
-        }
+        // else if (wave == 1){
+        //     enemyRhythmManager.SetDifficulty(5);
+        //     SpawnBossWave();
+        // }
         else if (wave % 5 == 0)
         {
             tutBossPanel.SetActive(true);
