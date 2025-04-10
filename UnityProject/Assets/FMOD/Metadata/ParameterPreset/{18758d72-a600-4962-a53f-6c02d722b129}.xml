@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="ParameterPreset" id="{18758d72-a600-4962-a53f-6c02d722b129}">
+		<property name="name">
+			<value>LevelState</value>
+		</property>
+		<relationship name="folder">
+			<destination>{e5b30046-8c5b-4e92-90ff-7eb966bf4af9}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{53a1a812-acc5-4b5c-999b-525f04ffe60e}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{53a1a812-acc5-4b5c-999b-525f04ffe60e}">
+		<property name="parameterType">
+			<value>2</value>
+		</property>
+		<property name="maximum">
+			<value>5</value>
+		</property>
+		<property name="enumerationLabels">
+			<value>Level1</value>
+			<value>BossFight1</value>
+			<value>Outro1</value>
+			<value>Level2</value>
+			<value>BossFight2</value>
+		</property>
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>

@@ -1,0 +1,563 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-9144653346170174134
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/EnemyEvent/EnemyDefeat
+  m_EditorClassIdentifier: 
+  Path: event:/EnemyEvent/EnemyDefeat
+  Guid:
+    Data1: 1810763230
+    Data2: 1111862520
+    Data3: 1493000860
+    Data4: 1858991063
+  Banks:
+  - {fileID: -2154801087569872019}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 428
+--- !u!114 &-8046095293275512544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UIEvent/UIBack
+  m_EditorClassIdentifier: 
+  Path: event:/UIEvent/UIBack
+  Guid:
+    Data1: 583429784
+    Data2: 1252873230
+    Data3: -2008548423
+    Data4: -1451738602
+  Banks:
+  - {fileID: -2154801087569872019}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 500
+--- !u!114 &-3396133825014551997
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.strings.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/FMOD/Build/Desktop/Master.strings.bank
+  Name: Master.strings
+  StudioPath: bank:/Master.strings
+  lastModified: 638798429116686185
+  FileSizes:
+  - Name: Desktop
+    Value: 1528
+  Exists: 1
+--- !u!114 &-3213539364494976037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/Track1
+  m_EditorClassIdentifier: 
+  Path: event:/Music/Track1
+  Guid:
+    Data1: -1235174025
+    Data2: 1098540614
+    Data3: 258972071
+    Data4: -698015668
+  Banks:
+  - {fileID: -1235831218402461384}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 213333
+--- !u!114 &-2154801087569872019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/SFX.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/FMOD/Build/Desktop/SFX.bank
+  Name: SFX
+  StudioPath: bank:/SFX
+  lastModified: 638798411247357105
+  FileSizes:
+  - Name: Desktop
+    Value: 361472
+  Exists: 1
+--- !u!114 &-1500415107718458318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/ComboEvent/ComboHit
+  m_EditorClassIdentifier: 
+  Path: event:/ComboEvent/ComboHit
+  Guid:
+    Data1: -1461921477
+    Data2: 1273809697
+    Data3: -1037004385
+    Data4: 2146016199
+  Banks:
+  - {fileID: -2154801087569872019}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters:
+  - {fileID: 757674750928664319}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 500
+--- !u!114 &-1235831218402461384
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: Assets/FMOD/Build/Desktop/Master.bank
+  Name: Master
+  StudioPath: bank:/Master
+  lastModified: 638798429116659179
+  FileSizes:
+  - Name: Desktop
+    Value: 9934784
+  Exists: 1
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32cf7c32a3ed8347bac48ef5ed56d82, type: 3}
+  m_Name: FMODStudioCache
+  m_EditorClassIdentifier: 
+  EditorBanks:
+  - {fileID: -3396133825014551997}
+  - {fileID: -1235831218402461384}
+  - {fileID: -2154801087569872019}
+  EditorEvents:
+  - {fileID: 8924826566599269346}
+  - {fileID: 6679347012057121932}
+  - {fileID: -3213539364494976037}
+  - {fileID: 2253035911484453582}
+  - {fileID: 1509395654698779538}
+  - {fileID: -1500415107718458318}
+  - {fileID: 2900493886311492857}
+  - {fileID: 4447999686920526903}
+  - {fileID: -8046095293275512544}
+  - {fileID: 4666128660915907866}
+  - {fileID: 7917670518643438010}
+  - {fileID: 1525475403980528368}
+  - {fileID: -9144653346170174134}
+  - {fileID: 8832228590332676737}
+  EditorParameters: []
+  MasterBanks:
+  - {fileID: -1235831218402461384}
+  StringsBanks:
+  - {fileID: -3396133825014551997}
+  cacheTime: 638798429116686185
+  cacheVersion: 131622
+--- !u!114 &757674750928664319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/ComboHit/ComboCount
+  m_EditorClassIdentifier: 
+  Name: ComboCount
+  StudioPath: 
+  Min: 0
+  Max: 8
+  Default: 0
+  ID:
+    data1: 3297726690
+    data2: 1806393843
+  Type: 1
+  IsGlobal: 0
+  Labels: []
+  Exists: 1
+--- !u!114 &1509395654698779538
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/EnemyEvent/EnemyHurt
+  m_EditorClassIdentifier: 
+  Path: event:/EnemyEvent/EnemyHurt
+  Guid:
+    Data1: -186164949
+    Data2: 1274945040
+    Data3: -1810400367
+    Data4: -1942117760
+  Banks:
+  - {fileID: -2154801087569872019}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 500
+--- !u!114 &1525475403980528368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/EnemyEvent/EnemyBossFlames
+  m_EditorClassIdentifier: 
+  Path: event:/EnemyEvent/EnemyBossFlames
+  Guid:
+    Data1: -1067592272
+    Data2: 1190920999
+    Data3: 1791733410
+    Data4: 116160473
+  Banks:
+  - {fileID: -2154801087569872019}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 15678
+--- !u!114 &2253035911484453582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/PlayerEvent/PlayerHurt
+  m_EditorClassIdentifier: 
+  Path: event:/PlayerEvent/PlayerHurt
+  Guid:
+    Data1: 11468303
+    Data2: 1338130652
+    Data3: 92380037
+    Data4: -2040567202
+  Banks:
+  - {fileID: -2154801087569872019}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 697
+--- !u!114 &2900493886311492857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/EnemyEvent/EnemyShoot
+  m_EditorClassIdentifier: 
+  Path: event:/EnemyEvent/EnemyShoot
+  Guid:
+    Data1: 1160114324
+    Data2: 1307066720
+    Data3: -1908675182
+    Data4: -40941661
+  Banks:
+  - {fileID: -2154801087569872019}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 701
+--- !u!114 &4447999686920526903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/ComboEvent/ComboFail
+  m_EditorClassIdentifier: 
+  Path: event:/ComboEvent/ComboFail
+  Guid:
+    Data1: 793887894
+    Data2: 1103108452
+    Data3: 1759718323
+    Data4: -1649356717
+  Banks:
+  - {fileID: -2154801087569872019}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 803
+--- !u!114 &4666128660915907866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UIEvent/UISelect
+  m_EditorClassIdentifier: 
+  Path: event:/UIEvent/UISelect
+  Guid:
+    Data1: 1733610908
+    Data2: 1332215757
+    Data3: 17413248
+    Data4: -2132372096
+  Banks:
+  - {fileID: -2154801087569872019}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 500
+--- !u!114 &5784829775352405266
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/FullTrack/LevelState
+  m_EditorClassIdentifier: 
+  Name: LevelState
+  StudioPath: 
+  Min: 0
+  Max: 4
+  Default: 0
+  ID:
+    data1: 149501279
+    data2: 4228908606
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Level1
+  - BossFight1
+  - Outro1
+  - Level2
+  - BossFight2
+  Exists: 1
+--- !u!114 &6679347012057121932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/Track2
+  m_EditorClassIdentifier: 
+  Path: event:/Music/Track2
+  Guid:
+    Data1: 1882996778
+    Data2: 1084099231
+    Data3: -1856136054
+    Data4: 57062216
+  Banks:
+  - {fileID: -1235831218402461384}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 7275740620420499528}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 288421
+--- !u!114 &7275740620420499528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Track2/LevelState
+  m_EditorClassIdentifier: 
+  Name: LevelState
+  StudioPath: 
+  Min: 0
+  Max: 4
+  Default: 0
+  ID:
+    data1: 149501279
+    data2: 4228908606
+  Type: 2
+  IsGlobal: 0
+  Labels:
+  - Level1
+  - BossFight1
+  - Outro1
+  - Level2
+  - BossFight2
+  Exists: 1
+--- !u!114 &7917670518643438010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/UIEvent/UIScroll
+  m_EditorClassIdentifier: 
+  Path: event:/UIEvent/UIScroll
+  Guid:
+    Data1: -1564263256
+    Data2: 1278009285
+    Data3: -310487369
+    Data4: -519052724
+  Banks:
+  - {fileID: -2154801087569872019}
+  IsStream: 0
+  Is3D: 0
+  IsOneShot: 1
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 500
+--- !u!114 &8832228590332676737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/FullTrack
+  m_EditorClassIdentifier: 
+  Path: event:/Music/FullTrack
+  Guid:
+    Data1: -1957888271
+    Data2: 1077832326
+    Data3: 1531366538
+    Data4: 1754216977
+  Banks:
+  - {fileID: -1235831218402461384}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters:
+  - {fileID: 5784829775352405266}
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 563684
+--- !u!114 &8924826566599269346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: event:/Music/MainMenu
+  m_EditorClassIdentifier: 
+  Path: event:/Music/MainMenu
+  Guid:
+    Data1: -1030246636
+    Data2: 1237463580
+    Data3: 806708141
+    Data4: -1432042668
+  Banks:
+  - {fileID: -1235831218402461384}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 1
+  MaxDistance: 20
+  Length: 140333

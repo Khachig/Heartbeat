@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{0623c268-e24a-40bb-9cb4-8eae6ba44dcf}">
+		<property name="assetPath">
+			<value>Music/KiB_LevelOne_SecondStem_120bpm_4-4_lp.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>88</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{b482341e-5f92-49d4-8c8c-f3800acacb4f}</destination>
+		</relationship>
+	</object>
+</objects>

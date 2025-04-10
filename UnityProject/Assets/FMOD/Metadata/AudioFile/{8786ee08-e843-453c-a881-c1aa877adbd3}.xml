@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.02.00">
+	<object class="AudioFile" id="{8786ee08-e843-453c-a881-c1aa877adbd3}">
+		<property name="assetPath">
+			<value>Music/Keep It Beating Track 2 OUTRO.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>48</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>65.262833333333333</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{b482341e-5f92-49d4-8c8c-f3800acacb4f}</destination>
+		</relationship>
+	</object>
+</objects>
