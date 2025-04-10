@@ -79,12 +79,19 @@ public class BossBehaviour : EnemyBehaviour
     
     void NeedleFire()
     {
-        int r = Stage.Lanes.GetModLane(Random.Range(-1, 2) + playerMovement.currentLaneIndex); 
-
-        for (int i = 0; i < 3; i++)
-        {
-            SpawnProjectile((r + i) % Stage.Lanes.GetNumLanes());
+        List<int> activeOffLimitLanes = Stage.Lanes.GetActiveOffLimitLanes();
+        List<int> inactiveOffLimitLanes = new List<int> () {0, 1, 2, 3};
+        foreach (int i in activeOffLimitLanes){
+            SpawnProjectile(i);
+            inactiveOffLimitLanes.Remove(i);
         }
+        SpawnProjectile(inactiveOffLimitLanes[Random.Range(0, 2)]);
+        // int r = Stage.Lanes.GetModLane(Random.Range(-1, 2) + playerMovement.currentLaneIndex); 
+
+        // for (int i = 0; i < 3; i++)
+        // {
+        //     SpawnProjectile((r + i) % Stage.Lanes.GetNumLanes());
+        // }
         RuntimeManager.PlayOneShot(EnemyShoot, transform.position);
     }
 

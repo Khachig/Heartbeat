@@ -124,7 +124,15 @@ public class Stage : MonoBehaviour
         offLimitLanes[lane] = null;
     }
 
-
+    private List<int> GetActiveOffLimitLanes(){
+        List<int> activeOffLimitLanes = new List<int> ();
+        for (int i=0; i<4; i++){
+            if (offLimitLanes[i] != null){
+                activeOffLimitLanes.Add(i);
+            }
+        }
+        return activeOffLimitLanes;
+    }
     
     public static class Lanes
 	{
@@ -135,5 +143,6 @@ public class Stage : MonoBehaviour
         public static void SpawnOffLimitLane(int lane) => instance.SpawnOffLimitLane(lane);
         public static void DeSpawnOffLimitLane(int lane) => instance.DeSpawnOffLimitLane(lane);
         public static bool IsOffLimitLaneActive(int lane) => instance.offLimitLanes[lane] != null;
+        public static List<int> GetActiveOffLimitLanes() => instance.GetActiveOffLimitLanes();
 	}
 }
