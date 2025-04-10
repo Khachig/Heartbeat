@@ -2929,7 +2929,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputActions: {fileID: 0}
   PauseMenu: {fileID: 643837268}
-  audioManager: {fileID: 0}
+  audioManager: {fileID: 419586457}
 --- !u!114 &726199529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2945,7 +2945,7 @@ MonoBehaviour:
   isGameOver: 0
   inputActions: {fileID: 0}
   EndGameMenu: {fileID: 372413709}
-  healthSystem: {fileID: 0}
+  healthSystem: {fileID: 973693055}
 --- !u!1 &789714628
 GameObject:
   m_ObjectHideFlags: 0
@@ -10399,6 +10399,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2532394184700753933, guid: e8e2a388cae17da4694ce394c8e74381, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 726199527}
+    - target: {fileID: 2532394184700753933, guid: e8e2a388cae17da4694ce394c8e74381, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: MainMenu
+      objectReference: {fileID: 0}
     - target: {fileID: 3566838082198685182, guid: e8e2a388cae17da4694ce394c8e74381, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
@@ -10422,6 +10430,14 @@ PrefabInstance:
     - target: {fileID: 3566838082198685182, guid: e8e2a388cae17da4694ce394c8e74381, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
       value: PauseGame, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6790859283049620688, guid: e8e2a388cae17da4694ce394c8e74381, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 726199527}
+    - target: {fileID: 6790859283049620688, guid: e8e2a388cae17da4694ce394c8e74381, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RestartGame
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
