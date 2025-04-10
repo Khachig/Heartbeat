@@ -57,8 +57,7 @@ public class AngerLevel : Level
             
         }
         else if (wave == -1){
-            tut1Panel.SetActive(true);
-            tut2Panel.SetActive(false);   
+            tut1Panel.SetActive(true); 
             enemyManager.disableEnemyMovement();
             SpawnTutorialWave(0); // arrows only, 2 directions
             
@@ -97,10 +96,8 @@ public class AngerLevel : Level
         enemyCount--;
         if (enemyCount == 0) {
             wave++;
-
-            if (wave < 1){
-                enemyRhythmManager.SetDifficulty(-1);
-                
+            if (wave == -1){
+                tut2Panel.SetActive(false);  
             }
             if (wave == 0){
                 tut1Panel.SetActive(false);
@@ -108,7 +105,7 @@ public class AngerLevel : Level
             else if (wave == 1){
                 
                 enemyManager.enableEnemyMovement();
-                enemyRhythmManager.SetDifficulty(-1);
+                // enemyRhythmManager.SetDifficulty(-1);
             }
             else if (wave == 2){
                 enemyRhythmManager.SetDifficulty(3);

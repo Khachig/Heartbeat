@@ -7,12 +7,14 @@ public class EnemyRhythms : MonoBehaviour
         new List<int>() {1, 3, 4, 5, 6, 7},
         new List<int>() {1, 2, 3, 5, 7, 8},
         new List<int>() {1, 2, 3, 4, 5, 7},
-        new List<int>() {1, 2, 3, 5, 6, 7 },
+        new List<int>() {1, 2, 3, 5, 6, 7},
         new List<int>() {1, 3, 4, 5, 7, 8},
         new List<int>() {1, 3, 5, 6, 7, 8},
     };
 
     static private List<List<int>> fiveRhythms = new List<List<int>>() {
+        new List<int>() {1, 3, 5, 7, 8},
+        new List<int>() {1, 2, 4, 6, 8},
         new List<int>() {1, 3, 5, 6, 7},
         new List<int>() {1, 3, 4, 5, 7},
         new List<int>() {1, 2, 3, 5, 6},

@@ -419,9 +419,13 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     private void SwitchAttackPhase(int currentBar)
     {
         isProjectilePhase = !isProjectilePhase;
+        int projTutorialWave = -2;
         if (isProjectileTutorial(currentBar)) // projectile tutorial
         {
             isProjectilePhase = true;
+        }
+        else if (wave == projTutorialWave){
+            EndAttackPhase();
         }
         // else if (wave == 0)
         // {
@@ -453,7 +457,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         if (waveStartBar == 0){
             waveStartBar = currentBar;
         }
-        int tutorialEndBar = waveStartBar+4;
+        int tutorialEndBar = waveStartBar+3;
         Debug.Log($"currentbar {currentBar} tutorialEndBar {tutorialEndBar}");
         return wave == projTutorialWave && currentBar <= tutorialEndBar;
     }
