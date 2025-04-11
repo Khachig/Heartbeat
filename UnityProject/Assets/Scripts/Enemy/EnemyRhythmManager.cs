@@ -21,6 +21,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     private bool hasStartedCombo = false;
     private bool hasBrokenCombo = false;
     public int comboNum = 0;
+    private int soundComboNum = 0;
     private float timeAtLastComboHit;
     private float timeToJudgementLine = 0f; // How long projectiles should travel before hitting judgement line
 
@@ -64,6 +65,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         hasStartedCombo = false;
         hasBrokenCombo = false;
         comboNum = 0;
+        soundComboNum = 0;
         timeAtLastComboHit = Time.time;
         timeToJudgementLine = 0f;
         isProjectilePhase = true;
@@ -123,9 +125,10 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             hasStartedCombo = true;
 
         comboNum++;
+        soundComboNum++;
         Effects.SpecialEffects.ComboContinueEffect(comboNum);
         FMOD.Studio.EventInstance comboHitInstance = RuntimeManager.CreateInstance(ComboHit);
-        comboHitInstance.setParameterByName("ComboCount", comboNum);
+        comboHitInstance.setParameterByName("ComboCount", soundComboNum);
         comboHitInstance.start();
 
         timeAtLastComboHit = Time.time;
@@ -137,6 +140,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         hasBrokenCombo = true;
         RuntimeManager.PlayOneShot(ComboFail, transform.position);
         comboNum = 0;
+        soundComboNum = 0;
     } 
 
     public bool HandlePlayerAttack(Vector2 input)
@@ -181,6 +185,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
     public void ResetCombo()
     {
         comboNum = 0;
+        soundComboNum = 0;
         hasStartedCombo = false;
         hasBrokenCombo = false;
     }
@@ -349,6 +354,7 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
         rhythmSequence = GenerateRhythmBasedOnDifficulty();
         rhythmSequenceIdx = 0;
         lastSequencePlayedBar = currentBar;
+        soundComboNum = 0;
     }
     private bool IsArrowTutorial(){
         return wave == -1 || wave == 0;
