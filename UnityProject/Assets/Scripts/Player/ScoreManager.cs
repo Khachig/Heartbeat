@@ -13,6 +13,7 @@ public class ScoreManager : MonoBehaviour
     public float scorePerSecond = 10f;  // Score increase per interval
     public TMP_Text scoreText;
     public TMP_Text finalScoreText;
+    public TMP_Text finalRatingText;
     public TMP_Text scoreChangeText;
     public TMP_Text scoreMultiplierText;
     public float scoreChange;
@@ -143,9 +144,57 @@ public class ScoreManager : MonoBehaviour
 
     private void Update()
     {
-        scoreText.text = "Score: " + ScoreManager.Instance.Score;
-        finalScoreText.text = scoreText.text + "\n/40000";
+        scoreText.text = "Score: " + AddCommasToScoreText();
+        finalScoreText.text = "Final Score: \n" + AddCommasToScoreText();
+        finalRatingText.text = "Rating: \n" + CalculateRating();
         scoreMultiplierText.text = "X"+ ScoreManager.Instance.beatMultiplier;
+    }
+
+    private String CalculateRating()
+    {   
+        float CurrentScore = ScoreManager.Instance.Score;
+        // Calculate rating based on score
+        if (CurrentScore >= 140000)
+        {
+            return "S";
+        }
+        else if (CurrentScore >= 110000)
+        {
+            return "A";
+        }
+        else if (CurrentScore >= 80000)
+        {
+            return "B";
+        }
+        else if (CurrentScore >= 50000)
+        {
+            return "C";
+        }
+        else if (CurrentScore >= 30000)
+        {
+            return "D";
+        }
+        else
+        {
+            return "F";
+        }
+    }
+
+    // helper to add commas to score text
+    private string AddCommasToScoreText()
+    {
+        // given ScoreManager.Instance.Score, return a string with commas
+        string scoreString = ScoreManager.Instance.Score.ToString();
+        int index = scoreString.IndexOf('.');
+        if (index == -1)
+        {
+            index = scoreString.Length;
+        }
+        for (int i = index - 3; i > 0; i -= 3)
+        {
+            scoreString = scoreString.Insert(i, ",");
+        }
+        return scoreString;
     }
 
     public void ReInitScore()
