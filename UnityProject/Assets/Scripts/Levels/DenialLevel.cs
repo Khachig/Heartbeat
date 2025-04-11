@@ -34,6 +34,7 @@ public class DenialLevel : Level
         Stage.Lanes.SetOffLimitLane(firelanePrefab);
         aManager.ChangeTrack(levelTrack);
         pulsableManager.Reset();
+        Effects.SpecialEffects.ResetComboText();
         Invoke("SpawnWave", 5f);
         GameObject playerObject = GameObject.FindWithTag("Player");
         PlayerMovement playerMovement = playerObject.GetComponent<PlayerMovement>();

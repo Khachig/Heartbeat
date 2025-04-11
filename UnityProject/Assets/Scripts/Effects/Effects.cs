@@ -9,6 +9,7 @@ public class Effects : MonoBehaviour
 {
 	public GameObject canvas;
 	public GameObject effectTextPrefab;
+	public GameObject comboTextPrefab;
 	public GameObject missTextPrefab;
 	public float popupDuration = 2f;
 	public Material ScreenDamageMat;
@@ -17,11 +18,10 @@ public class Effects : MonoBehaviour
     public float CameraShakeIntensity = 0.5f;
 	private Coroutine screenDamageTask;
 	private GameObject effectTextPopup;
+	private GameObject comboTextPopup;
 	private GameObject missTextPopup;
 	private Animator textAnimator;
-	private float timeSinceLastPopup;
-	private float timeSinceLastMissPopup;
-	private Coroutine popupFadeRoutine;
+	private Dictionary<GameObject, Coroutine> popupFadeRoutines;
 
 	private static Effects instance;
  
@@ -37,45 +37,38 @@ public class Effects : MonoBehaviour
 		}
 		ScreenDamageMat.SetFloat("_vignette_radius", 1f);
 		ScreenDamageImage.color = GetNewAlphaForColor(ScreenDamageImage.color, 0f);
-		timeSinceLastPopup = Time.time; 
-	}
-
-	private void Update()
-	{
-		if (Time.time - timeSinceLastPopup > popupDuration)
-			DestroyPopup(ref effectTextPopup);
-		if (Time.time - timeSinceLastMissPopup > popupDuration)
-			DestroyPopup(ref missTextPopup);
+		popupFadeRoutines = new Dictionary<GameObject, Coroutine>();
 	}
 
 	private void PlayerHealEffect() 
 	{
 		SpawnPopup("PERFECT WAVE!\nHEAL!", effectTextPrefab, ref effectTextPopup);
-		timeSinceLastPopup = Time.time;
 	}
 
 	private void ComboContinueEffect(int comboNum) 
 	{
-		SpawnPopup("COMBO: " + comboNum, effectTextPrefab, ref effectTextPopup);
-		timeSinceLastPopup = Time.time;
+		SpawnPopup("COMBO: " + comboNum, comboTextPrefab, ref comboTextPopup, false);
 	}
 
 	private void ComboBreakEffect() 
 	{
-		SpawnPopup("COMBO BROKEN", effectTextPrefab, ref effectTextPopup);
-		timeSinceLastPopup = Time.time;
+		SpawnPopup("COMBO BROKEN", comboTextPrefab, ref comboTextPopup);
+	}
+
+	private void ResetComboText()
+	{
+		if (comboTextPopup != null)
+			comboTextPopup.GetComponent<TextMeshProUGUI>().color = new Color32(255, 255, 255, 0);
 	}
 
 	private void MissEffect() 
 	{
 		SpawnPopup("MISS", missTextPrefab, ref missTextPopup);
-		timeSinceLastMissPopup = Time.time;
 	}
 
 	private void MultiplierEffect(int multiplierNum) 
 	{
 		SpawnPopup("X" + multiplierNum, missTextPrefab, ref missTextPopup);
-		timeSinceLastMissPopup = Time.time;
 	}
 
 	private void ScreenDamageEffect(float intensity) 
@@ -128,40 +121,32 @@ public class Effects : MonoBehaviour
 		return Mathf.Lerp(toMin, toMax, Mathf.InverseLerp(fromMin, fromMax, value));
 	}
 
-	private void SpawnPopup(string message, GameObject prefab, ref GameObject textPopup)
+	private void SpawnPopup(string message, GameObject prefab, ref GameObject textPopup, bool fadeOut = true)
 	{
-		if (popupFadeRoutine != null)
-			StopCoroutine(popupFadeRoutine);
-
 		if (!textPopup)
 		{
 			textPopup = Instantiate(prefab, prefab.transform.position, Quaternion.identity) as GameObject;
 			textPopup.transform.SetParent(canvas.transform, false);
-		}
+			popupFadeRoutines.Add(textPopup, null);
+		} else if (popupFadeRoutines[textPopup] != null)
+			StopCoroutine(popupFadeRoutines[textPopup]);
+
 		textAnimator = textPopup.GetComponent<Animator>();
 		textAnimator.SetTrigger("Pulse");
         TextMeshProUGUI textComponent = textPopup.GetComponent<TextMeshProUGUI>();
+        textComponent.color = new Color32(255, 255, 255, 255);
         textComponent.text = message;
-        popupFadeRoutine = StartCoroutine(PopupFadeRoutine(textComponent));
-	}
+		if (fadeOut)
+			popupFadeRoutines[textPopup] = StartCoroutine(PopupFadeRoutine(textComponent));
+		else
+			popupFadeRoutines[textPopup] = null;
 
-	private void DestroyPopup(ref GameObject textPopup)
-	{
-		if (!textPopup)
-			return;
-
-		if (popupFadeRoutine != null)
-			StopCoroutine(popupFadeRoutine);
-		Destroy(textPopup);
-		textPopup = null;
-		textAnimator = null;
 	}
 
 	private IEnumerator PopupFadeRoutine(TextMeshProUGUI textComponent)
     {
-        Color32 startColor = new Color32(255, 255, 255, 255);
+        Color32 startColor = textComponent.color;
         Color32 endColor = new Color32(255, 255, 255, 0);
-        textComponent.color = startColor;
 
         float elapsedTime = 0f;
 
@@ -175,7 +160,7 @@ public class Effects : MonoBehaviour
 
         textComponent.color = endColor;
 
-        popupFadeRoutine = null;
+        popupFadeRoutines[textComponent.gameObject] = null;
     }
 
 	private Color GetNewAlphaForColor(Color color, float newAlpha)
@@ -197,6 +182,7 @@ public class Effects : MonoBehaviour
 		public static void PlayerHealEffect() => instance.PlayerHealEffect();
 		public static void ComboContinueEffect(int comboNum) => instance.ComboContinueEffect(comboNum);
 		public static void ComboBreakEffect() => instance.ComboBreakEffect();
+		public static void ResetComboText() => instance.ResetComboText();
 		public static void MissEffect() => instance.MissEffect();
 		public static void MultiplierEffect(int multiplierNum) => instance.MultiplierEffect(multiplierNum);
 	}

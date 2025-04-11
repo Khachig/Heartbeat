@@ -970,6 +970,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvas: {fileID: 1301802704}
   effectTextPrefab: {fileID: 8594685426196085470, guid: d73488ab0353dd6418be6e2678152bf4, type: 3}
+  comboTextPrefab: {fileID: 8594685426196085470, guid: 2d468a2ee26ccdd478c6a4e4601da937, type: 3}
   missTextPrefab: {fileID: 8594685426196085470, guid: c1182a101ed51e742bb3e137b46a5cea, type: 3}
   popupDuration: 2
   ScreenDamageMat: {fileID: 2100000, guid: e6bdc3bc86f50f34cb1f99837c6f39e6, type: 2}

@@ -39,6 +39,7 @@ public class AngerLevel : Level
         Stage.Lanes.SetOffLimitLane(firelanePrefab);
         aManager.ChangeTrack(levelTrack);
         pulsableManager.Reset();
+        Effects.SpecialEffects.ResetComboText();
         Invoke("SpawnWave", 5f);
     }
 
