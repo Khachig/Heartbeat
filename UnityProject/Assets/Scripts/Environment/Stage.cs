@@ -133,6 +133,11 @@ public class Stage : MonoBehaviour
         }
         return activeOffLimitLanes;
     }
+
+    private void SetOffLimitLane(GameObject newOffLimitLanePrefab)
+    {
+        offLimitLanePrefab = newOffLimitLanePrefab;
+    }
     
     public static class Lanes
 	{
@@ -144,5 +149,6 @@ public class Stage : MonoBehaviour
         public static void DeSpawnOffLimitLane(int lane) => instance.DeSpawnOffLimitLane(lane);
         public static bool IsOffLimitLaneActive(int lane) => instance.offLimitLanes[lane] != null;
         public static List<int> GetActiveOffLimitLanes() => instance.GetActiveOffLimitLanes();
+        public static void SetOffLimitLane(GameObject newOffLimitLanePrefab) => instance.SetOffLimitLane(newOffLimitLanePrefab);
 	}
 }

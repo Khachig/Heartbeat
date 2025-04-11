@@ -12,6 +12,7 @@ public class AngerLevel : Level
     public GameObject enemyPrefab;
     public GameObject bossPrefab;
     [EventRef] public string levelTrack; // A reference to the FMOD event we want to use
+    public GameObject firelanePrefab;
     private int enemyCount = 0;
     private int maxEnemyCount = 1;
     private int wave = -2;
@@ -35,6 +36,7 @@ public class AngerLevel : Level
         tut2Panel.SetActive(false);
         tutBossPanel.SetActive(false);
         levelCompleteScreen.SetActive(false);
+        Stage.Lanes.SetOffLimitLane(firelanePrefab);
         aManager.ChangeTrack(levelTrack);
         pulsableManager.Reset();
         Invoke("SpawnWave", 5f);

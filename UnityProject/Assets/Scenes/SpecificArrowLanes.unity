@@ -829,6 +829,7 @@ MonoBehaviour:
   enemyPrefab: {fileID: 8466114321657616639, guid: b2d0888221fb64495af929b5eb1e411f, type: 3}
   bossPrefab: {fileID: 8466114321657616639, guid: e501954f57f673f4a861f98bd560f01e, type: 3}
   levelTrack: event:/Music/Track3
+  firelanePrefab: {fileID: 8817314484962031407, guid: 6149e2f039993c44f8dc410b8cfb2939, type: 3}
 --- !u!1 &112943074
 GameObject:
   m_ObjectHideFlags: 0
@@ -2242,6 +2243,7 @@ MonoBehaviour:
   bossPrefab: {fileID: 2633022709120744907, guid: 378e829a74999f54ea23467e98107180, type: 3}
   tut3Panel: {fileID: 513855840}
   levelTrack: event:/Music/Track2
+  firelanePrefab: {fileID: 8817314484962031407, guid: 780285502d9abb24699398db46743722, type: 3}
 --- !u!1 &577330736
 GameObject:
   m_ObjectHideFlags: 0

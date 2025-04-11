@@ -10,6 +10,7 @@ public class DenialLevel : Level
     public GameObject bossPrefab;
     public GameObject tut3Panel;
     [EventRef] public string levelTrack; // A reference to the FMOD event we want to use
+    public GameObject firelanePrefab;
     private int enemyCount = 0;
     private int maxEnemyCount = 1;
     private int wave = -2;
@@ -30,6 +31,7 @@ public class DenialLevel : Level
         enemyRhythmManager.SetWave(wave);
         enemyManager.enableEnemyMovement();
         levelCompleteScreen.SetActive(false);
+        Stage.Lanes.SetOffLimitLane(firelanePrefab);
         aManager.ChangeTrack(levelTrack);
         pulsableManager.Reset();
         Invoke("SpawnWave", 5f);
