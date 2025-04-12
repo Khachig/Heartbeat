@@ -172,7 +172,7 @@ PrefabInstance:
     - target: {fileID: -7635826562936255635, guid: f8e2e23528b4b4fe5ae86859d4b7c8ae, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: f545602de51ce4f218caae348d81cea1, type: 2}
+      objectReference: {fileID: 2100000, guid: f8ed30e2eae5a4e9e8f5249885cc2e3d, type: 2}
     - target: {fileID: -7635826562936255635, guid: f8e2e23528b4b4fe5ae86859d4b7c8ae, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
@@ -293,7 +293,6 @@ MonoBehaviour:
   DownPrefab: {fileID: 5211037245117644644, guid: 7a92c5ac3fef2774f951aa777b3096b3, type: 3}
   LeftPrefab: {fileID: 5211037245117644644, guid: 84c2121a596ee8848aeaab73a7a45f8e, type: 3}
   RightPrefab: {fileID: 5211037245117644644, guid: 95c17894a8d1e7747882b4a083d85654, type: 3}
-  arrowArrangement: 
   spawnOffsetAngle: 0.5235988
   spawnArcRadius: 2
 --- !u!114 &-4415448277049850471
@@ -309,8 +308,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 1492149416413714763, guid: e1e58811e7ffa2743944673839469c7c, type: 3}
-  fireRate: 1
-  lastFireTime: 0
   EnemyShoot:
     Guid:
       Data1: 1160114324
