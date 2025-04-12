@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     private float beatLength;
     private bool isMoving = false;
     private float lastMoveTime = 0f;
-    private const float inputCooldown = 0.1f; // set to 0.1 second
+    private float inputCooldown = 0.2f; // set to 0.1 second
     private bool canMove = true;
 
     private int beatMultiplier = 1;
@@ -33,6 +33,8 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         timeAtLastBeat = Time.time;
         transform.localPosition = GetCurrPosition();
         hitThreshold = 0.2f;
+        moveDuration = 0.2f;
+        inputCooldown = 0.2f;
     }
     public void SetBeatOffLimitLaneSpawn(int beat){
         globalBeatOffLimitLaneSpawn = beat;
@@ -134,6 +136,7 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     IEnumerator SmoothMove(Vector3 target, Quaternion targetRotation, float transitionDuration)
     {
         isMoving = true;
+        
         Vector3 start = transform.localPosition;
         Quaternion startRotation = transform.localRotation;
 
@@ -151,6 +154,11 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
 
         transform.localPosition = target; // Ensure precise snapping
         transform.localRotation = targetRotation;
+        Invoke("finishedMoving", 0.15f);
+        
+    }
+
+    void finishedMoving(){
         isMoving = false;
     }
 
@@ -191,10 +199,14 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         if (timeAtLastOffBeat == 0){
             timeAtLastOffBeat = timeAtLastBeat;
         }
+        int currentBeat = audioEvent.CurrentBeat;
 
         // beatMultiplierIfHit++;
-        if (timeAtLastBeat >= timeAtLastOffBeat + beatLength + 0.2){
+        // if (timeAtLastBeat >= timeAtLastOffBeat + beatLength + 0.2)
+        if (currentBeat % 2 == 1)
+        {
             beatMultiplierIfHit++;
+            Debug.Log($"beatMultiplierIfHit {beatMultiplierIfHit}");
             timeAtLastOffBeat = timeAtLastBeat;
         }
         
@@ -231,7 +243,10 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     }
     public void IncrementMultiplier(int amount)
     {
-        beatMultiplier += amount;
+        if (beatMultiplier <= beatMultiplierIfHit+1){
+            beatMultiplier += amount;
+        }
+        
         // if (beatMultiplier > beatMultiplierIfHit + 1){
         //     beatMultiplierIfHit = beatMultiplier;
         // }

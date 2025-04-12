@@ -16,7 +16,8 @@ public class ScoreManager : MonoBehaviour
     public TMP_Text finalRatingText;
     public TMP_Text scoreChangeText;
     public TMP_Text scoreMultiplierText;
-    public float scoreChange;
+    public int scoreChange;
+    public float lastChangeTime = 0;
     private Coroutine currentCoroutine;
     private int currentLevel = 0;
     private int beatMultiplier = 1;
@@ -48,16 +49,22 @@ public class ScoreManager : MonoBehaviour
 
     public void AddScore(int amount)
     {
+        int prevChangeAmt = 0;
         if (currentCoroutine != null)
         {
+            if (Time.time < lastChangeTime+0.27){
+                prevChangeAmt = scoreChange;
+            }
             StopCoroutine(currentCoroutine);
         }
-        int changeAmount = (int)Math.Round((float)amount * (1.0f+ (float)(beatMultiplier/100)));
-        Debug.Log($"beatMultiplier/100 {(float)beatMultiplier/100} {(1.0f + (float)(beatMultiplier/100))} {(float)amount * (1.0f+ (float)(beatMultiplier/100))}");
+        int changeAmount = (int)Math.Round((float)amount * (1.0f+ (float)beatMultiplier/100));
+        // Debug.Log($"beatMultiplier/100 {(float)(beatMultiplier/100)} 1+{(float)beatMultiplier/100}: {1.0f + (float)beatMultiplier/100} {(float)amount * (1.0f+ (float)(beatMultiplier/100))}");
         Score += changeAmount;
+        changeAmount += prevChangeAmt;
         scoreChangeText.text = "+" + changeAmount.ToString();
         scoreChangeText.color = Color.green;
         scoreChange = changeAmount;
+        lastChangeTime = Time.time;
         scoreChangeText.gameObject.SetActive(true);
         // Debug.Log("New Score: " + Score);
         currentCoroutine = StartCoroutine(HideTextAfterDelay(2f));

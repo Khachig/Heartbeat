@@ -77,13 +77,13 @@ public class AngerLevel : Level
         //     enemyRhythmManager.SetDifficulty(5);
         //     SpawnBossWave();
         // }
-        else if (wave % 5 == 0)
+        else if (wave % 6 == 0)
         {
             tutBossPanel.SetActive(true);
             SpawnBossWave();
             Invoke(nameof(DeactivateBossTutorialPanel), 5f);
         }
-        else if (wave > 5)
+        else if (wave > 6)
             LevelComplete();
         else
             SpawnRegWave();
@@ -106,23 +106,26 @@ public class AngerLevel : Level
                 tut1Panel.SetActive(false);
             }
             else if (wave == 1){
-                
+                maxEnemyCount++;
+                enemyRhythmManager.SetDifficulty(3);
                 enemyManager.enableEnemyMovement();
                 // enemyRhythmManager.SetDifficulty(-1);
             }
-            else if (wave == 2){
-                enemyRhythmManager.SetDifficulty(3);
-            }
-            else if (wave == 4)
+            // else if (wave == 2){
+                
+            // }
+            else if (wave == 4){
+                maxEnemyCount++;
                 enemyRhythmManager.SetDifficulty(4); // Set to normal difficulty (harder rhythms)
+            }
             // else if (wave >= 6)
             //     enemyRhythmManager.SetDifficulty(4); // Set to normal difficulty (harder rhythms)
-            else if (wave == 5)
+            else if (wave == 6)
                 enemyRhythmManager.SetDifficulty(5); // Set to difficulty 5 for boss
-            if (wave <= 3)
-                maxEnemyCount = 1;
-            else if (maxEnemyCount < 4)
-                maxEnemyCount++;
+            // if (wave <= 0)
+            //     maxEnemyCount = 1;
+            // else if (maxEnemyCount < 4)
+                
             Invoke("SpawnWave", 3);
         }
     }
