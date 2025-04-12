@@ -26,15 +26,16 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     private float timeAtLastOffBeat;
     private int globalBeatOffLimitLaneSpawn = 0;
     private bool inLevelEndScreen = false;
+    private bool comboBroken = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         timeAtLastBeat = Time.time;
         transform.localPosition = GetCurrPosition();
-        hitThreshold = 0.2f;
+        hitThreshold = 0.122f;
         moveDuration = 0.2f;
-        inputCooldown = 0.2f;
+        inputCooldown = 0.1f;
     }
     public void SetBeatOffLimitLaneSpawn(int beat){
         globalBeatOffLimitLaneSpawn = beat;
@@ -63,8 +64,9 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
             // Do any penalty for moving out of time
             Debug.Log($"{currtime}, {timeAtLastBeat}, {timeAtLastBeat + beatLength} Missed Movement Timing");
             Debug.Log($"{currtime - timeAtLastBeat}, {timeAtLastBeat + beatLength - currtime}");
-
-            return;
+            BreakMultiplier();
+            comboBroken = true;
+            // return;
         }
 
 
@@ -128,7 +130,10 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         Vector3 newposition = GetCurrPosition();
         Quaternion targetRotation = GetCurrRotation();
         if (!inLevelEndScreen){
-            IncrementMultiplier(1);
+            if (!comboBroken){
+                IncrementMultiplier(1);
+            }
+            
         }
         StartCoroutine(SmoothMove(newposition, targetRotation, transitionDuration));
     }
@@ -154,7 +159,7 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
 
         transform.localPosition = target; // Ensure precise snapping
         transform.localRotation = targetRotation;
-        Invoke("finishedMoving", 0.15f);
+        isMoving = false;
         
     }
 
@@ -206,7 +211,7 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         if (currentBeat % 2 == 1)
         {
             beatMultiplierIfHit++;
-            Debug.Log($"beatMultiplierIfHit {beatMultiplierIfHit}");
+            // Debug.Log($"beatMultiplierIfHit {beatMultiplierIfHit}");
             timeAtLastOffBeat = timeAtLastBeat;
         }
         
@@ -236,8 +241,12 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
         }
         else if (beatMultiplierIfHit > beatMultiplier)
         {
-            BreakMultiplier();
-            beatMultiplierIfHit = beatMultiplier;
+            if (comboBroken){
+                comboBroken = false;
+                beatMultiplierIfHit = beatMultiplier;
+            }
+            else{
+            BreakMultiplier();}
         }
     
     }
@@ -245,6 +254,9 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     {
         if (beatMultiplier <= beatMultiplierIfHit+1){
             beatMultiplier += amount;
+        }
+        else{
+            return;
         }
         
         // if (beatMultiplier > beatMultiplierIfHit + 1){
@@ -256,7 +268,12 @@ public class PlayerMovement : MonoBehaviour, IEasyListener
     }
     private void BreakMultiplier()
     {
+        Debug.Log($"break beatMultiplierIfHit {beatMultiplierIfHit} beatMultiplier {beatMultiplier}");
         beatMultiplier = Mathf.Max(1, beatMultiplier - 3);
         ScoreManager.Instance.SetMultiplier(beatMultiplier);
+        beatMultiplierIfHit = beatMultiplier;
+        // if (beatMultiplier >= 25){
+        //     Effects.SpecialEffects.MissEffect();
+        // }
     }
 }

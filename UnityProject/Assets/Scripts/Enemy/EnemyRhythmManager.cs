@@ -431,7 +431,13 @@ public class EnemyRhythmManager : MonoBehaviour, IEasyListener
             isProjectilePhase = true;
         }
         else if (wave == projTutorialWave){
-            Invoke("EndAttackPhase", 0.75f);
+            // Invoke("EndAttackPhase", 0.75f);
+            if (currentBar > waveStartBar+4){
+                EndAttackPhase();
+            }
+            else{
+                return;
+            }
         }
         // else if (wave == 0)
         // {
