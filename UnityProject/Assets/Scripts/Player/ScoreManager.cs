@@ -161,23 +161,23 @@ public class ScoreManager : MonoBehaviour
     {   
         float CurrentScore = ScoreManager.Instance.Score;
         // Calculate rating based on score
-        if (CurrentScore >= 140000)
+        if (CurrentScore >= 150000)
         {
             return "S";
         }
-        else if (CurrentScore >= 110000)
+        else if (CurrentScore >= 120000)
         {
             return "A";
         }
-        else if (CurrentScore >= 80000)
+        else if (CurrentScore >= 90000)
         {
             return "B";
         }
-        else if (CurrentScore >= 50000)
+        else if (CurrentScore >= 60000)
         {
             return "C";
         }
-        else if (CurrentScore >= 30000)
+        else if (CurrentScore >= 40000)
         {
             return "D";
         }
